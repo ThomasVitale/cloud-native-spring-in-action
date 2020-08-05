@@ -1,1 +1,1 @@
-# cloud-native-spring-in-action
+# Cloud Native Spring in Action
