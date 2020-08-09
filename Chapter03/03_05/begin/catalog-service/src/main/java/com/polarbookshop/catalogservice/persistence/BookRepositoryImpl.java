@@ -15,7 +15,7 @@ public class BookRepositoryImpl implements BookRepository {
     private static final Map<String, Book> books = new ConcurrentHashMap<>();
 
     static {
-        Book book = new Book("1234567891", "Northern Light", "Lyra Silvertongue", Year.of(2001));
+        Book book = new Book("1234567891", "Northern Lights", "Lyra Silvertongue", Year.of(2001));
         books.put(book.getIsbn(), book);
     }
 
