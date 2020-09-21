@@ -1,0 +1,6 @@
+greetings:
+  message: "Welcome to the Arctic, my friend!"
+spring:
+  profiles:
+    #active: "dev"
+    #active: "prod"
