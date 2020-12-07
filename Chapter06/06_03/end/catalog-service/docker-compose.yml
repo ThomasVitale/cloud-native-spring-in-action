@@ -1,0 +1,20 @@
+version: "3.7"
+services:
+  polardb-catalog:
+    image: "postgres:13"
+    container_name: "polardb-catalog"
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=polardb_catalog
+  catalog-service:
+    image: "polarbookshop/catalog-service:0.0.1-SNAPSHOT"
+    container_name: "catalog-service"
+    ports:
+      - 9001:9001
+    environment:
+      # JVM environment variable to enable debug through a socke on port 8001
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8001
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://polardb-catalog:5432/polardb_catalog

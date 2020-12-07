@@ -1,0 +1,22 @@
+server:
+  port: 9001
+  tomcat:
+    accept-count: 100
+    connection-timeout: 2000
+    max-connections: 8192
+    threads:
+      max: 200
+      min-spare: 10
+
+spring:
+  datasource:
+    username: admin
+    password: admin
+    url: jdbc:postgresql://localhost:5432/polardb_catalog
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 20
+      pool-name: polardb-pool
+  jpa:
+    hibernate:
+      ddl-auto: validate
