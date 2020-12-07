@@ -36,4 +36,4 @@ jobs:
       - name: Build Docker image
         run: ./gradlew bootBuildImage
       - name: Push to Docker Hub
-        run: docker push thomasvitale/catalog-service:0.0.1-SNAPSHOT
+        run: docker push polarbookshop/catalog-service:0.0.1-SNAPSHOT
