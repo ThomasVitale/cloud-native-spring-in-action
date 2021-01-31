@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: default
+  datasource:
+    url: jdbc:tc:postgresql:13:///
+#  jpa:
+#    hibernate:
+#      ddl-auto: create-drop
