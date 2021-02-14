@@ -111,9 +111,7 @@ jobs:
         run: |
           cd Chapter05/05-end/catalog-service
           chmod +x gradlew
-          ./gradlew build
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
+          ./gradlew test -i
   build-05-end-config:
     name: Build Chapter05/05-end/config-service
     runs-on: ubuntu-20.04
