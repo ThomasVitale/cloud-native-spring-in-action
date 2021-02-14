@@ -9,13 +9,14 @@ Source code and resources from the [Cloud Native Spring in Action - With Spring 
     * [Docker for Linux](https://docs.docker.com/engine/install/ubuntu/)
     * [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop)
     * [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop)
-* [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
+* [Kind](https://kind.sigs.k8s.io/)
+* [Minikube](https://minikube.sigs.k8s.io/)
 * [HTTPie](https://httpie.org/)
 
 ## Versions
 
-* Spring Boot 2.3
-* Docker 19.03
+* Spring Boot 2.4.x
+* Docker 20.03
 * Kubernetes 1.19
 * Java 11
 
@@ -29,6 +30,14 @@ Source code: [Chapter02](https://github.com/ThomasVitale/cloud-native-spring-in-
 
 Source code: [Chapter03](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter03)
 
-## 3. Externalized Configuration Management
+## 4. Externalized Configuration Management
 
 Source code: [Chapter04](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter04)
+
+## 5. Persisting and Managing Data in the Cloud
+
+Source code: [Chapter05](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter05)
+
+## 6. Containerizing Spring boot
+
+Source code: [Chapter06](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter06)
