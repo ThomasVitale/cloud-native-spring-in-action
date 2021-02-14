@@ -102,16 +102,11 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_TOKEN }}
       - name: Assemble and test
         run: |
           cd Chapter05/05-end/catalog-service
           chmod +x gradlew
-          ./gradlew test -i
+          ./gradlew build
   build-05-end-config:
     name: Build Chapter05/05-end/config-service
     runs-on: ubuntu-20.04
