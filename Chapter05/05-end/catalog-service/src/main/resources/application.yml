@@ -30,8 +30,7 @@ spring:
       maximum-pool-size: 20
       pool-name: polardb-catalog-pool
   jpa:
-    hibernate:
-      ddl-auto: validate
+    hibernate.ddl-auto: validate
 
 management.endpoints.web.exposure.include: refresh
 

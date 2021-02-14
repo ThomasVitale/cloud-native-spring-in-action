@@ -9,18 +9,17 @@ import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 
-import com.polarbookshop.catalogservice.persistence.BaseEntity;
+import com.polarbookshop.catalogservice.persistence.PersistableEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data
-@AllArgsConstructor
+@Data @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Book extends BaseEntity {
+public class Book extends PersistableEntity {
 
     @NotBlank(message = "The book ISBN must be defined.")
     @Pattern(regexp = "^(97([89]))?\\d{9}(\\d|X)$", message = "The ISBN format must follow the standards ISBN-10 or ISBN-13.")
@@ -38,4 +37,6 @@ public class Book extends BaseEntity {
     @NotNull(message = "The book price must be defined.")
     @Positive(message = "The book price must be greater than zero.")
     private Double price;
+
+    private String publisher;
 }

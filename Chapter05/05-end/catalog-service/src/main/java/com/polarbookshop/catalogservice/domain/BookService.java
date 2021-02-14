@@ -5,7 +5,6 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +27,6 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-    @Transactional
     public void removeBookFromCatalog(String isbn) {
         if (!bookRepository.existsByIsbn(isbn)) {
             throw new BookNotFoundException(isbn);

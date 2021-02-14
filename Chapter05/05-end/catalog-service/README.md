@@ -56,4 +56,5 @@ docker exec -it polardb-catalog psql -U admin -d polardb_catalog
 |:--------------------------:|:------------------------------:|
 | `\list`                    | List all databases.            |
 | `\connect polardb_catalog` | Connect to specific database.  |
+| `\dt`                      | List all tables.               |
 | `\quit`                    | Quit interactive psql console. |

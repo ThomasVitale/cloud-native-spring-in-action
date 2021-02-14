@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.polarbookshop.catalogservice.persistence.JpaConfig;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +28,8 @@ class BookRepositoryJpaTests {
 
     @Test
     void findAllOrderByTitle() {
-        Book expectedBook1 = new Book("1234561235", "Title", "Author", Year.of(2000), 12.90);
-        Book expectedBook2 = new Book("1234561236", "Another Title", "Author", Year.of(2000), 12.90);
+        Book expectedBook1 = new Book("1234561235", "Title", "Author", Year.of(2000), 12.90, "Polar");
+        Book expectedBook2 = new Book("1234561236", "Another Title", "Author", Year.of(2000), 12.90, "Polar");
         entityManager.persist(expectedBook1);
         entityManager.persist(expectedBook2);
 
@@ -42,7 +41,7 @@ class BookRepositoryJpaTests {
     @Test
     void findBookByIsbnWhenExisting() {
         String bookIsbn = "1234561235";
-        Book expectedBook = new Book(bookIsbn, "Title", "Author", Year.of(2000), 12.90);
+        Book expectedBook = new Book(bookIsbn, "Title", "Author", Year.of(2000), 12.90, "Polar");
         entityManager.persist(expectedBook);
 
         Optional<Book> actualBook = bookRepository.findByIsbn(bookIsbn);
@@ -60,7 +59,7 @@ class BookRepositoryJpaTests {
     @Test
     void existsByIsbnWhenExisting() {
         String bookIsbn = "1234561235";
-        Book bookToCreate = new Book(bookIsbn, "Title", "Author", Year.of(2000), 12.90);
+        Book bookToCreate = new Book(bookIsbn, "Title", "Author", Year.of(2000), 12.90, "Polar");
         entityManager.persist(bookToCreate);
 
         boolean existing = bookRepository.existsByIsbn(bookIsbn);
@@ -77,11 +76,11 @@ class BookRepositoryJpaTests {
     @Test
     void deleteByIsbn() {
         String bookIsbn = "1234561235";
-        Book bookToCreate = new Book(bookIsbn, "Title", "Author", Year.of(2000), 12.90);
+        Book bookToCreate = new Book(bookIsbn, "Title", "Author", Year.of(2000), 12.90, "Polar");
         Book persistedBook = entityManager.persist(bookToCreate);
 
         bookRepository.deleteByIsbn(bookIsbn);
 
-        Assertions.assertThat(entityManager.find(Book.class, persistedBook.getId())).isNull();
+        assertThat(entityManager.find(Book.class, persistedBook.getId())).isNull();
     }
 }
