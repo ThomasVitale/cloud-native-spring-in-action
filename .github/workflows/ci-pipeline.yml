@@ -122,8 +122,8 @@ jobs:
           cd Chapter05/05-end/config-service
           chmod +x gradlew
           ./gradlew build
-  build-06-start-catalog:
-    name: Build Chapter06/06-start/catalog-service
+  build-06-begin-catalog:
+    name: Build Chapter06/06-begin/catalog-service
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout repository
@@ -134,11 +134,11 @@ jobs:
           java-version: 11
       - name: Assemble and test
         run: |
-          cd Chapter06/06-start/catalog-service
+          cd Chapter06/06-begin/catalog-service
           chmod +x gradlew
           ./gradlew build
-  build-06-start-config:
-    name: Build Chapter06/06-start/config-service
+  build-06-begin-config:
+    name: Build Chapter06/06-begin/config-service
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout repository
@@ -149,7 +149,7 @@ jobs:
           java-version: 11
       - name: Assemble and test
         run: |
-          cd Chapter06/06-start/config-service
+          cd Chapter06/06-begin/config-service
           chmod +x gradlew
           ./gradlew build
   build-06-end-catalog:
@@ -182,8 +182,8 @@ jobs:
           cd Chapter06/06-end/config-service
           chmod +x gradlew
           ./gradlew build
-  build-07-start-catalog:
-    name: Build Chapter07/07-start/catalog-service
+  build-07-begin-catalog:
+    name: Build Chapter07/07-begin/catalog-service
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout repository
@@ -194,11 +194,11 @@ jobs:
           java-version: 11
       - name: Assemble and test
         run: |
-          cd Chapter07/07-start/catalog-service
+          cd Chapter07/07-begin/catalog-service
           chmod +x gradlew
           ./gradlew build
-  build-07-start-config:
-    name: Build Chapter07/07-start/config-service
+  build-07-begin-config:
+    name: Build Chapter07/07-begin/config-service
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout repository
@@ -209,7 +209,7 @@ jobs:
           java-version: 11
       - name: Assemble and test
         run: |
-          cd Chapter07/07-start/config-service
+          cd Chapter07/07-begin/config-service
           chmod +x gradlew
           ./gradlew build
   build-07-end-catalog:
