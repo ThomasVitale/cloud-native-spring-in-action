@@ -102,6 +102,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
