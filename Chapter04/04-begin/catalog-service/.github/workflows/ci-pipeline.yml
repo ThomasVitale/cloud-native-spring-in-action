@@ -3,7 +3,7 @@ on: [push]
 
 jobs:
   build:
-    name: Run unit and integration tests
+    name: Build and Test
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout repository
@@ -13,4 +13,6 @@ jobs:
         with:
           java-version: 11
       - name: Build and test application
-        run: ./gradlew build
+        run: |
+          chmod +x gradlew
+          ./gradlew build

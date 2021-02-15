@@ -13,7 +13,7 @@ public class BookService {
     private final BookRepository bookRepository;
 
     public Collection<Book> viewBookList() {
-        return bookRepository.findAllOrderByTitle();
+        return bookRepository.findAll();
     }
 
     public Book viewBookDetails(String isbn) {
@@ -32,7 +32,7 @@ public class BookService {
         if (!bookRepository.existsByIsbn(isbn)) {
             throw new BookNotFoundException(isbn);
         }
-        bookRepository.delete(isbn);
+        bookRepository.deleteByIsbn(isbn);
     }
 
     public Book editBookDetails(String isbn, Book book) {
@@ -44,6 +44,6 @@ public class BookService {
         bookToUpdate.setTitle(book.getTitle());
         bookToUpdate.setAuthor(book.getAuthor());
         bookToUpdate.setPublishingYear(book.getPublishingYear());
-        return bookRepository.update(isbn, bookToUpdate);
+        return bookRepository.save(bookToUpdate);
     }
 }

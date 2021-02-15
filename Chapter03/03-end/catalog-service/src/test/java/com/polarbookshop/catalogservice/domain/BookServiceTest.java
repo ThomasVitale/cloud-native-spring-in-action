@@ -23,7 +23,7 @@ class BookServiceTest {
     @Test
     void whenBookToCreateAlreadyExistsThenThrows() {
         String bookIsbn = "1234561232";
-        Book bookToCreate = new Book(bookIsbn, "Title", "Author", Year.of(2000));
+        Book bookToCreate = new Book(bookIsbn, "Title", "Author", Year.of(2000), 9.90);
         when(bookRepository.existsByIsbn(bookIsbn)).thenReturn(true);
         assertThatThrownBy(() -> bookService.addBookToCatalog(bookToCreate))
                 .isInstanceOf(BookAlreadyExistsException.class)

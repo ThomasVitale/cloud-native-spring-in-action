@@ -43,6 +43,7 @@ public class BookService {
         bookToUpdate.setTitle(book.getTitle());
         bookToUpdate.setAuthor(book.getAuthor());
         bookToUpdate.setPublishingYear(book.getPublishingYear());
+        bookToUpdate.setPrice(book.getPrice());
         return bookRepository.save(bookToUpdate);
     }
 }

@@ -23,7 +23,7 @@ class BookControllerIntegrationTests {
     @Test
     void whenGetRequestWithIdThenBookReturned() {
         String bookIsbn = "1231231230";
-        Book bookToCreate = new Book(bookIsbn, "Title", "Author", Year.of(1991));
+        Book bookToCreate = new Book(bookIsbn, "Title", "Author", Year.of(1991), 9.90);
         Book expectedBook = restTemplate.postForEntity("/books", bookToCreate, Book.class).getBody();
 
         ResponseEntity<Book> response = restTemplate.getForEntity("/books/" + bookIsbn, Book.class);
@@ -36,7 +36,7 @@ class BookControllerIntegrationTests {
 
     @Test
     void whenPostRequestThenBookCreated() {
-        Book expectedBook = new Book("1231231231", "Title", "Author", Year.of(1991));
+        Book expectedBook = new Book("1231231231", "Title", "Author", Year.of(1991), 9.90);
 
         ResponseEntity<Book> response = restTemplate.postForEntity("/books", expectedBook, Book.class);
 
@@ -48,7 +48,7 @@ class BookControllerIntegrationTests {
     @Test
     void whenPutRequestThenBookUpdated() {
         String bookIsbn = "1231231232";
-        Book bookToCreate = new Book(bookIsbn, "Title", "Author", Year.of(1991));
+        Book bookToCreate = new Book(bookIsbn, "Title", "Author", Year.of(1991), 9.90);
         Book createdBook = restTemplate.postForEntity("/books", bookToCreate, Book.class).getBody();
         Objects.requireNonNull(createdBook).setPublishingYear(Year.of(1990));
 
@@ -63,7 +63,7 @@ class BookControllerIntegrationTests {
     @Test
     void whenDeleteRequestThenBookDeleted() {
         String bookIsbn = "1231231233";
-        Book bookToCreate = new Book(bookIsbn, "Title", "Author", Year.of(1973));
+        Book bookToCreate = new Book(bookIsbn, "Title", "Author", Year.of(1973), 9.90);
         restTemplate.postForEntity("/books", bookToCreate, Book.class);
 
         restTemplate.delete("/books/" + bookIsbn);

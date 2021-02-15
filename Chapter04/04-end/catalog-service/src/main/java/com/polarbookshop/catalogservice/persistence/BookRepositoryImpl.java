@@ -15,7 +15,7 @@ public class BookRepositoryImpl implements BookRepository {
 	private static final Map<String, Book> books = new ConcurrentHashMap<>();
 
 	@Override
-	public Collection<Book> findAllOrderByTitle() {
+	public Collection<Book> findAll() {
 		return books.values();
 	}
 
@@ -36,13 +36,7 @@ public class BookRepositoryImpl implements BookRepository {
 	}
 
 	@Override
-	public void delete(String isbn) {
+	public void deleteByIsbn(String isbn) {
 		books.remove(isbn);
-	}
-
-	@Override
-	public Book update(String isbn, Book book) {
-		books.put(isbn, book);
-		return book;
 	}
 }

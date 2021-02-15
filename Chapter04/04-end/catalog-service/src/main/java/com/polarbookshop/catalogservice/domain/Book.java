@@ -3,8 +3,10 @@ package com.polarbookshop.catalogservice.domain;
 import java.time.Year;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,4 +27,8 @@ public class Book {
 
     @PastOrPresent(message = "The book cannot have been published in the future.")
     private Year publishingYear;
+
+    @NotNull(message = "The book price must be defined.")
+    @Positive(message = "The book price must be greater than zero.")
+    private Double price;
 }

@@ -3,7 +3,7 @@ on: [push]
 
 jobs:
   build:
-    name: Run unit and integration tests
+    name: Build and Test
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout repository
