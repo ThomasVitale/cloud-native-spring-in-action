@@ -20,7 +20,7 @@ java -jar build/libs/greeting-service-0.0.1-SNAPSHOT.jar
 Run Greeting Service as a Docker container
 
 ```bash
-docker run --name greeting-service -p 8080:8080 arcticgreetings/greeting-service:0.0.1-SNAPSHOT
+docker run --name greeting-service -p 8080:8080 greeting-service:0.0.1-SNAPSHOT
 ```
 
 ### Container Commands
@@ -37,29 +37,29 @@ docker run --name greeting-service -p 8080:8080 arcticgreetings/greeting-service
 ### Create Deployment for application container
 
 ```bash
-kubectl create deployment greeting-service-deployment --image=arcticgreetings/greeting-service:0.0.1-SNAPSHOT
+kubectl create deployment greeting-app --image=greeting-service:0.0.1-SNAPSHOT
 ```
 
 ### Create Service for application Deployment
 
 ```bash
-kubectl expose deployment greeting-service-deployment --type=ClusterIP --name=my-service --port=8080
+kubectl expose deployment greeting-app --type=ClusterIP --name=greeting-app-service --port=8080
 ```
 
 ### Port forwarding from localhost to Kubernetes cluster
 
 ```bash
-kubectl port-forward service/my-service 8000:8080
+kubectl port-forward service/greeting-app-service 8000:8080
 ```
 
 ### Delete Deployment for application container
 
 ```bash
-kubectl delete deployment greeting-service-deployment
+kubectl delete deployment greeting-app
 ```
 
 ### Delete Service for application container
 
 ```bash
-kubectl delete svc my-service
+kubectl delete svc greeting-app-service
 ```
