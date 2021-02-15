@@ -16,17 +16,34 @@
 
 ## Useful Commands
 
-| Gradle Command	   | Description            |
-|:--------------------:|:----------------------:|
-| `./gradlew bootRun`  | Run the application.   |
-| `./gradlew build`    | Build the application. |
-| `./gradlew test`     | Run tests.              
+| Gradle Command	         | Description                   |
+|:--------------------------:|:-----------------------------:|
+| `./gradlew bootRun`        | Run the application.          |
+| `./gradlew build`          | Build the application.        |
+| `./gradlew test`           | Run tests.                    |
+| `./gradlew bootBuildImage` | Containerize the application. |
 
 After building the application, you can also run it from the Java CLI:
 
 ```bash
 java -jar build/libs/catalog-service-0.0.1-SNAPSHOT.jar
 ```
+
+## Docker tasks
+
+Run Catalog Service as a Docker container
+
+```bash
+docker run --name catalog-service -p 8080:8080 polarbookshop/catalog-service:0.0.1-SNAPSHOT
+```
+
+### Container Commands
+
+| Docker Command	              | Description       |
+|:-------------------------------:|:-----------------:|
+| `docker stop catalog-service`   | Stop container.   |
+| `docker start catalog-service`  | Start container.  |
+| `docker remove catalog-service` | Remove container. |
 
 ## Running a PostgreSQL Database
 
