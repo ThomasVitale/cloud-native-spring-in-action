@@ -1,4 +1,4 @@
-name: Deployment Pipeline
+name: CI Pipeline
 on:
   push:
     branches:
@@ -20,7 +20,7 @@ jobs:
           chmod +x gradlew
           ./gradlew build
   package:
-    name: Build and Publish Image
+    name: Package and Publish Image
     needs: [build]
     runs-on: ubuntu-20.04
     steps:
@@ -30,7 +30,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Build Docker image
+      - name: Package and publish image
         run: |
           chmod +x gradlew
           ./gradlew bootBuildImage \
