@@ -1,14 +1,17 @@
 server:
   port: 9001
+  shutdown: graceful
   tomcat:
     connection-timeout: 5s
     threads:
-      max: 200
+      max: 100
       min-spare: 10
 
 spring:
   application:
     name: catalog-service
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
   config.import: "optional:configserver:http://localhost:8888"
   cloud:
     config:

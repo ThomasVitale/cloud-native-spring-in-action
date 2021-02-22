@@ -3,7 +3,7 @@ server:
   tomcat:
     connection-timeout: 5s
     threads:
-      max: 200
+      max: 100
       min-spare: 10
   error:
     include-message: always

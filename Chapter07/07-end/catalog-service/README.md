@@ -28,9 +28,9 @@ After building the application, you can also run it from the Java CLI:
 java -jar build/libs/catalog-service-0.0.1-SNAPSHOT.jar
 ```
 
-## Running a PostgreSQL Database
+## Running a PostgreSQL Database (Docker)
 
-Run PostgreSQL as a Docker container
+Run PostgreSQL as a Docker container:
 
 ```bash
 docker run --name polardb-catalog -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=polardb_catalog -p 5432:5432 -d postgres:13
@@ -58,3 +58,20 @@ docker exec -it polardb-catalog psql -U admin -d polardb_catalog
 | `\connect polardb_catalog` | Connect to specific database.  |
 | `\dt`                      | List all tables.               |
 | `\quit`                    | Quit interactive psql console. |
+
+## Running a PostgreSQL Database (Kubernetes)
+
+Run PostgreSQL as a Helm chart:
+
+```bash
+helm repo add bitnami https://charts.bitnami.com/bitnami
+```
+
+```bash
+helm install polardb-catalog bitnami/postgresql \
+  --set postgresqlUsername=admin \
+  --set postgresqlPassword=admin \
+  --set postgresqlDatabase=polardb_catalog \
+  --set image.tag=13 \
+  --set service.port=5432
+```

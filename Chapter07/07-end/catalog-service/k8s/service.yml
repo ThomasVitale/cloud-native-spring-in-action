@@ -3,12 +3,12 @@ kind: Service
 metadata:
   name: catalog-service
   labels:
-    app: catalog-service
+    app: catalog-app
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
-    app: catalog-service
+    app: catalog-app
   ports:
-  - port: 9001
+  - protocol: TCP
+    port: 9001
     targetPort: 9001
-    nodePort: 30001
