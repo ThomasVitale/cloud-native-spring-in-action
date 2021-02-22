@@ -40,33 +40,33 @@ Gradle | Maven
 
 ## 2. Cloud Native Foundations: Patterns and Technologies
 
-[Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter02/02-begin)
-[Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter02/02-end)
+* [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter02/02-begin)
+* [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter02/02-end)
 
 ## 3. Getting Started with Cloud Native Development
 
-[Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter03/03-begin)
-[Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter03/03-end)
+* [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter03/03-begin)
+* [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter03/03-end)
 
 ## 4. Externalized Configuration Management
 
-[Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter04/04-begin)
-[Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter04/04-end)
+* [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter04/04-begin)
+* [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter04/04-end)
 
 ## 5. Persisting and Managing Data in the Cloud
 
-[Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter05/05-begin)
-[Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter05/05-end)
+* [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter05/05-begin)
+* [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter05/05-end)
 
 ## 6. Containerizing Spring Boot
 
-[Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter06/06-begin)
-[Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter06/06-end)
+* [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter06/06-begin)
+* [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter06/06-end)
 
 ## 7. Kubernetes Fundamentals for Spring Boot
 
-[Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter07/07-begin)
-[Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter07/07-end)
+* [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter07/07-begin)
+* [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter07/07-end)
 
 ## Book forum
 
