@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-app
+  labels:
+    app: edge-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edge-app
+  template:
+    metadata:
+      labels:
+        app: edge-app
+    spec:
+      terminationGracePeriodSeconds: 20
+      containers:
+        - name: edge-app
+          image: polarbookshop/edge-service:0.0.1-SNAPSHOT
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 5" ]
+          ports:
+            - containerPort: 9000
+          env:
+            - name: CATALOG_SERVICE_URL
+              value: http://catalog-service
+            - name: ORDER_SERVICE_URL
+              value: http://order-service
+            - name: SPRING_REDIS_HOST
+              value: polardb-redis-master
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "0.5"
+            limits:
+              memory: "512Mi"

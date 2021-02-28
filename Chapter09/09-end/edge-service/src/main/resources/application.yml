@@ -1,0 +1,64 @@
+server:
+  port: 9000
+  netty:
+    connection-timeout: 5s
+  shutdown: graceful
+
+spring:
+  cloud:
+    gateway:
+      httpclient:
+        connect-timeout: 2000
+        response-timeout: 1s
+      default-filters:
+        - SaveSession
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 10
+            redis-rate-limiter.burstCapacity: 20
+            redis-rate-limiter.requestedTokens: 1
+        - name: Retry
+          args:
+            retries: 3
+            methods: GET
+            series: SERVER_ERROR
+            exceptions: java.io.IOException, java.util.concurrent.TimeoutException
+            backoff:
+              firstBackoff: 50ms
+              maxBackOff: 500ms
+              factor: 2
+              basedOnPreviousValue: false
+      routes:
+        - id: catalog_service
+          uri: ${CATALOG_SERVICE_URL:http://localhost:9001}/books
+          predicates:
+            - Path=/books/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: catalogCircuitBreaker
+                fallbackUri: forward:/catalog-fallback
+        - id: order_service
+          uri: ${ORDER_SERVICE_URL:http://localhost:9002}/orders
+          predicates:
+            - Path=/orders/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: orderCircuitBreaker
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
+  redis:
+    connect-timeout: 5s
+    host: localhost
+    port: 6379
+    timeout: 500ms
+    password: admin
+  session:
+    store-type: redis
+    timeout: 10m
+    redis:
+      namespace: polar:edge
+logging:
+  level:
+    io.github.resilience4j: DEBUG

@@ -332,3 +332,78 @@ jobs:
           cd Chapter08/08-end/order-service
           chmod +x gradlew
           ./gradlew build
+  build-09-begin-catalog:
+    name: Build Chapter08/09-begin/catalog-service
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Assemble and test
+        run: |
+          cd Chapter08/09-begin/catalog-service
+          chmod +x gradlew
+          ./gradlew build
+  build-09-begin-config:
+    name: Build Chapter09/09-begin/config-service
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Assemble and test
+        run: |
+          cd Chapter09/09-begin/config-service
+          chmod +x gradlew
+          ./gradlew build
+  build-09-begin-order:
+    name: Build Chapter08/09-begin/order-service
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Assemble and test
+        run: |
+          cd Chapter09/09-begin/order-service
+          chmod +x gradlew
+          ./gradlew build
+  build-09-end-order:
+    name: Build Chapter09/09-end/order-service
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Assemble and test
+        run: |
+          cd Chapter09/09-end/order-service
+          chmod +x gradlew
+          ./gradlew build
+  build-09-end-edge:
+    name: Build Chapter09/09-end/edge-service
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Assemble and test
+        run: |
+          cd Chapter09/09-end/edge-service
+          chmod +x gradlew
+          ./gradlew build

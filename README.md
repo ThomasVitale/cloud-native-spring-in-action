@@ -68,6 +68,16 @@ Gradle | Maven
 * [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter07/07-begin)
 * [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter07/07-end)
 
+## 8. Reactive Spring: Resilience and Scalability
+
+* [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter08/08-begin)
+* [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter08/08-end)
+
+## 9. API Gateway and Circuit Breakers
+
+* [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter09/09-begin)
+* [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter09/09-end)
+
 ## Book forum
 
 Feel free to submit questions, feedback, or errata to the forum dedicated to "Cloud Native Spring in Action": https://livebook.manning.com/book/cloud-native-spring-in-action/.
