@@ -14,36 +14,21 @@ After building the application, you can also run it from the Java CLI:
 java -jar build/libs/edge-service-0.0.1-SNAPSHOT.jar
 ```
 
-## Running a PostgreSQL Database (Docker)
+## Running a Redis Database (Docker)
 
-Run PostgreSQL as a Docker container:
+Run Redis as a Docker container:
 
 ```bash
-docker run --name polardb-order -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=polardb_order -p 5433:5432 -d postgres:13
+docker run --name polardb-redis -p 6379:6379 -d redis:6
 ```
 
 ### Container Commands
 
 | Docker Command	              | Description       |
 |:-------------------------------:|:-----------------:|
-| `docker stop polardb-order`   | Stop container.   |
-| `docker start polardb-order`  | Start container.  |
-| `docker remove polardb-order` | Remove container. |
-
-### Database Commands
-
-Start an interactive PSQL console:
-
-```bash
-docker exec -it polardb-order psql -U admin -d polardb_order
-```
-
-| PSQL Command	             | Description                    |
-|:--------------------------:|:------------------------------:|
-| `\list`                    | List all databases.            |
-| `\connect polardb_order` | Connect to specific database.  |
-| `\dt`                      | List all tables.               |
-| `\quit`                    | Quit interactive psql console. |
+| `docker stop polardb-redis`   | Stop container.   |
+| `docker start polardb-redis`  | Start container.  |
+| `docker remove polardb-redis` | Remove container. |
 
 ## Running a Redis Database (Kubernetes)
 
@@ -56,7 +41,6 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 ```bash
 helm install polardb-redis bitnami/redis \
   --set cluster.enabled=false \
-  --set fullnameOverride=polardb-redis \
   --set image.tag=6 \
   --set password=admin
 ```

@@ -31,6 +31,8 @@ spec:
               value: http://order-service
             - name: SPRING_REDIS_HOST
               value: polardb-redis-master
+            - name: SPRING_REDIS_PASSWORD
+              value: admin
           resources:
             requests:
               memory: "512Mi"

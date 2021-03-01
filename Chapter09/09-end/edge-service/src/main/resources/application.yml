@@ -5,11 +5,17 @@ server:
   shutdown: graceful
 
 spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
   cloud:
     gateway:
       httpclient:
-        connect-timeout: 2000
-        response-timeout: 1s
+        connect-timeout: 5000
+        response-timeout: 5s
+        pool:
+          type: elastic
+          max-idle-time: 15s
+          max-life-time: 60s
       default-filters:
         - SaveSession
         - name: RequestRateLimiter
@@ -29,7 +35,7 @@ spring:
               factor: 2
               basedOnPreviousValue: false
       routes:
-        - id: catalog_service
+        - id: catalog-route
           uri: ${CATALOG_SERVICE_URL:http://localhost:9001}/books
           predicates:
             - Path=/books/**
@@ -38,7 +44,7 @@ spring:
               args:
                 name: catalogCircuitBreaker
                 fallbackUri: forward:/catalog-fallback
-        - id: order_service
+        - id: order-route
           uri: ${ORDER_SERVICE_URL:http://localhost:9002}/orders
           predicates:
             - Path=/orders/**
@@ -46,8 +52,6 @@ spring:
             - name: CircuitBreaker
               args:
                 name: orderCircuitBreaker
-  lifecycle:
-    timeout-per-shutdown-phase: 15s
   redis:
     connect-timeout: 5s
     host: localhost

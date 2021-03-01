@@ -24,7 +24,7 @@ public class FallbackConfiguration {
 	}
 
 	public Mono<ServerResponse> handleGetFallback(ServerRequest request) {
-		return ServerResponse.ok().body(Mono.just("Fallback"), String.class);
+		return ServerResponse.ok().body(Mono.just(""), String.class);
 	}
 
 	public Mono<ServerResponse> handlePostFallback(ServerRequest request) {
