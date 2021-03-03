@@ -49,7 +49,7 @@ docker exec -it polardb-order psql -U admin -d polardb_order
 | PSQL Command	             | Description                    |
 |:--------------------------:|:------------------------------:|
 | `\list`                    | List all databases.            |
-| `\connect polardb_order` | Connect to specific database.  |
+| `\connect polardb_order`   | Connect to specific database.  |
 | `\dt`                      | List all tables.               |
 | `\quit`                    | Quit interactive psql console. |
 
@@ -65,7 +65,7 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 helm install polardb-order bitnami/postgresql \
   --set postgresqlUsername=admin \
   --set postgresqlPassword=admin \
-  --set postgresqlDatabase=polardb_catalog \
+  --set postgresqlDatabase=polardb_order \
   --set image.tag=13 \
   --set service.port=5433
 ```

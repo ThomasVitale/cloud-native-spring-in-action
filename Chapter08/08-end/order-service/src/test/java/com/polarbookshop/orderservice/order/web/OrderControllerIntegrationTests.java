@@ -48,8 +48,8 @@ class OrderControllerIntegrationTests {
 	}
 
 	private static String r2dbcUrl() {
-		return String.format("r2dbc:postgresql://%s:%s/%s", postgresql.getContainerIpAddress(),
-				postgresql.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT), postgresql.getDatabaseName());
+		return String.format("r2dbc:postgresql://%s:%s/%s", postgresql.getHost(),
+				postgresql.getFirstMappedPort(), postgresql.getDatabaseName());
 	}
 
 	@Test
