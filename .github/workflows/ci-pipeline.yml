@@ -2,211 +2,37 @@ name: CI Pipeline
 on: [push]
 
 jobs:
-  build-chapter-02:
+  build:
     name: Build ${{ matrix.project }}
     runs-on: ubuntu-20.04
     strategy:
       matrix:
         project: [
-          Chapter02/02-end/greeting-service
-        ]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Assemble and test
-        run: |
-          cd ${{ matrix.project }}
-          chmod +x gradlew
-          ./gradlew build
-  build-chapter-03:
-    name: Build ${{ matrix.project }}
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        project: [
-          Chapter03/03-end/catalog-service
-        ]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Assemble and test
-        run: |
-          cd ${{ matrix.project }}
-          chmod +x gradlew
-          ./gradlew build
-  build-chapter-04:
-    name: Build ${{ matrix.project }}
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        project: [
+          Chapter02/02-end/greeting-service,
+          Chapter03/03-end/catalog-service,
           Chapter04/04-begin/catalog-service,
           Chapter04/04-end/catalog-service,
-          Chapter04/04-end/config-service
-        ]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Assemble and test
-        run: |
-          cd ${{ matrix.project }}
-          chmod +x gradlew
-          ./gradlew build
-  build-chapter-05:
-    name: Build ${{ matrix.project }}
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        project: [
+          Chapter04/04-end/config-service,
           Chapter05/05-begin/catalog-service,
           Chapter05/05-begin/config-service,
           Chapter05/05-end/catalog-service,
-          Chapter05/05-end/config-service
-        ]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Assemble and test
-        run: |
-          cd ${{ matrix.project }}
-          chmod +x gradlew
-          ./gradlew build
-  build-chapter-06:
-    name: Build ${{ matrix.project }}
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        project: [
+          Chapter05/05-end/config-service,
           Chapter06/06-begin/catalog-service,
           Chapter06/06-begin/config-service,
           Chapter06/06-end/catalog-service,
-          Chapter06/06-end/config-service
-        ]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Assemble and test
-        run: |
-          cd ${{ matrix.project }}
-          chmod +x gradlew
-          ./gradlew build
-  build-chapter-07:
-    name: Build ${{ matrix.project }}
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        project: [
+          Chapter06/06-end/config-service,
           Chapter07/07-begin/catalog-service,
           Chapter07/07-begin/config-service,
           Chapter07/07-end/catalog-service,
-          Chapter07/07-end/config-service
-        ]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Assemble and test
-        run: |
-          cd ${{ matrix.project }}
-          chmod +x gradlew
-          ./gradlew build
-  build-chapter-08:
-    name: Build ${{ matrix.project }}
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        project: [
+          Chapter07/07-end/config-service,
           Chapter08/08-begin/catalog-service,
           Chapter08/08-begin/config-service,
           Chapter08/08-end/catalog-service,
           Chapter08/08-end/config-service,
-          Chapter08/08-end/order-service
-        ]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Assemble and test
-        run: |
-          cd ${{ matrix.project }}
-          chmod +x gradlew
-          ./gradlew build
-  build-chapter-09-begin:
-    name: Build ${{ matrix.project }}
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        project: [
           Chapter09/09-begin/catalog-service,
           Chapter09/09-begin/config-service,
-          Chapter09/09-begin/order-service
-        ]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Assemble and test
-        run: |
-          cd ${{ matrix.project }}
-          chmod +x gradlew
-          ./gradlew build
-  build-chapter-09-end:
-    name: Build ${{ matrix.project }}
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        project: [
           Chapter09/09-end/catalog-service,
           Chapter09/09-end/config-service,
-          Chapter09/09-end/order-service
-        ]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Assemble and test
-        run: |
-          cd ${{ matrix.project }}
-          chmod +x gradlew
-          ./gradlew build
-  build-chapter-09-end-edge:
-    name: Build ${{ matrix.project }}
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        project: [
           Chapter09/09-end/edge-service
         ]
     steps:
@@ -219,5 +45,50 @@ jobs:
       - name: Assemble and test
         run: |
           cd ${{ matrix.project }}
+          chmod +x gradlew
+          ./gradlew build
+  build-chapter-08-end-order-service:
+    name: Build Chapter08/08-end/order-service
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Assemble and test
+        run: |
+          cd Chapter08/08-end/order-service
+          chmod +x gradlew
+          ./gradlew build
+  build-chapter-09-begin-order-service:
+    name: Build Chapter09/09-begin/order-service
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Assemble and test
+        run: |
+          cd Chapter09/09-begin/order-service
+          chmod +x gradlew
+          ./gradlew build
+  build-chapter-09-end-order-service:
+    name: Build Chapter09/09-end/order-service
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Assemble and test
+        run: |
+          cd Chapter09/09-end/order-service
           chmod +x gradlew
           ./gradlew build
