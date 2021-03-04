@@ -29,11 +29,14 @@ jobs:
           Chapter08/08-begin/config-service,
           Chapter08/08-end/catalog-service,
           Chapter08/08-end/config-service,
+          Chapter08/08-end/order-service,
           Chapter09/09-begin/catalog-service,
           Chapter09/09-begin/config-service,
+          Chapter09/09-begin/order-service,
           Chapter09/09-end/catalog-service,
           Chapter09/09-end/config-service,
-          Chapter09/09-end/edge-service
+          Chapter09/09-end/edge-service,
+          Chapter09/09-end/order-service
         ]
     steps:
       - name: Checkout repository
@@ -61,7 +64,7 @@ jobs:
         run: |
           cd Chapter08/08-end/order-service
           chmod +x gradlew
-          ./gradlew build
+          ./gradlew build --debug
   build-chapter-09-begin-order-service:
     name: Build Chapter09/09-begin/order-service
     runs-on: ubuntu-20.04
@@ -76,7 +79,7 @@ jobs:
         run: |
           cd Chapter09/09-begin/order-service
           chmod +x gradlew
-          ./gradlew build
+          ./gradlew test --debug
   build-chapter-09-end-order-service:
     name: Build Chapter09/09-end/order-service
     runs-on: ubuntu-20.04
@@ -91,4 +94,4 @@ jobs:
         run: |
           cd Chapter09/09-end/order-service
           chmod +x gradlew
-          ./gradlew build
+          ./gradlew test --debug
