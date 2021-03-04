@@ -22,3 +22,13 @@ spring:
 
 polar:
   catalog-service-url: "http://localhost:9001/books/"
+
+logging:
+  level:
+    org:
+      springframework:
+        dao: debug
+    io:
+      r2dbc:
+        postgresql:
+          PostgresqlConnectionFactory: debug
