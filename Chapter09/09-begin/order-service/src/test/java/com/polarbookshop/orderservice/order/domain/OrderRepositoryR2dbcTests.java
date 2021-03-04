@@ -30,10 +30,7 @@ class OrderRepositoryR2dbcTests {
         registry.add("spring.r2dbc.url", OrderRepositoryR2dbcTests::r2dbcUrl);
         registry.add("spring.r2dbc.username", postgresql::getUsername);
         registry.add("spring.r2dbc.password", postgresql::getPassword);
-
         registry.add("spring.flyway.url", postgresql::getJdbcUrl);
-        registry.add("spring.flyway.user", postgresql::getUsername);
-        registry.add("spring.flyway.password", postgresql::getPassword);
     }
 
     private static String r2dbcUrl() {

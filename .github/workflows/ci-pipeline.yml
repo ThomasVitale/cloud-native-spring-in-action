@@ -64,7 +64,7 @@ jobs:
         run: |
           cd Chapter08/08-end/order-service
           chmod +x gradlew
-          ./gradlew build --debug
+          ./gradlew build --debug --full-stacktrace
   build-chapter-09-begin-order-service:
     name: Build Chapter09/09-begin/order-service
     runs-on: ubuntu-20.04
@@ -79,7 +79,7 @@ jobs:
         run: |
           cd Chapter09/09-begin/order-service
           chmod +x gradlew
-          ./gradlew test --debug
+          ./gradlew test --debug --full-stacktrace
   build-chapter-09-end-order-service:
     name: Build Chapter09/09-end/order-service
     runs-on: ubuntu-20.04
@@ -94,4 +94,4 @@ jobs:
         run: |
           cd Chapter09/09-end/order-service
           chmod +x gradlew
-          ./gradlew test --debug
+          ./gradlew test --debug --full-stacktrace
