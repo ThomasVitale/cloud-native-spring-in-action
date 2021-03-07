@@ -28,7 +28,7 @@ public class OrderService {
 	}
 
 	public void updateOrderStatus(Long orderId, OrderStatus status) {
-		getOrder(orderId)
+		orderRepository.findById(orderId)
 				.map(order -> {
 					order.setStatus(status);
 					return order;

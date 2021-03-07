@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @Slf4j
-public class EventFunctions {
+public class OrderFunctions {
 
 	@Bean
 	public Consumer<Order> publishOrderAcceptedEvent(StreamBridge streamBridge) {

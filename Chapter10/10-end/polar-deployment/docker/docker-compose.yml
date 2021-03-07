@@ -40,9 +40,10 @@ services:
     environment:
       # JVM environment variable to enable debug through a socket on port 8002
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8002
-      - POLAR_CATALOG_SERVICE_URL=http://catalog-service:9001
+      - POLAR_CATALOG_SERVICE_URL=http://catalog-service:9001/books/
       - SPRING_R2DBC_URL=r2dbc:postgresql://polardb-order:5432/polardb_order
       - SPRING_FLYWAY_URL=jdbc:postgresql://polardb-order:5432/polardb_order
+      - SPRING_RABBITMQ_HOST=polarmq-broker
 
   polardb-redis:
     image: "redis:6"
@@ -62,9 +63,9 @@ services:
       - ORDER_SERVICE_URL=http://order-service:9002
       - SPRING_REDIS_HOST=polardb-redis
   
-  polarmq-rabbit:
+  polarmq-broker:
     image: rabbitmq:3-management
-    container_name: polarmq-rabbit
+    container_name: polarmq-broker
     ports:
       - 5672:5672
       - 15672:15672
@@ -79,4 +80,4 @@ services:
     environment:
       # JVM environment variable to enable debug through a socket on port 8003
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8003
-      - SPRING_RABBITMQ_HOST=polarmq-rabbit
+      - SPRING_RABBITMQ_HOST=polarmq-broker

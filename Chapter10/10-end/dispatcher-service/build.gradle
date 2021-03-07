@@ -23,6 +23,7 @@ ext {
 }
 
 dependencies {
+	//implementation 'org.springframework.boot:spring-boot-starter'
 	//implementation 'org.springframework.cloud:spring-cloud-function-context'
 	implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
 
@@ -45,6 +46,11 @@ dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 	}
+}
+
+bootBuildImage {
+	imageName = "polarbookshop/${project.name}:${project.version}"
+	environment = ["BP_JVM_VERSION": "11.*"]
 }
 
 test {

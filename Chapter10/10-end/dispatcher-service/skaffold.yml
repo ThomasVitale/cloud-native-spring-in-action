@@ -12,13 +12,13 @@ build:
 deploy:
   helm:
     releases:
-      - name: polarmq-rabbit
+      - name: polarmq-broker
         chartPath: bitnami/rabbitmq
         remote: true
         setValues:
           auth.username: user
           auth.password: password
-          image.tag: 3-management
+          image.tag: 3.8
           service.port: 5672
           service.managerPort: 15672
   kubectl:
