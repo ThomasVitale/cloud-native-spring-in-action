@@ -6,6 +6,7 @@ jobs:
     name: Build ${{ matrix.project }}
     runs-on: ubuntu-20.04
     strategy:
+      fail-fast: false
       matrix:
         project: [
           Chapter02/02-end/greeting-service,
@@ -45,7 +46,7 @@ jobs:
           Chapter10/10-end/config-service,
           Chapter10/10-end/order-service,
           Chapter10/10-end/edge-service,
-          Chapter10/10-end/dispatcher-service,
+          Chapter10/10-end/dispatcher-service
         ]
     steps:
       - name: Checkout repository
@@ -59,78 +60,3 @@ jobs:
           cd ${{ matrix.project }}
           chmod +x gradlew
           ./gradlew build
-  build-chapter-08-end-order-service:
-    name: Build Chapter08/08-end/order-service
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Assemble and test
-        run: |
-          cd Chapter08/08-end/order-service
-          chmod +x gradlew
-          ./gradlew build
-  build-chapter-09-begin-order-service:
-    name: Build Chapter09/09-begin/order-service
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Assemble and test
-        run: |
-          cd Chapter09/09-begin/order-service
-          chmod +x gradlew
-          ./gradlew test
-  build-chapter-09-end-order-service:
-    name: Build Chapter09/09-end/order-service
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Assemble and test
-        run: |
-          cd Chapter09/09-end/order-service
-          chmod +x gradlew
-          ./gradlew test
-  build-chapter-10-begin-order-service:
-    name: Build Chapter10/10-begin/order-service
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Assemble and test
-        run: |
-          cd Chapter10/10-begin/order-service
-          chmod +x gradlew
-          ./gradlew test
-  build-chapter-10-end-order-service:
-    name: Build Chapter10/10-end/order-service
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Assemble and test
-        run: |
-          cd Chapter10/10-end/order-service
-          chmod +x gradlew
-          ./gradlew test
