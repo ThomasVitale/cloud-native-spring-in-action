@@ -78,6 +78,11 @@ Gradle | Maven
 * [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter09/09-begin)
 * [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter09/09-end)
 
+## 10. Event-driven Applications and Functions
+
+* [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter10/10-begin)
+* [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter10/10-end)
+
 ## Book forum
 
 Feel free to submit questions, feedback, or errata to the forum dedicated to "Cloud Native Spring in Action": https://livebook.manning.com/book/cloud-native-spring-in-action/.
