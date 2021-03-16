@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-app
+  labels:
+    app: config-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: config-app
+  template:
+    metadata:
+      labels:
+        app: config-app
+    spec:
+      terminationGracePeriodSeconds: 20
+      containers:
+        - name: catalog-app
+          image: polarbookshop/config-service:0.0.1-SNAPSHOT
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 5" ]
+          ports:
+            - containerPort: 8888
+          resources:
+            requests:
+              memory: "756Mi"
+              cpu: "0.5"
+            limits:
+              memory: "756Mi"

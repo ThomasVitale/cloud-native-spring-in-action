@@ -1,0 +1,20 @@
+spring:
+  cloud:
+    function:
+      definition: pack|label
+    stream:
+      bindings:
+        packlabel-in-0:
+          destination: order-accepted
+          group: polar-dispatcher
+        packlabel-out-0:
+          destination: order-dispatched
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: user
+    password: password
+    connection-timeout: 15s
+
+
+
