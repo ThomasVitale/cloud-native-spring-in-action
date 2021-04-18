@@ -46,7 +46,18 @@ jobs:
           Chapter10/10-end/config-service,
           Chapter10/10-end/order-service,
           Chapter10/10-end/edge-service,
-          Chapter10/10-end/dispatcher-service
+          Chapter10/10-end/dispatcher-service,
+          Chapter10/11-begin/catalog-service,
+          Chapter10/11-begin/config-service,
+          Chapter10/11-begin/order-service,
+          Chapter10/11-begin/edge-service,
+          Chapter10/11-begin/dispatcher-service
+          Chapter10/11-end/catalog-service,
+          Chapter10/11-end/config-service,
+          Chapter10/11-end/order-service,
+          Chapter10/11-end/edge-service,
+          Chapter10/11-end/dispatcher-service
+        ]
         ]
     steps:
       - name: Checkout repository
