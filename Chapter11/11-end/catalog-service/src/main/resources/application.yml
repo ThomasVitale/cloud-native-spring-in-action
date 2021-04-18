@@ -34,6 +34,11 @@ spring:
       pool-name: polardb-catalog-pool
   jpa:
     hibernate.ddl-auto: validate
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8181/auth/realms/PolarBookshop
 
 management.endpoints.web.exposure.include: refresh
 

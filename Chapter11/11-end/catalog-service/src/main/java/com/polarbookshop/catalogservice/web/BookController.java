@@ -30,7 +30,6 @@ public class BookController {
 
     @GetMapping("{isbn}")
     public Book getByIsbn(@PathVariable String isbn) {
-        System.out.println("Calling");
         return bookService.viewBookDetails(isbn);
     }
 

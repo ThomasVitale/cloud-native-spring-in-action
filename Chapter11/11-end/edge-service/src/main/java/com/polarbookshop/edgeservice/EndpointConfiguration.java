@@ -12,7 +12,7 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 @Configuration
-public class FallbackConfiguration {
+public class EndpointConfiguration {
 
 	@Bean
 	public RouterFunction<ServerResponse> routerFunction() {

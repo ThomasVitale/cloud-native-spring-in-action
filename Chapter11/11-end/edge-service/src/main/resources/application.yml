@@ -18,6 +18,7 @@ spring:
           max-life-time: 60s
       default-filters:
         - SaveSession
+        - TokenRelay
         - name: RequestRateLimiter
           args:
             redis-rate-limiter.replenishRate: 10
@@ -63,6 +64,14 @@ spring:
     timeout: 10m
     redis:
       namespace: polar:edge
-logging:
-  level:
-    io.github.resilience4j: DEBUG
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: edge-service
+            client-secret: 6c8521c5-7e70-41c0-a868-0d60b88e463b
+            scope: openid, profile, email, roles
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8181/auth/realms/PolarBookshop

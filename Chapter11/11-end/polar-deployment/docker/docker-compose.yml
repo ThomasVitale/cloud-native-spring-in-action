@@ -81,3 +81,27 @@ services:
       # JVM environment variable to enable debug through a socket on port 8003
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8003
       - SPRING_RABBITMQ_HOST=polarmq-broker
+  
+  polardb-keycloak:
+    image: "postgres:13"
+    container_name: "polardb-keycloak"
+    ports:
+      - 5434:5434
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=keycloak
+  keycloak:
+    image: quay.io/keycloak/keycloak:12.0.4
+    container_name: "keycloak"
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: polardb-keycloak
+      DB_DATABASE: keycloak
+      DB_USER: admin
+      DB_SCHEMA: public
+      DB_PASSWORD: admin
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: password
+    ports:
+      - 8181:8080

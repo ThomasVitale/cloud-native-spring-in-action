@@ -40,6 +40,11 @@ spring:
     username: user
     password: password
     connection-timeout: 15s
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8181/auth/realms/PolarBookshop
 
 logging.level.reactor.core.*: debug
 
