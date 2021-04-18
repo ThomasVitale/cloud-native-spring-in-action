@@ -58,7 +58,6 @@ jobs:
           Chapter10/11-end/edge-service,
           Chapter10/11-end/dispatcher-service
         ]
-        ]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
