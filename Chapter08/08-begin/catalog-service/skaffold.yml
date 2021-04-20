@@ -1,4 +1,4 @@
-apiVersion: skaffold/v2beta12
+apiVersion: skaffold/v2beta13
 kind: Config
 metadata:
   name: catalog-service
@@ -13,8 +13,7 @@ deploy:
   helm:
     releases:
       - name: polardb-catalog
-        chartPath: bitnami/postgresql
-        remote: true
+        remoteChart: bitnami/postgresql
         setValues:
           postgresqlUsername: admin
           postgresqlPassword: admin
