@@ -21,7 +21,7 @@ public class OrderFunctions {
 			if (!order.getStatus().equals(OrderStatus.ACCEPTED)) {
 				return;
 			}
-			OrderAcceptedMessage orderAcceptedMessage = new OrderAcceptedMessage(order.getId());
+			var orderAcceptedMessage = new OrderAcceptedMessage(order.getId());
 			log.info("Sending order accepted event with id: " + order.getId());
 			streamBridge.send("order-accepted", orderAcceptedMessage);
 		};

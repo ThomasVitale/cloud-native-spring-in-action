@@ -1,6 +1,6 @@
 package com.polarbookshop.orderservice.order.web;
 
-import com.polarbookshop.orderservice.config.SecurityConfiguration;
+import com.polarbookshop.orderservice.config.SecurityConfig;
 import com.polarbookshop.orderservice.order.domain.Order;
 import com.polarbookshop.orderservice.order.domain.OrderService;
 import com.polarbookshop.orderservice.order.domain.OrderStatus;
@@ -20,14 +20,14 @@ import static org.springframework.security.test.web.reactive.server.SecurityMock
 import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.mockJwt;
 
 @WebFluxTest(OrderController.class)
-@Import(SecurityConfiguration.class)
+@Import(SecurityConfig.class)
 class OrderControllerWebFluxTests {
 
 	@Autowired
 	private WebTestClient webClient;
 
 	@MockBean
-	private OrderService orderService;
+	OrderService orderService;
 
 	@MockBean
 	ReactiveJwtDecoder reactiveJwtDecoder;

@@ -7,7 +7,7 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.savedrequest.NoOpServerRequestCache;
 
 @Configuration
-public class SecurityConfiguration {
+public class SecurityConfig {
 
 	@Bean
 	SecurityWebFilterChain filterChain(ServerHttpSecurity http) {

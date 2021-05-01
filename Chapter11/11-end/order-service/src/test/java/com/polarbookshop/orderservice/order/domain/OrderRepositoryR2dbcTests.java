@@ -60,21 +60,21 @@ class OrderRepositoryR2dbcTests {
     }
 
     @Test
+    void createOrderNotAuthenticated() {
+        Order rejectedOrder = new Order("1234567890", 3, OrderStatus.REJECTED);
+        StepVerifier.create(orderRepository.save(rejectedOrder))
+                .expectNextMatches(order -> Objects.isNull(order.getCreatedBy()) &&
+                        Objects.isNull(order.getLastModifiedBy()))
+                .verifyComplete();
+    }
+
+    @Test
     @WithMockUser("melinda")
     void createOrderWhenAuthenticated() {
         Order rejectedOrder = new Order("1234567890", 3, OrderStatus.REJECTED);
         StepVerifier.create(orderRepository.save(rejectedOrder))
                 .expectNextMatches(order -> order.getCreatedBy().equals("melinda") &&
                         order.getLastModifiedBy().equals("melinda"))
-                .verifyComplete();
-    }
-
-    @Test
-    void createOrderNotAuthenticated() {
-        Order rejectedOrder = new Order("1234567890", 3, OrderStatus.REJECTED);
-        StepVerifier.create(orderRepository.save(rejectedOrder))
-                .expectNextMatches(order -> Objects.isNull(order.getCreatedBy()) &&
-                        Objects.isNull(order.getLastModifiedBy()))
                 .verifyComplete();
     }
 }

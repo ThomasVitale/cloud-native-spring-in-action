@@ -30,6 +30,7 @@ import org.springframework.cloud.stream.binder.test.TestChannelBinderConfigurati
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -200,6 +201,17 @@ class OrderControllerIntegrationTests {
 		given(bookClient.getBookByIsbn(bookIsbn)).willReturn(Mono.empty());
 		OrderRequest orderRequest = new OrderRequest(bookIsbn, 3);
 
+		String test = "{\"keys\":[{"
+				+ "\"kid\":\"ckb609q8XD8bLpef1wUyDhawa4XWr_F2z9Zct8OiDeI\","
+				+ "\"kty\":\"RSA\","
+				+ "\"alg\":\"RS256\","
+				+ "\"use\":\"sig\","
+				+ "\"n\":\"j0_U50H6oK-7HVt6PiANCKtNF6ednuSj8QiJHwU36a80d9VsEMNiePhlWHlq3OCeI2uuHbiJ_2zvh6T8tJEGvCY1ohrmY7-bAgNoFROORgPRxwBTZx0GHXJ04qupdhOAXorMXav177mTC9KgTZVOVasUutGbsDbagqCoBlhBkIppemjZZgMakjI9NkJxUylqh__HMDCL9AdKvhdPgR-4Op4wzNP739qgfDGiu18xtOujCqOo8pmEvfLmsgI_q4KmKk7rtP_5LpQPNaVbkmt9eNg7r0VKe4vFNx2PwXI1wh4obhG58nfEfepR4Nv4yEHzV3cqBnYx5OJOQJ-SBJhtUQ\","
+				+ "\"e\":\"AQAB\","
+				+ "\"x5c\":[\"MIICpzCCAY8CBgF5HmsGHTANBgkqhkiG9w0BAQsFADAXMRUwEwYDVQQDDAxTZWN1cml0eURlbW8wHhcNMjEwNDI5MTYxNTAwWhcNMzEwNDI5MTYxNjQwWjAXMRUwEwYDVQQDDAxTZWN1cml0eURlbW8wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCPT9TnQfqgr7sdW3o+IA0Iq00Xp52e5KPxCIkfBTfprzR31WwQw2J4+GVYeWrc4J4ja64duIn/bO+HpPy0kQa8JjWiGuZjv5sCA2gVE45GA9HHAFNnHQYdcnTiq6l2E4Beisxdq/XvuZML0qBNlU5VqxS60ZuwNtqCoKgGWEGQiml6aNlmAxqSMj02QnFTKWqH/8cwMIv0B0q+F0+BH7g6njDM0/vf2qB8MaK7XzG066MKo6jymYS98uayAj+rgqYqTuu0//kulA81pVuSa3142DuvRUp7i8U3HY/BcjXCHihuEbnyd8R96lHg2/jIQfNXdyoGdjHk4k5An5IEmG1RAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAGuF9MOBKgBd/ZLa7uRie8VArR0lquVpajq4cQF0z5cw49L8CZvZt3BLR2hb9jUkzWqU2WUYcu3mceGhXPUxBASpMH3hLzgJ5z8Qbs0kIxBGYw6gRYWtn1jDsfudHTD42jQEimc8L/hsTaDwIgClweUm9H5ZFvlgh9cszmS7+moVllaky0skVhQi/kjvj26ijo5cYmXPq+/u7YDm8hV9ce+CNv6DkvkoILbwVRKgbPA+SHEBWz9PkZax5yWNLylll7GX+C9qHCZ+Jjzah+MZUNpnnaKwAyZ+TuJaM+Rz8ykb5zezayiMa7Z3Ch+b85u19ZT4j5qMUe26nm7gSwgALZI=\"],"
+				+ "\"x5t\":\"Fivw04QNwt2jEd2slSxrnMAwdyw\","
+				+ "\"x5t#S256\":\"TRTPvrwELEV6i3PkO7y8ePKsHJ30-oAyi9O4RwqonHY\"}]}";
+
 		webTestClient.post().uri("/orders")
 				.headers(headers -> headers.setBearerAuth(accessTokenIrma))
 				.bodyValue(orderRequest)
@@ -219,11 +231,11 @@ class OrderControllerIntegrationTests {
 				.build();
 
 		MultiValueMap<String, String> oAuthParameters = new LinkedMultiValueMap<>();
-		oAuthParameters.put("grant_type", List.of("password"));
-		oAuthParameters.put("client_id", List.of("edge-service"));
-		oAuthParameters.put("client_secret", List.of("6c8521c5-7e70-41c0-a868-0d60b88e463b"));
-		oAuthParameters.put("username", List.of(username));
-		oAuthParameters.put("password", List.of("password"));
+		oAuthParameters.put(OAuth2ParameterNames.GRANT_TYPE, List.of("password"));
+		oAuthParameters.put(OAuth2ParameterNames.CLIENT_ID, List.of("edge-service"));
+		oAuthParameters.put(OAuth2ParameterNames.CLIENT_SECRET, List.of("6c8521c5-7e70-41c0-a868-0d60b88e463b"));
+		oAuthParameters.put(OAuth2ParameterNames.USERNAME, List.of(username));
+		oAuthParameters.put(OAuth2ParameterNames.PASSWORD, List.of("password"));
 
 		String accessTokenResponse = webClient.post().uri(tokenUrl)
 				.bodyValue(oAuthParameters)
@@ -231,6 +243,7 @@ class OrderControllerIntegrationTests {
 				.bodyToMono(String.class)
 				.block();
 
-		return new ObjectMapper().readValue(accessTokenResponse, ObjectNode.class).get("access_token").asText();
+		return new ObjectMapper().readValue(accessTokenResponse, ObjectNode.class)
+				.get(OAuth2ParameterNames.ACCESS_TOKEN).asText();
 	}
 }
