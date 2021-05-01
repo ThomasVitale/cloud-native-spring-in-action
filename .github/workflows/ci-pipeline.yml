@@ -51,7 +51,7 @@ jobs:
           Chapter11/11-begin/config-service,
           Chapter11/11-begin/order-service,
           Chapter11/11-begin/edge-service,
-          Chapter11/11-begin/dispatcher-service
+          Chapter11/11-begin/dispatcher-service,
           Chapter11/11-end/catalog-service,
           Chapter11/11-end/config-service,
           Chapter11/11-end/order-service,
