@@ -19,7 +19,18 @@ spring:
     user: ${spring.r2dbc.username}
     password: ${spring.r2dbc.password}
     url: jdbc:postgresql://localhost:5433/polardb_order
+  config:
+    import: "optional:configserver:http://localhost:8888"
   cloud:
+    config:
+      request-connect-timeout: 1000 # 1s
+      request-read-timeout: 5000 # 5s
+      fail-fast: false
+      retry:
+        max-attempts: 6
+        initial-interval: 1000 # 1s
+        max-interval: 2000 # 2s
+        multiplier: 1.1
     function:
       definition: acceptOrder;dispatchOrder
     stream:
