@@ -11,6 +11,9 @@ public class RateLimiterConfiguration {
 
 	@Bean
 	public KeyResolver keyResolver() {
-		return exchange -> Mono.just("ONE_BUCKET");
+		return exchange -> exchange.getPrincipal()
+				.flatMap(p -> Mono.just(p.getName()))
+				.defaultIfEmpty("ANONYMOUS");
 	}
+	
 }

@@ -4,7 +4,6 @@ import java.util.Objects;
 
 import reactor.core.publisher.Mono;
 
-import org.springframework.boot.autoconfigure.security.reactive.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,7 +21,7 @@ import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.web.server.WebFilter;
 
 @Configuration
-public class SecurityConfiguration {
+public class SecurityConfig {
 
 	@Bean
 	public ServerOAuth2AuthorizedClientRepository authorizedClientRepository() {
@@ -33,13 +32,11 @@ public class SecurityConfiguration {
 	SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http, ReactiveClientRegistrationRepository clientRegistrationRepository) {
 		return http
 				.authorizeExchange(exchange -> exchange
-						.matchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-						.pathMatchers("/", "/login/**", "/oauth2/**").permitAll()
-						.pathMatchers("/favicon.ico", "/*.css", "/*.js").permitAll()
-						.pathMatchers("/books/**", HttpMethod.HEAD.toString(), HttpMethod.GET.toString()).permitAll()
+						.pathMatchers("/", "/*.css", "/*.js", "/favicon.ico").permitAll()
+						.pathMatchers(HttpMethod.GET, "/**").permitAll()
 						.anyExchange().authenticated()
 				)
-				.exceptionHandling(exceptionHandlingSpec -> exceptionHandlingSpec
+				.exceptionHandling(exceptionHandling -> exceptionHandling
 						.authenticationEntryPoint(new HttpStatusServerEntryPoint(HttpStatus.UNAUTHORIZED)))
 				.oauth2Login(login -> login.authorizedClientRepository(authorizedClientRepository()))
 				.logout(logout -> logout.logoutSuccessHandler(oidcLogoutSuccessHandler(clientRegistrationRepository)))
@@ -48,8 +45,7 @@ public class SecurityConfiguration {
 	}
 
 	private ServerLogoutSuccessHandler oidcLogoutSuccessHandler(ReactiveClientRegistrationRepository clientRegistrationRepository) {
-		OidcClientInitiatedServerLogoutSuccessHandler oidcLogoutSuccessHandler =
-				new OidcClientInitiatedServerLogoutSuccessHandler(clientRegistrationRepository);
+		var oidcLogoutSuccessHandler = new OidcClientInitiatedServerLogoutSuccessHandler(clientRegistrationRepository);
 		oidcLogoutSuccessHandler.setPostLogoutRedirectUri("{baseUrl}");
 		return oidcLogoutSuccessHandler;
 	}

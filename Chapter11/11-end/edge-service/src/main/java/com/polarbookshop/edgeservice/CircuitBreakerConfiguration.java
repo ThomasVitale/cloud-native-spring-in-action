@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class CircuitBreakerConfiguration {
 
-	private static final Duration TIMEOUT = Duration.ofSeconds(3);
+	private static final Duration TIMEOUT = Duration.ofSeconds(5);
 
 	@Bean
 	public Customizer<ReactiveResilience4JCircuitBreakerFactory> defaultCustomizer() {
@@ -31,4 +31,5 @@ public class CircuitBreakerConfiguration {
 				.build()
 		);
 	}
+
 }

@@ -12,12 +12,13 @@ public class UserController {
 
 	@GetMapping("user")
 	public Mono<User> getUser(@AuthenticationPrincipal OidcUser oidcUser) {
-		User user = new User();
-		user.setId(oidcUser.getSubject());
-		user.setUsername(oidcUser.getPreferredUsername());
-		user.setFirstName(oidcUser.getGivenName());
-		user.setLastName(oidcUser.getFamilyName());
-		user.setRoles(oidcUser.getClaimAsStringList("roles"));
+		var user = new User(
+				oidcUser.getPreferredUsername(),
+				oidcUser.getGivenName(),
+				oidcUser.getFamilyName(),
+				oidcUser.getClaimAsStringList("roles")
+		);
 		return Mono.just(user);
 	}
+
 }
