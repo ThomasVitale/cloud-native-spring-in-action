@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.polarbookshop.catalogservice.domain.Book;
 import com.polarbookshop.catalogservice.domain.BookNotFoundException;
 import com.polarbookshop.catalogservice.domain.BookService;
-import com.polarbookshop.catalogservice.config.SecurityConfiguration;
+import com.polarbookshop.catalogservice.config.SecurityConfig;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +18,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static com.polarbookshop.catalogservice.config.SecurityConfiguration.ROLE_CUSTOMER;
-import static com.polarbookshop.catalogservice.config.SecurityConfiguration.ROLE_EMPLOYEE;
+import static com.polarbookshop.catalogservice.config.SecurityConfig.ROLE_CUSTOMER;
+import static com.polarbookshop.catalogservice.config.SecurityConfig.ROLE_EMPLOYEE;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(BookController.class)
-@Import(SecurityConfiguration.class)
+@Import(SecurityConfig.class)
 class BookControllerMvcTests {
 
     @Autowired
@@ -39,7 +39,7 @@ class BookControllerMvcTests {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private BookService bookService;
+    BookService bookService;
 
     @MockBean
     JwtDecoder jwtDecoder;

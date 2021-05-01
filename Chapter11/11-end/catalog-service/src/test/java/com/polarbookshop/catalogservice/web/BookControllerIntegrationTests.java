@@ -1,7 +1,7 @@
 package com.polarbookshop.catalogservice.web;
 
 import java.time.Year;
-import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,6 +23,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.util.LinkedMultiValueMap;
@@ -33,16 +35,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("integration")
 @Testcontainers
 class BookControllerIntegrationTests {
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+    static HttpHeaders authorizationBearerHeader;
 
-    private static HttpHeaders authorizationBearerHeader;
+    @Autowired
+    TestRestTemplate restTemplate;
 
     @Container
-    private static final KeycloakContainer keycloak = new KeycloakContainer("jboss/keycloak:12.0.4")
+    static final KeycloakContainer keycloak = new KeycloakContainer("jboss/keycloak:12.0.4")
                     .withRealmImportFile("keycloak_config.json")
                     .withEnv("DB_VENDOR", "h2");
 
@@ -84,7 +87,7 @@ class BookControllerIntegrationTests {
     }
 
     @Test
-    void whenPostRequestUnathenticatedThen401() {
+    void whenPostRequestUnauthenticatedThen401() {
         Book expectedBook = new Book("1231231231", "Title", "Author", Year.of(1991), 9.90, "Polar");
 
         ResponseEntity<Book> response = restTemplate
@@ -97,7 +100,8 @@ class BookControllerIntegrationTests {
     void whenPutRequestThenBookUpdated() {
         String bookIsbn = "1231231232";
         Book bookToCreate = new Book(bookIsbn, "Title", "Author", Year.of(1991), 9.90, "Polar");
-        Book createdBook = restTemplate.postForEntity("/books", new HttpEntity<>(bookToCreate, authorizationBearerHeader), Book.class).getBody();
+        Book createdBook = restTemplate
+                .postForEntity("/books", new HttpEntity<>(bookToCreate, authorizationBearerHeader), Book.class).getBody();
         Objects.requireNonNull(createdBook).setPublishingYear(Year.of(1990));
 
         restTemplate.put("/books/" + bookIsbn, new HttpEntity<>(createdBook, authorizationBearerHeader));
@@ -126,17 +130,17 @@ class BookControllerIntegrationTests {
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED.toString())
                 .build();
 
-        MultiValueMap<String, String> oAuthParameters = new LinkedMultiValueMap<>();
-        oAuthParameters.put("grant_type", Collections.singletonList("password"));
-        oAuthParameters.put("client_id", Collections.singletonList("edge-service"));
-        oAuthParameters.put("client_secret", Collections.singletonList("6c8521c5-7e70-41c0-a868-0d60b88e463b"));
-        oAuthParameters.put("username", Collections.singletonList("irma.pince"));
-        oAuthParameters.put("password", Collections.singletonList("password"));
+        MultiValueMap<String, String> oAuth2Parameters = new LinkedMultiValueMap<>();
+        oAuth2Parameters.put(OAuth2ParameterNames.GRANT_TYPE, List.of("password"));
+        oAuth2Parameters.put(OAuth2ParameterNames.CLIENT_ID, List.of("edge-service"));
+        oAuth2Parameters.put(OAuth2ParameterNames.CLIENT_SECRET, List.of("6c8521c5-7e70-41c0-a868-0d60b88e463b"));
+        oAuth2Parameters.put(OAuth2ParameterNames.USERNAME, List.of("irma.pince"));
+        oAuth2Parameters.put(OAuth2ParameterNames.PASSWORD, List.of("password"));
 
-        String accessTokenResponse = keycloakRest.postForObject(tokenUrl, oAuthParameters, String.class);
+        String accessTokenResponse = keycloakRest.postForObject(tokenUrl, oAuth2Parameters, String.class);
         HttpHeaders authorizedHeaders = new HttpHeaders();
-        assertThatNoException().isThrownBy(() -> authorizedHeaders.setBearerAuth(
-                new ObjectMapper().readValue(accessTokenResponse, ObjectNode.class).get("access_token").asText()));
+        assertThatNoException().isThrownBy(() -> authorizedHeaders.setBearerAuth(new ObjectMapper()
+                .readValue(accessTokenResponse, ObjectNode.class).get(OAuth2ParameterNames.ACCESS_TOKEN).asText()));
         return authorizedHeaders;
     }
 }
