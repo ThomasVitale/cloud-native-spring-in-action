@@ -21,7 +21,7 @@ import static org.springframework.security.test.web.reactive.server.SecurityMock
 class SecurityConfigTests {
 
 	@Autowired
-	private WebTestClient webClient;
+	WebTestClient webClient;
 
 	@MockBean
 	ReactiveClientRegistrationRepository clientRegistrationRepository;

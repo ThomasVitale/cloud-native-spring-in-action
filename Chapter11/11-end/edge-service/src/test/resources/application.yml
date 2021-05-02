@@ -1,7 +1,0 @@
-#spring:
-#  session:
-#    store-type: none
-
-logging:
-  level:
-    org.springframework.*: debug

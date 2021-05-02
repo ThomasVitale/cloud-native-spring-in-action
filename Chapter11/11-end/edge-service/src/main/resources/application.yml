@@ -76,26 +76,6 @@ spring:
           keycloak:
             issuer-uri: http://localhost:8180/auth/realms/PolarBookshop
 
-resilience4j.circuitbreaker:
-  configs:
-    default:
-      minimumNumberOfCalls: 20
-      slidingWindowSize: 20
-      permittedNumberOfCallsInHalfOpenState: 5
-      failureRateThreshold: 50
-      waitDurationInOpenState: 60s
-  instances:
-    catalogCircuitBreaker:
-      baseConfig: default
-    orderCircuitBreaker:
-      baseConfig: default
-
-resilience4j.timelimiter:
-  configs:
-    default:
-      timeoutDuration: 5s
-      cancelRunningFuture: true
-
 logging:
   level:
     io.github.resilience4j: DEBUG
