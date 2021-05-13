@@ -15,7 +15,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 public class EndpointConfiguration {
 
 	@Bean
-	public RouterFunction<ServerResponse> routerFunction() {
+	RouterFunction<ServerResponse> routerFunction() {
 		return RouterFunctions
 				.route(RequestPredicates.GET("/catalog-fallback"),
 						this::handleGetFallback)
@@ -23,11 +23,11 @@ public class EndpointConfiguration {
 						this::handlePostFallback);
 	}
 
-	public Mono<ServerResponse> handleGetFallback(ServerRequest request) {
+	private Mono<ServerResponse> handleGetFallback(ServerRequest request) {
 		return ServerResponse.ok().body(Mono.just(""), String.class);
 	}
 
-	public Mono<ServerResponse> handlePostFallback(ServerRequest request) {
+	private Mono<ServerResponse> handlePostFallback(ServerRequest request) {
 		return ServerResponse.status(HttpStatus.SERVICE_UNAVAILABLE).build();
 	}
 

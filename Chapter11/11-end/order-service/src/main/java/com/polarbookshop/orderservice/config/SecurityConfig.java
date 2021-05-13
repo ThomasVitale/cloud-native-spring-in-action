@@ -21,4 +21,5 @@ public class SecurityConfig {
 				.csrf(ServerHttpSecurity.CsrfSpec::disable)
 				.build();
 	}
+
 }

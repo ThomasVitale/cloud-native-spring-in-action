@@ -92,8 +92,8 @@ services:
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=keycloak
   keycloak:
-    image: quay.io/keycloak/keycloak:12.0.4
-    container_name: "keycloak"
+    image: jboss/keycloak:13.0.0
+    container_name: "polar-keycloak"
     environment:
       DB_VENDOR: POSTGRES
       DB_ADDR: polardb-keycloak
@@ -104,4 +104,16 @@ services:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: password
     ports:
-      - 8181:8080
+      - 9100:8080
+  keycloak2:
+    image: jboss/keycloak:13.0.0
+    container_name: "keycloak2"
+    volumes:
+      - ./keycloak:/opt/jboss/keycloak/imports
+    command: 
+      - "-b 0.0.0.0 -Dkeycloak.import=/opt/jboss/keycloak/imports/realm-export.json"
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: password
+    ports:
+      - 9200:8080

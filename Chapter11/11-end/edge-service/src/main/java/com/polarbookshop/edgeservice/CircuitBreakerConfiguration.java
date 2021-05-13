@@ -17,7 +17,7 @@ public class CircuitBreakerConfiguration {
 	private static final Duration TIMEOUT = Duration.ofSeconds(5);
 
 	@Bean
-	public Customizer<ReactiveResilience4JCircuitBreakerFactory> defaultCustomizer() {
+	Customizer<ReactiveResilience4JCircuitBreakerFactory> defaultCustomizer() {
 		return factory -> factory.configureDefault(id -> new Resilience4JConfigBuilder(id)
 				.circuitBreakerConfig(CircuitBreakerConfig.custom()
 						.slidingWindowSize(20)

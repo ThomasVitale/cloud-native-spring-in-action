@@ -44,11 +44,7 @@ class UserControllerTests {
 				.exchange()
 				.expectStatus().is2xxSuccessful()
 				.expectBody(User.class)
-				.value(user -> {
-					System.out.println(user);
-					assertThat(user).isNotNull();
-					assertThat(user).usingRecursiveComparison().isEqualTo(expectedUser);
-				});
+				.value(user -> assertThat(user).isEqualTo(expectedUser));
 	}
 
 	private SecurityMockServerConfigurers.OidcLoginMutator configureMockOidcLogin(User expectedUser) {

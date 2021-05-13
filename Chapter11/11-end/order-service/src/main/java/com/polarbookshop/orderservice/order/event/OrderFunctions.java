@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 public class OrderFunctions {
 
 	@Bean
-	public Consumer<Order> publishOrderAcceptedEvent(StreamBridge streamBridge) {
+	Consumer<Order> publishOrderAcceptedEvent(StreamBridge streamBridge) {
 		return order -> {
 			if (!order.getStatus().equals(OrderStatus.ACCEPTED)) {
 				return;
@@ -28,10 +28,11 @@ public class OrderFunctions {
 	}
 
 	@Bean
-	public Consumer<OrderDispatchedMessage> dispatchOrder(OrderService orderService) {
+	Consumer<OrderDispatchedMessage> dispatchOrder(OrderService orderService) {
 		return orderDispatchedMessage -> {
 			log.info("The order with id " + orderDispatchedMessage.getOrderId() + " has been dispatched.");
 			orderService.updateOrderStatus(orderDispatchedMessage.getOrderId(), OrderStatus.DISPATCHED);
 		};
 	}
+
 }

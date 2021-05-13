@@ -70,11 +70,11 @@ spring:
         registration:
           keycloak:
             client-id: edge-service
-            client-secret: 887f916e-552e-4d84-a8e1-a195d3212d1f
+            client-secret: 636f4ef3-e6aa-4076-a5ae-5e4925524fed
             scope: openid, roles
         provider:
           keycloak:
-            issuer-uri: http://localhost:8180/auth/realms/PolarBookshop
+            issuer-uri: http://localhost:9100/auth/realms/PolarBookshop
 
 logging:
   level:

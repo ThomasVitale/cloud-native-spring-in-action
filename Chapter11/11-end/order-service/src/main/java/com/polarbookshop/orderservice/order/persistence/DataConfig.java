@@ -19,4 +19,5 @@ public class DataConfig {
 				.filter(Authentication::isAuthenticated)
 				.map(Authentication::getName);
 	}
+
 }

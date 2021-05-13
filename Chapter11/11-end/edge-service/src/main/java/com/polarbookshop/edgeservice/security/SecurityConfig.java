@@ -24,7 +24,7 @@ import org.springframework.web.server.WebFilter;
 public class SecurityConfig {
 
 	@Bean
-	public ServerOAuth2AuthorizedClientRepository authorizedClientRepository() {
+	ServerOAuth2AuthorizedClientRepository authorizedClientRepository() {
 		return new WebSessionServerOAuth2AuthorizedClientRepository();
 	}
 
@@ -56,7 +56,8 @@ public class SecurityConfig {
 			String key = CsrfToken.class.getName();
 			Mono<CsrfToken> csrfToken = exchange.getAttributes().containsKey(key) ? exchange.getAttribute(key) : Mono.empty();
 			return Objects.requireNonNull(csrfToken)
-					.doOnSuccess(token -> {}) // Do nothing. Just subscribe.
+					// Subscribe to the CsrfToken publisher. Required because of https://github.com/spring-projects/spring-security/issues/5766
+					.doOnSuccess(token -> {})
 					.then(chain.filter(exchange));
 		};
 	}
