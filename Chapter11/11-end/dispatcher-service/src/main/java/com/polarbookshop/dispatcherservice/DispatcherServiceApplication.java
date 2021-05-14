@@ -9,5 +9,4 @@ public class DispatcherServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DispatcherServiceApplication.class, args);
 	}
-
 }

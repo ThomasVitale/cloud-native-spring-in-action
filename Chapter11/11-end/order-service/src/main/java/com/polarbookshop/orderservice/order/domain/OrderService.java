@@ -19,8 +19,12 @@ public class OrderService {
 	private final Consumer<Order> acceptedOrderConsumer;
 	private final OrderRepository orderRepository;
 
-	public Flux<Order> getAllOrders(String userId) {
-		return orderRepository.findAllByCreatedBy(userId);
+	public Flux<Order> getAllOrders() {
+		return orderRepository.findAll();
+	}
+
+	public Mono<Order> getOrder(Long id) {
+		return orderRepository.findById(id);
 	}
 
 	public void updateOrderStatus(Long orderId, OrderStatus status) {
@@ -53,5 +57,4 @@ public class OrderService {
 	private Order buildRejectedOrder(String isbn, int quantity) {
 		return new Order(isbn, quantity, OrderStatus.REJECTED);
 	}
-
 }

@@ -15,5 +15,5 @@ public class RateLimiterConfiguration {
 				.flatMap(p -> Mono.just(p.getName()))
 				.defaultIfEmpty("ANONYMOUS");
 	}
-	
+
 }

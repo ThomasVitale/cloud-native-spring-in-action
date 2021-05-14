@@ -12,10 +12,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,7 +29,7 @@ class BookRepositoryJpaTests {
     private TestEntityManager entityManager;
 
     @Test
-    void findAllBooks() {
+    void findAllOrderByTitle() {
         Book expectedBook1 = new Book("1234561235", "Title", "Author", Year.of(2000), 12.90, "Polar");
         Book expectedBook2 = new Book("1234561236", "Another Title", "Author", Year.of(2000), 12.90, "Polar");
         entityManager.persist(expectedBook1);
@@ -76,25 +73,6 @@ class BookRepositoryJpaTests {
     void existsByIsbnWhenNotExisting() {
         boolean existing = bookRepository.existsByIsbn("1234561235");
         assertThat(existing).isFalse();
-    }
-
-    @Test
-    void createBookWhenNotAuthenticated() {
-        Book bookToCreate = new Book("1234561235", "Title", "Author", Year.of(2000), 12.90, "Polar");
-        Book createdBook = bookRepository.save(bookToCreate);
-
-        assertThat(createdBook.getCreatedBy()).isNull();
-        assertThat(createdBook.getLastModifiedBy()).isNull();
-    }
-
-    @Test
-    @WithMockUser("john")
-    void createBookWhenAuthenticated() {
-        Book bookToCreate = new Book("1234561235", "Title", "Author", Year.of(2000), 12.90, "Polar");
-        Book createdBook = bookRepository.save(bookToCreate);
-
-        assertThat(createdBook.getCreatedBy()).isEqualTo("john");
-        assertThat(createdBook.getLastModifiedBy()).isEqualTo("john");
     }
 
     @Test

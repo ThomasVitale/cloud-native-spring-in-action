@@ -65,4 +65,5 @@ class SecurityConfigTests {
 				.redirectUri("https://example.org")
 				.build();
 	}
+
 }

@@ -1,4 +1,4 @@
-apiVersion: skaffold/v2beta13
+apiVersion: skaffold/v2beta12
 kind: Config
 metadata:
   name: edge-service
@@ -13,7 +13,7 @@ deploy:
   helm:
     releases:
       - name: polardb-redis
-        remoteChart: bitnami/redis
+        chartPath: bitnami/redis
         remote: true
         setValues:
           cluster.enabled: false

@@ -61,4 +61,5 @@ public class SecurityConfig {
 					.then(chain.filter(exchange));
 		};
 	}
+
 }

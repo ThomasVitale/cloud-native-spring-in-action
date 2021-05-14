@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -13,7 +12,6 @@ import org.springframework.data.relational.core.mapping.Table;
 @Data @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
 public class Order extends PersistableEntity {
 
 	private String bookIsbn;
