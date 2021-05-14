@@ -14,7 +14,9 @@ After building the application, you can also run it from the Java CLI:
 java -jar build/libs/edge-service-0.0.1-SNAPSHOT.jar
 ```
 
-## Running a Redis Database (Docker)
+## Redis 
+
+### Running a Redis Database (Docker)
 
 Run Redis as a Docker container:
 
@@ -22,7 +24,7 @@ Run Redis as a Docker container:
 docker run --name polardb-redis -p 6379:6379 -d redis:6
 ```
 
-### Container Commands
+#### Container Commands
 
 | Docker Command	              | Description       |
 |:-------------------------------:|:-----------------:|
@@ -30,7 +32,7 @@ docker run --name polardb-redis -p 6379:6379 -d redis:6
 | `docker start polardb-redis`  | Start container.  |
 | `docker remove polardb-redis` | Remove container. |
 
-## Running a Redis Database (Kubernetes)
+### Running a Redis Database (Kubernetes)
 
 Run Redis as a Helm chart:
 
