@@ -16,7 +16,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.mockOidcLogin;
 
-@WebFluxTest
+@WebFluxTest(UserController.class)
 @Import(SecurityConfig.class)
 class UserControllerTests {
 

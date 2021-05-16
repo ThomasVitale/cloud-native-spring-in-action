@@ -60,9 +60,9 @@ class SecurityConfigTests {
 		return ClientRegistration.withRegistrationId("test")
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 				.clientId("test")
-				.authorizationUri("https://authorization-uri.example.org")
-				.tokenUri("https://token-uri.example.org")
-				.redirectUri("https://example.org")
+				.authorizationUri("https://sso.polarbookshop.org/auth")
+				.tokenUri("https://sso.polarbookshop.org/token")
+				.redirectUri("https://polarbookshop.org")
 				.build();
 	}
 

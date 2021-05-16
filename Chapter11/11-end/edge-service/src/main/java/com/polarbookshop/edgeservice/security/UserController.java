@@ -1,5 +1,7 @@
 package com.polarbookshop.edgeservice.security;
 
+import java.util.List;
+
 import reactor.core.publisher.Mono;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,7 +18,7 @@ public class UserController {
 				oidcUser.getPreferredUsername(),
 				oidcUser.getGivenName(),
 				oidcUser.getFamilyName(),
-				oidcUser.getClaimAsStringList("roles")
+				List.of("employee", "customer")
 		);
 		return Mono.just(user);
 	}
