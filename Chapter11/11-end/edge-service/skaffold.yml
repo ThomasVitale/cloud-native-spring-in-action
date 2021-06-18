@@ -1,4 +1,4 @@
-apiVersion: skaffold/v2beta12
+apiVersion: skaffold/v2beta17
 kind: Config
 metadata:
   name: edge-service

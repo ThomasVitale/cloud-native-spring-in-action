@@ -1,4 +1,4 @@
-apiVersion: skaffold/v2beta13
+apiVersion: skaffold/v2beta17
 kind: Config
 metadata:
   name: config-service
