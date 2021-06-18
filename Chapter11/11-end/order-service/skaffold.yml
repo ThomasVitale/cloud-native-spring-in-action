@@ -12,8 +12,8 @@ build:
 deploy:
   helm:
     releases:
-      - name: polardb-order
-        chartPath: bitnami/postgresql
+      - name: polar-postgres-order
+        remoteChart: bitnami/postgresql
         remote: true
         setValues:
           postgresqlUsername: admin

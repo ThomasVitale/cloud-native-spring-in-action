@@ -12,9 +12,8 @@ build:
 deploy:
   helm:
     releases:
-      - name: polardb-catalog
-        chartPath: bitnami/postgresql
-        remote: true
+      - name: polar-postgres-catalog
+        remoteChart: bitnami/postgresql
         setValues:
           postgresqlUsername: admin
           postgresqlPassword: admin

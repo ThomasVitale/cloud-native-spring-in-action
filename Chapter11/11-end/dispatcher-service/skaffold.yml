@@ -12,9 +12,8 @@ build:
 deploy:
   helm:
     releases:
-      - name: polarmq-broker
-        chartPath: bitnami/rabbitmq
-        remote: true
+      - name: polar-rabbitmq
+        remoteChart: bitnami/rabbitmq
         setValues:
           auth.username: user
           auth.password: password

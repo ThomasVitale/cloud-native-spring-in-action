@@ -12,11 +12,11 @@ build:
 deploy:
   helm:
     releases:
-      - name: polardb-redis
+      - name: polar-redis
         remoteChart: bitnami/redis
         setValues:
           cluster.enabled: false
-          fullnameOverride: polardb-redis
+          fullnameOverride: polar-redis
           image.tag: 6
           password: admin
   kubectl:
