@@ -83,14 +83,14 @@ services:
       - SPRING_RABBITMQ_HOST=polarmq-broker
 
   polar-keycloak:
-    image: jboss/keycloak:13.0.0
+    image: jboss/keycloak:14.0.0
     container_name: "polar-keycloak"
     volumes:
       - ./keycloak:/opt/jboss/keycloak/imports
-    command: 
+    command:
       - "-b 0.0.0.0 -Dkeycloak.import=/opt/jboss/keycloak/imports/realm-export.json"
     environment:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: password
     ports:
-      - 9100:8080
+      - 8080:8080
