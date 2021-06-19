@@ -6,13 +6,7 @@ plugins {
 
 group = 'com.polarbookshop'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
+sourceCompatibility = '16'
 
 repositories {
 	mavenCentral()
@@ -30,9 +24,6 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
 	implementation 'org.springframework.session:spring-session-data-redis'
 
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'io.projectreactor:reactor-test'
@@ -48,7 +39,7 @@ dependencyManagement {
 
 bootBuildImage {
 	imageName = "polarbookshop/${project.name}:${project.version}"
-	environment = ["BP_JVM_VERSION": "11.*"]
+	environment = ["BP_JVM_VERSION": "16.*"]
 }
 
 test {

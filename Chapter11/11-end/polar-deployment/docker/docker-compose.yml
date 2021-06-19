@@ -55,6 +55,7 @@ services:
       - 6379:6379
   edge-service:
     depends_on:
+      - polar-keycloak
       - polar-redis
     image: "polarbookshop/edge-service:0.0.1-SNAPSHOT"
     container_name: "edge-service"
@@ -65,6 +66,7 @@ services:
       # JVM environment variable to enable debug through a socket on port 8000
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000
       - CATALOG_SERVICE_URL=http://catalog-service:9001
+      - KEYCLOAK_URL=http://host.docker.internal:8080
       - ORDER_SERVICE_URL=http://order-service:9002
       - SPRING_REDIS_HOST=polar-redis
   

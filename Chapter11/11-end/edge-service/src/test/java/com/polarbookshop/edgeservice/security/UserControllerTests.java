@@ -49,9 +49,9 @@ class UserControllerTests {
 
 	private SecurityMockServerConfigurers.OidcLoginMutator configureMockOidcLogin(User expectedUser) {
 		return mockOidcLogin().idToken(builder -> {
-			builder.claim(StandardClaimNames.PREFERRED_USERNAME, expectedUser.getUsername());
-			builder.claim(StandardClaimNames.GIVEN_NAME, expectedUser.getFirstName());
-			builder.claim(StandardClaimNames.FAMILY_NAME, expectedUser.getLastName());
+			builder.claim(StandardClaimNames.PREFERRED_USERNAME, expectedUser.username());
+			builder.claim(StandardClaimNames.GIVEN_NAME, expectedUser.firstName());
+			builder.claim(StandardClaimNames.FAMILY_NAME, expectedUser.lastName());
 		});
 	}
 
