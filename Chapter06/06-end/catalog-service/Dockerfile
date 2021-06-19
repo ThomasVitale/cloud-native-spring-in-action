@@ -1,10 +1,10 @@
-FROM adoptopenjdk:11-jre-hotspot-bionic
+FROM adoptopenjdk:16-jre-hotspot-bionic
 WORKDIR application
 ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} catalog-service.jar
 RUN java -Djarmode=layertools -jar catalog-service.jar extract
 
-FROM adoptopenjdk:11-jre-hotspot-bionic
+FROM adoptopenjdk:16-jre-hotspot-bionic
 RUN adduser spring && useradd -g spring spring
 USER spring
 WORKDIR application

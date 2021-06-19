@@ -13,7 +13,7 @@ From the [Spring Initialzr](https://start.spring.io/) application, choose the fo
 * _Artifact_: `catalog-service`
 * _Name_: catalog-service
 * _Package name_: `com.polarbookshop.catalogservice`
-* _Java version_: 11
+* _Java version_: 16
 * _Dependencies_: Spring Web
 
 Then, click "Generate" to download the `catalog-service.zip` archive containing the project.
@@ -23,11 +23,11 @@ Then, click "Generate" to download the `catalog-service.zip` archive containing 
 If you prefer using the REST API offered by Spring Initializr, use this command to initialize a project with Gradle as the build tool:
 
 ```bash
-curl https://start.spring.io/starter.tgz -d groupId=com.polarbookshop -d artifactId=catalog-service -d name=catalog-service -d packageName=com.polarbookshop.catalogservice -d dependencies=web -d javaVersion=11 -d bootVersion=2.5.1 -d type=gradle-project -o catalog-service.zip
+curl https://start.spring.io/starter.tgz -d groupId=com.polarbookshop -d artifactId=catalog-service -d name=catalog-service -d packageName=com.polarbookshop.catalogservice -d dependencies=web -d javaVersion=16 -d bootVersion=2.5.1 -d type=gradle-project -o catalog-service.zip
 ```
 
 For using Maven instead of Gradle:
 
 ```bash
-curl https://start.spring.io/starter.tgz -d groupId=com.polarbookshop -d artifactId=catalog-service -d name=catalog-service -d packageName=com.polarbookshop.catalogservice -d dependencies=web -d javaVersion=11 -d bootVersion=2.5.1 -o catalog-service.zip
+curl https://start.spring.io/starter.tgz -d groupId=com.polarbookshop -d artifactId=catalog-service -d name=catalog-service -d packageName=com.polarbookshop.catalogservice -d dependencies=web -d javaVersion=16 -d bootVersion=2.5.1 -o catalog-service.zip
 ```
