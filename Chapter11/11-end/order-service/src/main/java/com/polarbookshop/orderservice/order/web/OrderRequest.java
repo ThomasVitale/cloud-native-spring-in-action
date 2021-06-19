@@ -21,4 +21,5 @@ public class OrderRequest {
 	@Min(value = 1, message = "You must order at least 1 item.")
 	@Max(value = 5, message = "You cannot order more than 5 items.")
 	private Integer quantity;
+
 }

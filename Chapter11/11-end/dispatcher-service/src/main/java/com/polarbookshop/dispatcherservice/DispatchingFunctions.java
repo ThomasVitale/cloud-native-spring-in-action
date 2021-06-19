@@ -27,4 +27,5 @@ public class DispatchingFunctions {
 			return new OrderDispatchedMessage(orderId);
 		});
 	}
+
 }

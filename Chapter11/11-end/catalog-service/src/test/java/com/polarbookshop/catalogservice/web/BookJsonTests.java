@@ -43,4 +43,5 @@ class BookJsonTests {
                 .isEqualTo(new Book("1234567890", "Title", "Author", Year.of(1973), 9.90, "Polar"));
         assertThat(json.parseObject(content).getIsbn()).isEqualTo("1234567890");
     }
+
 }

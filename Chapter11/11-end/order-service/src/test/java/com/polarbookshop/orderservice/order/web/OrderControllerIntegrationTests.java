@@ -132,4 +132,5 @@ class OrderControllerIntegrationTests {
 		assertThat(createdOrder.getQuantity()).isEqualTo(orderRequest.getQuantity());
 		assertThat(createdOrder.getStatus()).isEqualTo(OrderStatus.REJECTED);
 	}
+
 }

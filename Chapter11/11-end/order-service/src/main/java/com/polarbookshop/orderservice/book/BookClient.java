@@ -28,4 +28,5 @@ public class BookClient {
 				.onErrorResume(WebClientResponseException.NotFound.class, exception -> Mono.empty())
 				.retryWhen(Retry.backoff(3, Duration.ofMillis(100)));
 	}
+
 }

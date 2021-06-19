@@ -31,4 +31,5 @@ class OrderJsonTests {
         assertThat(json.write(order)).extractingJsonPathStringValue("@.status")
                 .isEqualTo("ACCEPTED");
     }
+
 }

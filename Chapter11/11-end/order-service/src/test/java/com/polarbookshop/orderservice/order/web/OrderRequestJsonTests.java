@@ -21,4 +21,5 @@ class OrderRequestJsonTests {
         assertThat(this.json.parse(content))
                 .usingRecursiveComparison().isEqualTo(new OrderRequest("1234567890", 1));
     }
+
 }

@@ -40,4 +40,5 @@ class OrderControllerWebFluxTests {
 		assertThat(createdOrder).isNotNull();
 		assertThat(createdOrder.getStatus()).isEqualTo(OrderStatus.REJECTED);
 	}
+
 }

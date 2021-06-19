@@ -26,4 +26,5 @@ public class CatalogServiceApplication {
 		return route(GET("/"), request ->
 						ok().body(properties.getGreeting()));
 	}
+
 }

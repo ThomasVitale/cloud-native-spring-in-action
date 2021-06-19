@@ -63,4 +63,5 @@ class BookClientTests {
 				.expectNextCount(0)
 				.verifyComplete();
 	}
+
 }

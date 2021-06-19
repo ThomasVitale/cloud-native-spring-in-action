@@ -39,11 +39,12 @@ public class BookService {
         if (existingBook.isEmpty()) {
             return addBookToCatalog(book);
         }
-        Book bookToUpdate = existingBook.get();
+        var bookToUpdate = existingBook.get();
         bookToUpdate.setTitle(book.getTitle());
         bookToUpdate.setAuthor(book.getAuthor());
         bookToUpdate.setPublishingYear(book.getPublishingYear());
         bookToUpdate.setPrice(book.getPrice());
         return bookRepository.save(bookToUpdate);
     }
+
 }
