@@ -1,4 +1,4 @@
-apiVersion: skaffold/v2beta13
+apiVersion: skaffold/v2beta17
 kind: Config
 metadata:
   name: config-service
@@ -8,7 +8,7 @@ build:
       buildpacks:
         builder: gcr.io/paketo-buildpacks/builder:base
         env:
-          - BP_JVM_VERSION=11.*
+          - BP_JVM_VERSION=16.*
 deploy:
   kubectl:
     manifests:

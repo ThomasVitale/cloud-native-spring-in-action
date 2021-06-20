@@ -1,20 +1,19 @@
 plugins {
-    id 'org.springframework.boot' version '2.4.3'
+    id 'org.springframework.boot' version '2.5.1'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
 }
 
 group = 'com.polarbookshop'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '16'
 
 repositories {
     mavenCentral()
-    maven { url 'https://repo.spring.io/milestone' }
 }
 
 ext {
-    set('springCloudVersion', "2020.0.1")
+    set('springCloudVersion', "2020.0.3")
 }
 
 dependencies {
@@ -30,7 +29,7 @@ dependencyManagement {
 
 bootBuildImage {
     imageName = "polarbookshop/${project.name}:${project.version}"
-    environment = ["BP_JVM_VERSION": "11.*"]
+    environment = ["BP_JVM_VERSION": "16.*"]
 }
 
 test {

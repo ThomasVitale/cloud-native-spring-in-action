@@ -1,7 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:tc:postgresql:13:///
-  jpa:
-    hibernate.ddl-auto: validate
-  profiles:
-    active: default
