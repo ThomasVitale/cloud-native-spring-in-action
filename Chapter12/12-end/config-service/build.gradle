@@ -1,0 +1,37 @@
+plugins {
+    id 'org.springframework.boot' version '2.5.1'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group = 'com.polarbookshop'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '16'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('springCloudVersion', "2020.0.3")
+}
+
+dependencies {
+    implementation 'org.springframework.cloud:spring-cloud-config-server'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+bootBuildImage {
+    imageName = "polarbookshop/${project.name}:${project.version}"
+    environment = ["BP_JVM_VERSION": "16.*"]
+}
+
+test {
+    useJUnitPlatform()
+}
