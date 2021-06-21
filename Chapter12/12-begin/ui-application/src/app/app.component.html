@@ -1,0 +1,51 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #drawer class="sidenav" fixedInViewport
+        [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+        [mode]="(isHandset$ | async) ? 'over' : 'side'">
+      <mat-toolbar>Menu</mat-toolbar>
+      <mat-nav-list>
+        <a mat-list-item routerLink="/browse-books">
+          <mat-icon>menu_book</mat-icon>
+          <span>Browse Books</span>
+        </a>
+        <a mat-list-item routerLink="/add-book" *ngIf="isAuthenticated && isEmployee()">
+          <mat-icon>import_contacts</mat-icon>
+          <span>Add Book</span>
+        </a>
+        <a mat-list-item routerLink="/my-orders" *ngIf="isAuthenticated">
+          <mat-icon>storefront</mat-icon>
+          <span>My Orders</span>
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <mat-toolbar color="primary">
+        <button
+          type="button"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          (click)="drawer.toggle()">
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+        <span>Polar Bookshop</span>
+        <span class="toolbar-spacer"></span>
+        <button mat-flat-button color="primary" (click)="logInClicked()" *ngIf="!isAuthenticated">
+          <span>Log In</span>
+        </button>
+        <form ngNoForm action="/logout" method="post" *ngIf="isAuthenticated">
+          <input type="hidden" name="_csrf" [value]="csrfToken()">
+          <button mat-flat-button color="primary">
+            <span>Log Out</span>
+          </button>
+      </form>
+      </mat-toolbar>
+      <main>
+        <div>
+          <mat-card>
+            <router-outlet></router-outlet>
+          </mat-card>
+        </div>
+      </main>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  
