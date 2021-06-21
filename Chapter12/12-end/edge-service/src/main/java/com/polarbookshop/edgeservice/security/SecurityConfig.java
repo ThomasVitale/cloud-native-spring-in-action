@@ -33,6 +33,7 @@ public class SecurityConfig {
 		return http
 				.authorizeExchange(exchange -> exchange
 						.pathMatchers("/", "/*.css", "/*.js", "/favicon.ico").permitAll()
+						.pathMatchers("/", "/*.css", "/*.js", "/favicon.ico").permitAll()
 						.anyExchange().authenticated()
 				)
 				.exceptionHandling(exceptionHandling -> exceptionHandling
