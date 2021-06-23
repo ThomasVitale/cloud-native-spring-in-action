@@ -19,12 +19,8 @@ public class OrderService {
 	private final Consumer<Order> acceptedOrderConsumer;
 	private final OrderRepository orderRepository;
 
-	public Flux<Order> getAllOrders() {
-		return orderRepository.findAll();
-	}
-
-	public Mono<Order> getOrder(Long id) {
-		return orderRepository.findById(id);
+	public Flux<Order> getAllOrders(String userId) {
+		return orderRepository.findAllByCreatedBy(userId);
 	}
 
 	public void updateOrderStatus(Long orderId, OrderStatus status) {

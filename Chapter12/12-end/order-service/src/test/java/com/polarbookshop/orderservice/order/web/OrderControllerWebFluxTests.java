@@ -1,5 +1,6 @@
 package com.polarbookshop.orderservice.order.web;
 
+import com.polarbookshop.orderservice.config.SecurityConfig;
 import com.polarbookshop.orderservice.order.domain.Order;
 import com.polarbookshop.orderservice.order.domain.OrderService;
 import com.polarbookshop.orderservice.order.domain.OrderStatus;
@@ -9,19 +10,27 @@ import reactor.core.publisher.Mono;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.csrf;
+import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.mockJwt;
 
 @WebFluxTest(OrderController.class)
+@Import(SecurityConfig.class)
 class OrderControllerWebFluxTests {
 
 	@Autowired
 	private WebTestClient webClient;
 
 	@MockBean
-	private OrderService orderService;
+	OrderService orderService;
+
+	@MockBean
+	ReactiveJwtDecoder reactiveJwtDecoder;
 
 	@Test
 	void whenBookNotAvailableThenRejectOrder() {
@@ -31,7 +40,8 @@ class OrderControllerWebFluxTests {
 		given(orderService.submitOrder(orderRequest.getIsbn(), orderRequest.getQuantity()))
 				.willReturn(Mono.just(expectedOrder));
 
-		Order createdOrder = webClient.post().uri("/orders/")
+		Order createdOrder = webClient.mutateWith(mockJwt()).mutateWith(csrf())
+				.post().uri("/orders/")
 				.bodyValue(orderRequest)
 				.exchange()
 				.expectStatus().is2xxSuccessful()
