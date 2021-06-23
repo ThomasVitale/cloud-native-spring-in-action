@@ -11,6 +11,7 @@ services:
       - POSTGRES_DB=polardb_catalog
   catalog-service:
     depends_on:
+      - polar-keycloak
       - polar-postgres-catalog
     image: "polarbookshop/catalog-service:0.0.1-SNAPSHOT"
     container_name: "catalog-service"
@@ -20,6 +21,7 @@ services:
     environment:
       # JVM environment variable to enable debug through a socket on port 8001
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8001
+      - KEYCLOAK_URL=http://host.docker.internal:8080
       - SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres-catalog:5432/polardb_catalog
 
   polar-postgres-order:
@@ -33,6 +35,7 @@ services:
       - POSTGRES_DB=polardb_order
   order-service:
     depends_on:
+      - polar-keycloak
       - polar-postgres-order
       - polar-rabbitmq
     image: "polarbookshop/order-service:0.0.1-SNAPSHOT"
@@ -43,6 +46,7 @@ services:
     environment:
       # JVM environment variable to enable debug through a socket on port 8002
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8002
+      - KEYCLOAK_URL=http://host.docker.internal:8080
       - POLAR_CATALOG_SERVICE_URL=http://catalog-service:9001/books/
       - SPRING_R2DBC_URL=r2dbc:postgresql://polar-postgres-order:5432/polardb_order
       - SPRING_FLYWAY_URL=jdbc:postgresql://polar-postgres-order:5432/polardb_order
