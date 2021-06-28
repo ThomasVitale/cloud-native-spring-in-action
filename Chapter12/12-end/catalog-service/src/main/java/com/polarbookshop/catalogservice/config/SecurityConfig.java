@@ -13,18 +13,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-	private static final String BOOKS_ENDPOINT = "/books/**";
-	public static final String ROLE_EMPLOYEE = "ROLE_employee";
-	public static final String ROLE_CUSTOMER = "ROLE_customer";
-
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http
 				.authorizeRequests(authorize -> authorize
-						.mvcMatchers(HttpMethod.HEAD, BOOKS_ENDPOINT).permitAll()
-						.mvcMatchers(HttpMethod.GET, BOOKS_ENDPOINT).permitAll()
-						.mvcMatchers(BOOKS_ENDPOINT).hasRole("employee")
-						.anyRequest().authenticated()
+						.mvcMatchers(HttpMethod.GET, "/books/**").permitAll()
+						.anyRequest().hasRole("employee")
 				)
 				.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
 				.sessionManagement(sessionManagement ->

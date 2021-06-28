@@ -1,7 +1,5 @@
 package com.polarbookshop.edgeservice.security;
 
-import java.util.List;
-
 import reactor.core.publisher.Mono;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

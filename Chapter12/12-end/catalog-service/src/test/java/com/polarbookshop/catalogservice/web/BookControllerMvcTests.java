@@ -18,8 +18,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static com.polarbookshop.catalogservice.config.SecurityConfig.ROLE_CUSTOMER;
-import static com.polarbookshop.catalogservice.config.SecurityConfig.ROLE_EMPLOYEE;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -31,6 +29,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(BookController.class)
 @Import(SecurityConfig.class)
 class BookControllerMvcTests {
+
+    private static final String ROLE_EMPLOYEE = "ROLE_employee";
+    private static final String ROLE_CUSTOMER = "ROLE_customer";
 
     @Autowired
     private MockMvc mockMvc;
