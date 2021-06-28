@@ -12,9 +12,11 @@ spring:
     name: catalog-service
   lifecycle:
     timeout-per-shutdown-phase: 15s
-  config.import: "optional:configserver:http://localhost:8888"
+  config:
+    import: "optional:configserver:"
   cloud:
     config:
+      uri: "http://localhost:8888"
       request-connect-timeout: 1000 # 1s
       request-read-timeout: 5000 # 5s
       fail-fast: false
