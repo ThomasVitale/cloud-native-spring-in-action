@@ -23,11 +23,11 @@ Then, click "Generate" to download the `greeting-service.zip` archive containing
 If you prefer using the REST API offered by Spring Initializr, use this command to initialize a project with Gradle as the build tool:
 
 ```bash
-curl https://start.spring.io/starter.tgz -d groupId=com.arcticgreetings -d artifactId=greeting-service -d name=greeting-service -d packageName=com.arcticgreetings.greetingservice -d dependencies=web -d javaVersion=16 -d bootVersion=2.5.1 -d type=gradle-project -o greeting-service.zip
+curl https://start.spring.io/starter.tgz -d groupId=com.arcticgreetings -d artifactId=greeting-service -d name=greeting-service -d packageName=com.arcticgreetings.greetingservice -d dependencies=web -d javaVersion=16 -d bootVersion=2.5.2 -d type=gradle-project -o greeting-service.zip
 ```
 
 For using Maven instead of Gradle:
 
 ```bash
-curl https://start.spring.io/starter.tgz -d groupId=com.arcticgreetings -d artifactId=greeting-service -d name=greeting-service -d packageName=com.arcticgreetings.greetingservice -d dependencies=web -d javaVersion=16 -d bootVersion=2.5.1 -o greeting-service.zip
+curl https://start.spring.io/starter.tgz -d groupId=com.arcticgreetings -d artifactId=greeting-service -d name=greeting-service -d packageName=com.arcticgreetings.greetingservice -d dependencies=web -d javaVersion=16 -d bootVersion=2.5.2 -o greeting-service.zip
 ```
