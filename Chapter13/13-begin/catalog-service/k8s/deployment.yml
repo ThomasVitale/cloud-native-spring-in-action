@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog-app
+  labels:
+    app: catalog-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: catalog-app
+  template:
+    metadata:
+      labels:
+        app: catalog-app
+    spec:
+      terminationGracePeriodSeconds: 20
+      containers:
+        - name: catalog-app
+          image: polarbookshop/catalog-service:0.0.1-SNAPSHOT
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 5" ]
+          ports:
+            - containerPort: 9001
+          env:
+            - name: SPRING_CONFIG_IMPORT
+              value: optional:configserver:http://config-service:8888
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://polardb-catalog-postgresql:5432/polardb_catalog
+          resources:
+            requests:
+              memory: "756Mi"
+              cpu: "0.5"
+            limits:
+              memory: "756Mi"
