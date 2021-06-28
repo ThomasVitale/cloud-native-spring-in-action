@@ -1,4 +1,4 @@
-# Cloud Native Spring in Action
+# 🍃 Cloud Native Spring in Action
 
 <a href="https://www.manning.com/books/cloud-native-spring-in-action?utm_source=affiliate&utm_medium=affiliate&a_aid=thomas&a_bid=3dda43a8"><img src="/book-cover.jpeg" alt="The book cover of 'Cloud Native Spring in Action' by Thomas Vitale" align="left" height="200px" /></a>
 
@@ -13,11 +13,11 @@ Chapter after chapter, you'll build, containerize, and deploy cloud native appli
 * Java 11+ or later
     * [AdoptOpenJDK](https://adoptopenjdk.net)
     * [SDKMAN](https://sdkman.io)
-* Docker 20.03+
+* Docker 20.10+
     * [Docker for Linux](https://docs.docker.com/engine/install/ubuntu/)
     * [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop)
     * [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop)
-* Kubernetes 1.19+
+* Kubernetes 1.21+
     * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
     * [kind](https://kind.sigs.k8s.io)
 * Other
@@ -32,9 +32,9 @@ Gradle | Maven
 `./gradlew clean` | `./mvnw clean`
 `./gradlew build` | `./mvnw install`
 `./gradlew test` | `./mvnw test`
-`./gradlew bootJar` | `./mvnw repackage`
+`./gradlew bootJar` | `./mvnw spring-boot:repackage`
 `./gradlew bootRun` | `./mvnw spring-boot:run`
-`./gradlew bootBuildImage` | `./mvnw spring-boot:build-image`  
+`./gradlew bootBuildImage` | `./mvnw spring-boot:build-image`
 
 ## 1. Introduction to Cloud Native
 
