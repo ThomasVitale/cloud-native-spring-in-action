@@ -101,7 +101,7 @@ services:
     volumes:
       - ./keycloak:/opt/jboss/keycloak/imports
     command:
-      - "-b 0.0.0.0 -Dkeycloak.import=/opt/jboss/keycloak/imports/realm-export.json"
+      - "-b 0.0.0.0 -Dkeycloak.import=/opt/jboss/keycloak/imports/full-realm-export.json"
     environment:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: password
