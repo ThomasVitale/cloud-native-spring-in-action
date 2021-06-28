@@ -7,7 +7,19 @@ server:
 spring:
   lifecycle:
     timeout-per-shutdown-phase: 15s
+  config:
+    import: "optional:configserver:"
   cloud:
+    config:
+      uri: "http://localhost:8888"
+      request-connect-timeout: 1000 # 1s
+      request-read-timeout: 5000 # 5s
+      fail-fast: false
+      retry:
+        max-attempts: 6
+        initial-interval: 1000 # 1s
+        max-interval: 2000 # 2s
+        multiplier: 1.1
     gateway:
       httpclient:
         connect-timeout: 5000
@@ -63,6 +75,7 @@ spring:
     timeout: 10m
     redis:
       namespace: polar:edge
-logging:
-  level:
-    io.github.resilience4j: DEBUG
+
+#logging:
+#  level:
+#    io.github.resilience4j: DEBUG

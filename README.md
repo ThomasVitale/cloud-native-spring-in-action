@@ -83,7 +83,7 @@ Gradle | Maven
 * [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter10/10-begin)
 * [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter10/10-end)
 
-## 11. Security: Authentication
+## 11. Security: Authentication, OIDC, and SPA
 
 * [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter11/11-begin)
 * [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter11/11-end)

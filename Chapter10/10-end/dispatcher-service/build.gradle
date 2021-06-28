@@ -25,6 +25,7 @@ ext {
 dependencies {
 	//implementation 'org.springframework.boot:spring-boot-starter'
 	//implementation 'org.springframework.cloud:spring-cloud-function-context'
+	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
 
 	compileOnly 'org.projectlombok:lombok'
