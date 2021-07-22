@@ -62,7 +62,5 @@ spring:
 
 logging.level.reactor.core.*: debug
 
-management.endpoints.web.exposure.include: busrefresh,refresh
-
 polar:
   catalog-service-url: "http://localhost:9001/books/"

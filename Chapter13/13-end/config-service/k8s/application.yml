@@ -1,0 +1,5 @@
+spring:
+  config:
+    import: configtree:/workspace/secrets/*/
+  rabbitmq:
+    host: polar-rabbitmq

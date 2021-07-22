@@ -1,22 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: edge-app
-  labels:
-    app: edge-app
+  name: edge-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: edge-app
+      app: edge-service
   template:
-    metadata:
-      labels:
-        app: edge-app
     spec:
       terminationGracePeriodSeconds: 20
       containers:
-        - name: edge-app
+        - name: edge-service
           image: polarbookshop/edge-service:0.0.1-SNAPSHOT
           lifecycle:
             preStop:
@@ -29,13 +24,27 @@ spec:
               value: http://catalog-service
             - name: ORDER_SERVICE_URL
               value: http://order-service
-            - name: SPRING_REDIS_HOST
-              value: polardb-redis-master
+            - name: KEYCLOAK_URL
+              value: http://polar-keycloak
+            - name: SPRING_RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: polar-rabbitmq
+                  key: rabbitmq-password
             - name: SPRING_REDIS_PASSWORD
-              value: admin
-          resources:
-            requests:
-              memory: "512Mi"
-              cpu: "0.5"
-            limits:
-              memory: "512Mi"
+              valueFrom:
+                secretKeyRef:
+                  name: polar-redis
+                  key: redis-password
+          volumeMounts:
+            - name: edge-service-volume
+              mountPath: /workspace/config
+            - name: edge-service-volume-secret
+              mountPath: /workspace/secrets/edge-service-secret
+      volumes:
+        - name: edge-service-volume
+          configMap:
+            name: edge-service
+        - name: edge-service-volume-secret
+          secret:
+            secretName: edge-service

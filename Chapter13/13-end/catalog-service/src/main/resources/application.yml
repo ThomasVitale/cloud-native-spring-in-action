@@ -17,6 +17,8 @@ spring:
   cloud:
     config:
       uri: "http://localhost:8888"
+      username: user
+      password: password
       request-connect-timeout: 1000 # 1s
       request-read-timeout: 5000 # 5s
       fail-fast: false
@@ -47,9 +49,6 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${KEYCLOAK_URL:http://localhost:8080}/auth/realms/PolarBookshop
-
-
-management.endpoints.web.exposure.include: busrefresh,refresh
 
 polar:
   greeting: Welcome to the local book catalog!

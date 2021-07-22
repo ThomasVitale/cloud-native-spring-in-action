@@ -1,0 +1,7 @@
+spring:
+  config:
+    import: optional:configserver:http://config-service:8888,configtree:/workspace/secrets/*/
+  datasource:
+    url: r2dbc:postgresql://polar-postgres-order:5432/polardb_order
+  rabbitmq:
+    host: polar-rabbitmq

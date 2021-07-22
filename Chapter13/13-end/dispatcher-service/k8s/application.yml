@@ -1,0 +1,5 @@
+spring:
+  config:
+    import: optional:configserver:http://config-service:8888,configtree:/workspace/secrets/*/
+  rabbitmq:
+    host: polar-rabbitmq

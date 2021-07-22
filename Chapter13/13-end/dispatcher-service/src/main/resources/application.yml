@@ -1,12 +1,17 @@
+server:
+  port: 9003
+
 spring:
   application:
-    name: order-service
+    name: dispatcher-service
   config:
     import: "optional:configserver:"
   cloud:
     config:
       uri: "http://localhost:8888"
-      request-connect-timeout: 1000 # 1s
+      username: user
+      password: password
+      request-connect-timeout: 1000 # 5s
       request-read-timeout: 5000 # 5s
       fail-fast: false
       retry:
@@ -29,5 +34,3 @@ spring:
     username: user
     password: password
     connection-timeout: 15s
-
-management.endpoints.web.exposure.include: busrefresh,refresh
