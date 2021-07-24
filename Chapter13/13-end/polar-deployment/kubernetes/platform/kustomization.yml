@@ -1,44 +1,43 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+resources:
+  - configuration-watcher.yml
+
 helmCharts:
   - name: postgresql
     repo: https://charts.bitnami.com/bitnami
     releaseName: polar-postgres-catalog
     valuesInline:
       fullnameOverride: polar-postgres-catalog
-      postgresqlUsername: admin
-      postgresqlPassword: admin
+      postgresqlUsername: user
+      postgresqlPassword: password
       postgresqlDatabase: polardb_catalog
-      metrics.enabled: false
+      persistence.enabled: false
   - name: postgresql
     repo: https://charts.bitnami.com/bitnami
     releaseName: polar-postgres-order
     valuesInline:
       fullnameOverride: polar-postgres-order
-      postgresqlUsername: admin
-      postgresqlPassword: admin
+      postgresqlUsername: user
+      postgresqlPassword: password
       postgresqlDatabase: polardb_order
-      service.port: 5433
-      metrics.enabled: false
+      persistence.enabled: false
   - name: redis
     repo: https://charts.bitnami.com/bitnami
     releaseName: polar-redis
     valuesInline:
       fullnameOverride: polar-redis
-      auth.password: password
       architecture: standalone
-      metrics.enabled: false
+      auth.password: password
+      master.persistence.enabled: false
   - name: rabbitmq
     repo: https://charts.bitnami.com/bitnami
     releaseName: polar-rabbitmq
     valuesInline:
       fullnameOverride: polar-rabbitmq
-      auth.username: user
-      auth.password: password
       clustering.enabled: false
-      metrics.enabled: false
-      service.port: 5672
+      persistence.enabled: false
   - name: keycloak
     repo: https://charts.bitnami.com/bitnami
     releaseName: polar-keycloak
@@ -47,9 +46,7 @@ helmCharts:
       auth:
         adminUser: admin
         adminPassword: password
-      service.port: 8080
       clustering.enabled: false
-      metrics.enabled: false
       extraEnvVars:
         - name: KEYCLOAK_EXTRA_ARGS
           value: "-Dkeycloak.import=/config/keycloak-realm.json" 

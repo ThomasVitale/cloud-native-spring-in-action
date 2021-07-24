@@ -10,8 +10,8 @@ spring:
   lifecycle:
     timeout-per-shutdown-phase: 15s
   r2dbc:
-    username: admin
-    password: admin
+    username: user
+    password: password
     url: r2dbc:postgresql://localhost:5433/polardb_order
     pool:
       max-create-connection-time: 5s
@@ -26,6 +26,8 @@ spring:
   cloud:
     config:
       uri: "http://localhost:8888"
+      username: user
+      password: password
       request-connect-timeout: 1000 # 1s
       request-read-timeout: 5000 # 5s
       fail-fast: false

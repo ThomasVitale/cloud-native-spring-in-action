@@ -1,6 +1,9 @@
 spring:
   config:
-    import: optional:configserver:http://config-service:8888,configtree:/workspace/secrets/*/
+    import: optional:configserver:,configtree:/workspace/secrets/*/
+  cloud:
+    config:
+      uri: http://config-service
   rabbitmq:
     host: polar-rabbitmq
   redis:

@@ -29,8 +29,8 @@ spring:
         multiplier: 1.1
   profiles.active: test-data
   datasource:
-    username: admin
-    password: admin
+    username: user
+    password: password
     url: jdbc:postgresql://localhost:5432/polardb_catalog
     hikari:
       connection-timeout: 5000 #ms

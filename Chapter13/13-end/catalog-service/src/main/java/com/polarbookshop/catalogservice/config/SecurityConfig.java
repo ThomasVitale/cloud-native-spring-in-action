@@ -17,7 +17,7 @@ public class SecurityConfig {
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http
 				.authorizeRequests(authorize -> authorize
-						.mvcMatchers(HttpMethod.GET, "/books/**").permitAll()
+						.mvcMatchers(HttpMethod.GET, "/", "/books/**").permitAll()
 						.anyRequest().hasRole("employee")
 				)
 				.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
