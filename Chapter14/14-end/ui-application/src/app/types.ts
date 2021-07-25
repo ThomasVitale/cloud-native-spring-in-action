@@ -19,8 +19,8 @@ export interface Order {
 
 export enum OrderStatus {
     ACCEPTED = 'Accepted',
-	REJECTED = 'Rejected',
-	DISPATCHED = 'Dispatched'
+	  REJECTED = 'Rejected',
+	  DISPATCHED = 'Dispatched'
 }
 
 export interface OrderRequest {
@@ -29,7 +29,6 @@ export interface OrderRequest {
 }
 
 export interface User {
-    id: string,
     username: string,
     firstName: string,
     lastName: string,

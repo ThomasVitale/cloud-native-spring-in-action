@@ -1,14 +1,7 @@
 version: "3.8"
 services:
-  polar-postgres-catalog:
-    image: "postgres:13"
-    container_name: "polar-postgres-catalog"
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=polardb_catalog
+
+  # Applications
 
   catalog-service:
     depends_on:
@@ -30,6 +23,11 @@ services:
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres-catalog:5432/polardb_catalog
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
+      - ZIPKIN_URL=http://tempo:9411
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: 127.0.0.1:24224
 
   config-service:
     depends_on:
@@ -46,17 +44,12 @@ services:
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:9888
       - ENCRYPT_KEY=sharedkey
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
-
-  polar-postgres-order:
-    image: "postgres:13"
-    container_name: "polar-postgres-order"
-    ports:
-      - 5433:5432
-    environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=polardb_order
-
+      - ZIPKIN_URL=http://tempo:9411
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: 127.0.0.1:24224
+  
   order-service:
     depends_on:
       - config-service
@@ -77,13 +70,12 @@ services:
       - SPRING_R2DBC_URL=r2dbc:postgresql://polar-postgres-order:5432/polardb_order
       - SPRING_FLYWAY_URL=jdbc:postgresql://polar-postgres-order:5432/polardb_order
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
+      - ZIPKIN_URL=http://tempo:9411
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: 127.0.0.1:24224
   
-  polar-redis:
-    image: "redis:6"
-    container_name: "polar-redis"
-    ports:
-      - 6379:6379
-
   edge-service:
     depends_on:
       - config-service
@@ -99,21 +91,17 @@ services:
       # JVM environment variable to enable debug through a socket on port 8000
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000
       - CATALOG_SERVICE_URL=http://catalog-service:9001
-      - KEYCLOAK_URL=http://host.docker.internal:8080
+      - KEYCLOAK_URL=http://kubernetes.docker.internal:8080
       - ORDER_SERVICE_URL=http://order-service:9002
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
       - SPRING_REDIS_HOST=polar-redis
-  
-  polar-rabbitmq:
-    image: rabbitmq:3-management
-    container_name: polar-rabbitmq
-    ports:
-      - 5672:5672
-      - 15672:15672
-    environment:
-      - RABBITMQ_DEFAULT_USER=user
-      - RABBITMQ_DEFAULT_PASS=password
+      - ZIPKIN_URL=http://tempo:9411
+      - DEBUG=true
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: 127.0.0.1:24224
 
   dispatcher-service:
     depends_on:
@@ -128,6 +116,49 @@ services:
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8003
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
+      - ZIPKIN_URL=http://tempo:9411
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: 127.0.0.1:24224
+  
+  # Backing Services
+  
+  polar-postgres-catalog:
+    image: "postgres:13"
+    container_name: "polar-postgres-catalog"
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=polardb_catalog
+
+  polar-postgres-order:
+    image: "postgres:13"
+    container_name: "polar-postgres-order"
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=polardb_order
+  
+  polar-redis:
+    image: "redis:6"
+    container_name: "polar-redis"
+    ports:
+      - 6379:6379
+  
+  polar-rabbitmq:
+    image: rabbitmq:3-management
+    container_name: polar-rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
 
   polar-keycloak:
     image: jboss/keycloak:14.0.0
@@ -141,3 +172,60 @@ services:
       KEYCLOAK_PASSWORD: password
     ports:
       - 8080:8080
+
+  # Observability
+
+  grafana:
+    image: grafana/grafana:8.0.6
+    container_name: grafana
+    depends_on:
+      - loki
+      - prometheus
+      - tempo
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: password
+    volumes:
+      - ./platform/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+      - ./platform/grafana/dashboards:/etc/grafana/provisioning/dashboards
+  
+  loki:
+    image: grafana/loki:2.2.1
+    container_name: loki
+    command: -config.file=/etc/loki/local-config.yaml
+    depends_on:
+      - fluent-bit
+    ports:
+      - "3100:3100"
+  
+  prometheus:
+    image: prom/prometheus:v2.28.1
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - "./platform/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
+  
+  tempo:
+    image: grafana/tempo:1.0.1
+    container_name: tempo
+    command: -config.file /etc/tempo-config.yml
+    volumes:
+      - ./platform/tempo/tempo.yml:/etc/tempo-config.yml
+    ports:
+      - "3101:3100"     # Tempo
+      - "9411:9411"     # Zipkin
+
+  fluent-bit:
+    image: grafana/fluent-bit-plugin-loki:main
+    container_name: fluent-bit
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    environment:
+      - LOKI_URL=http://loki:3100/loki/api/v1/push
+    volumes:
+      - ./platform/fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+  

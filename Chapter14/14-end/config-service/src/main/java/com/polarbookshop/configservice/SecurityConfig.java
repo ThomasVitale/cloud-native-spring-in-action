@@ -1,5 +1,6 @@
 package com.polarbookshop.configservice;
 
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -13,7 +14,10 @@ public class SecurityConfig {
 	SecurityFilterChain springSecurityFilter(HttpSecurity http) throws Exception {
 		return http
 				.csrf().disable()
-				.authorizeRequests(request -> request.anyRequest().authenticated())
+				.authorizeRequests(authorize -> authorize
+						.requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
+						.anyRequest().authenticated()
+				)
 				.httpBasic(Customizer.withDefaults())
 				.build();
 	}

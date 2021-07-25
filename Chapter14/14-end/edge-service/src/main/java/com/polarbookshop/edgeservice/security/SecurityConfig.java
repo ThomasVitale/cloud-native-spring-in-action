@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import reactor.core.publisher.Mono;
 
+import org.springframework.boot.actuate.autoconfigure.security.reactive.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,8 @@ public class SecurityConfig {
 	SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http, ReactiveClientRegistrationRepository clientRegistrationRepository) {
 		return http
 				.authorizeExchange(exchange -> exchange
-						.pathMatchers("/", "/*.css", "/*.js", "/favicon.ico").permitAll()
+						.matchers(EndpointRequest.toAnyEndpoint()).permitAll()
+						.pathMatchers("/", "/*.css", "/*.js", "/favicon.ico", "/books/**").permitAll()
 						.anyExchange().authenticated()
 				)
 				.exceptionHandling(exceptionHandling -> exceptionHandling
