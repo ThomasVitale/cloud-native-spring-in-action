@@ -44,6 +44,7 @@ services:
       - BPL_JVM_THREAD_COUNT=50
       # JVM environment variable to enable debug through a socket on port 9888
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:9888
+      - ENCRYPT_KEY=sharedkey
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
 
   polar-postgres-order:
