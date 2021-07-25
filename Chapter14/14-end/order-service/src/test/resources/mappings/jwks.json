@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/protocol/openid-connect/certs"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "bodyFileName": "jwks_body.json"
+  }
+}

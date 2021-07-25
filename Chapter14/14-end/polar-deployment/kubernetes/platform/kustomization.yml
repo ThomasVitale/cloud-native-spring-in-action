@@ -1,0 +1,68 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - configuration-watcher.yml
+
+helmCharts:
+  - name: postgresql
+    repo: https://charts.bitnami.com/bitnami
+    releaseName: polar-postgres-catalog
+    valuesInline:
+      fullnameOverride: polar-postgres-catalog
+      postgresqlUsername: user
+      postgresqlPassword: password
+      postgresqlDatabase: polardb_catalog
+      persistence.enabled: false
+  - name: postgresql
+    repo: https://charts.bitnami.com/bitnami
+    releaseName: polar-postgres-order
+    valuesInline:
+      fullnameOverride: polar-postgres-order
+      postgresqlUsername: user
+      postgresqlPassword: password
+      postgresqlDatabase: polardb_order
+      persistence.enabled: false
+  - name: redis
+    repo: https://charts.bitnami.com/bitnami
+    releaseName: polar-redis
+    valuesInline:
+      fullnameOverride: polar-redis
+      architecture: standalone
+      auth.password: password
+      master.persistence.enabled: false
+  - name: rabbitmq
+    repo: https://charts.bitnami.com/bitnami
+    releaseName: polar-rabbitmq
+    valuesInline:
+      fullnameOverride: polar-rabbitmq
+      clustering.enabled: false
+      persistence.enabled: false
+  - name: keycloak
+    repo: https://charts.bitnami.com/bitnami
+    releaseName: polar-keycloak
+    valuesInline:
+      fullnameOverride: polar-keycloak
+      auth:
+        adminUser: admin
+        adminPassword: password
+      clustering.enabled: false
+      extraEnvVars:
+        - name: KEYCLOAK_EXTRA_ARGS
+          value: "-Dkeycloak.import=/config/keycloak-realm.json" 
+      extraVolumeMounts:
+        - name: config
+          mountPath: "/config"
+          readOnly: true   
+      extraVolumes:
+        - name: config
+          configMap:
+            name: keycloak-realm
+            items:
+            - key: "keycloak-realm.json"
+              path: "keycloak-realm.json"
+
+configMapGenerator:
+- name: keycloak-realm
+  files:
+    - config/keycloak-realm.json
