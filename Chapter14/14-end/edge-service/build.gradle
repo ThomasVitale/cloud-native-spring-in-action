@@ -28,6 +28,7 @@ dependencies {
 	implementation 'org.springframework.session:spring-session-data-redis'
 	implementation 'org.springframework.cloud:spring-cloud-sleuth-zipkin'
 	implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+	implementation 'io.github.resilience4j:resilience4j-micrometer'
 
 	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
 

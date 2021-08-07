@@ -8,6 +8,11 @@ spec:
     matchLabels:
       app: dispatcher-service
   template:
+    metadata:
+      annotations:
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9003"
     spec:
       terminationGracePeriodSeconds: 20
       containers:

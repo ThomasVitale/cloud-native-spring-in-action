@@ -8,6 +8,11 @@ spec:
     matchLabels:
       app: catalog-service
   template:
+    metadata:
+      annotations:
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9001"
     spec:
       terminationGracePeriodSeconds: 20
       containers:

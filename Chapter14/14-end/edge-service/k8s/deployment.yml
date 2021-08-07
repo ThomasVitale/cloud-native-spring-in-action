@@ -8,6 +8,11 @@ spec:
     matchLabels:
       app: edge-service
   template:
+    metadata:
+      annotations:
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9000"
     spec:
       terminationGracePeriodSeconds: 20
       containers:

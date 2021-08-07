@@ -6,6 +6,7 @@ services:
   catalog-service:
     depends_on:
       - config-service
+      - fluent-bit
       - polar-keycloak
       - polar-postgres-catalog
       - polar-rabbitmq
@@ -31,6 +32,7 @@ services:
 
   config-service:
     depends_on:
+      - fluent-bit
       - polar-rabbitmq
     image: "polarbookshop/config-service:0.0.1-SNAPSHOT"
     container_name: "config-service"
@@ -53,6 +55,7 @@ services:
   order-service:
     depends_on:
       - config-service
+      - fluent-bit
       - polar-keycloak
       - polar-rabbitmq
       - polar-postgres-order
@@ -79,6 +82,7 @@ services:
   edge-service:
     depends_on:
       - config-service
+      - fluent-bit
       - polar-keycloak
       - polar-rabbitmq
       - polar-redis
@@ -106,6 +110,7 @@ services:
   dispatcher-service:
     depends_on:
       - config-service
+      - fluent-bit
       - polar-rabbitmq
     image: polarbookshop/dispatcher-service:0.0.1-SNAPSHOT
     container_name: dispatcher-service
@@ -165,11 +170,11 @@ services:
     container_name: "polar-keycloak"
     volumes:
       - ./keycloak:/opt/jboss/keycloak/imports
-    command:
-      - "-b 0.0.0.0 -Dkeycloak.import=/opt/jboss/keycloak/imports/full-realm-export.json"
     environment:
+      KEYCLOAK_IMPORT: "/opt/jboss/keycloak/imports/full-realm-export.json"
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: password
+      DB_VENDOR: h2
     ports:
       - 8080:8080
 
