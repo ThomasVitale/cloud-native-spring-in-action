@@ -8,7 +8,7 @@ how to do that with the application and with the REST API. Either way, you'll ge
 From the [Spring Initialzr](https://start.spring.io/) application, choose the following:
 
 * _Project_: Gradle (or Maven)
-* _Spring Boot_: 2.5.1 (or the latest production version available)
+* _Spring Boot_: 2.5.3 (or the latest production version available)
 * _Group_: `com.polarbookshop`
 * _Artifact_: `catalog-service`
 * _Name_: catalog-service

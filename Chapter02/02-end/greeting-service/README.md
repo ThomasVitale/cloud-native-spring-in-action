@@ -15,9 +15,9 @@ After building the application, you can also run it from the Java CLI:
 java -jar build/libs/greeting-service-0.0.1-SNAPSHOT.jar
 ```
 
-## Docker tasks
+## Container tasks
 
-Run Greeting Service as a Docker container
+Run Greeting Service as a container
 
 ```bash
 docker run --name greeting-service -p 8080:8080 greeting-service:0.0.1-SNAPSHOT
@@ -30,7 +30,6 @@ docker run --name greeting-service -p 8080:8080 greeting-service:0.0.1-SNAPSHOT
 | `docker stop greeting-service`   | Stop container.   |
 | `docker start greeting-service`  | Start container.  |
 | `docker remove greeting-service` | Remove container. |
-
 
 ## Kubernetes tasks
 
