@@ -1,0 +1,15 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: quote-function
+spec:
+  template:
+    spec:
+      containers:
+        - image: europe-north1-docker.pkg.dev/polar-bookshop/polarsophia/quote-function:0.0.1-SNAPSHOT
+          ports:
+            - containerPort: 9102
+          resources:
+            limits:
+              cpu: '1'
+              memory: 512Mi

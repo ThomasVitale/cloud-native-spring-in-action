@@ -1,0 +1,7 @@
+server:
+  port: 9102
+
+spring:
+  cloud:
+    function:
+      definition: allQuotes
