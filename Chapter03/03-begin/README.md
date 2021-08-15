@@ -1,7 +1,8 @@
 # Chapter 03 - Begin
 
-In this chapter, you'll build a Catalog Service application. You can initialize a Spring Boot project using your favorite method. This guide describes
-how to do that with the application and with the REST API. Either way, you'll get a zip archive that you can extract and import in your IDE.
+In this chapter, you'll build a Catalog Service application. You can initialize a Spring Boot project using your
+favorite method. This guide describes how to do that with the Spring Initializr application and with its REST API.
+Either way, you'll get a zip archive that you can extract and import in your IDE.
 
 ## Initialize Catalog Service with Spring Initializr - App
 
@@ -20,7 +21,7 @@ Then, click "Generate" to download the `catalog-service.zip` archive containing 
 
 ## Initialize Catalog Service with Spring Initializr - REST API
 
-If you prefer using the REST API offered by Spring Initializr, use this command to initialize a project with Gradle as the build tool:
+If you prefer using the REST API offered by Spring Initializr, run the following command to initialize a project with Gradle as the build tool:
 
 ```bash
 curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=catalog-service -d name=catalog-service -d packageName=com.polarbookshop.catalogservice -d dependencies=web -d javaVersion=16 -d bootVersion=2.5.2 -d type=gradle-project -o catalog-service.zip
