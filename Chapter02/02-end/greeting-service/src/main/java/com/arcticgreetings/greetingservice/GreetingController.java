@@ -10,4 +10,5 @@ public class GreetingController {
     public String getGreetings() {
         return "Welcome to the Arctic, my friend!";
     }
+    
 }

@@ -9,4 +9,5 @@ class GreetingServiceApplicationTests {
 	@Test
 	void contextLoads() {
 	}
+	
 }

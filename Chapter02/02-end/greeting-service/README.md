@@ -36,29 +36,29 @@ docker run --name greeting-service -p 8080:8080 greeting-service:0.0.1-SNAPSHOT
 ### Create Deployment for application container
 
 ```bash
-kubectl create deployment greeting-app --image=greeting-service:0.0.1-SNAPSHOT
+kubectl create deployment greeting-service --image=greeting-service:0.0.1-SNAPSHOT
 ```
 
 ### Create Service for application Deployment
 
 ```bash
-kubectl expose deployment greeting-app --type=ClusterIP --name=greeting-app-service --port=8080
+kubectl expose deployment greeting-service --type=ClusterIP --name=greeting-service --port=8080
 ```
 
 ### Port forwarding from localhost to Kubernetes cluster
 
 ```bash
-kubectl port-forward service/greeting-app-service 8000:8080
+kubectl port-forward service/greeting-service 8000:8080
 ```
 
 ### Delete Deployment for application container
 
 ```bash
-kubectl delete deployment greeting-app
+kubectl delete deployment greeting-service
 ```
 
 ### Delete Service for application container
 
 ```bash
-kubectl delete svc greeting-app-service
+kubectl delete svc greeting-service
 ```
