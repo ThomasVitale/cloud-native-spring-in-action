@@ -1,4 +1,4 @@
-# Catalog Service
+# Config Service
 
 ## Useful Commands
 

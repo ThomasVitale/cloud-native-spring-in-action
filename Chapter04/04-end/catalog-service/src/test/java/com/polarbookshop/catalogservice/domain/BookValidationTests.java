@@ -112,4 +112,5 @@ class BookValidationTests {
         assertThat(violations.iterator().next().getMessage())
                 .isEqualTo("The book price must be greater than zero.");
     }
+
 }

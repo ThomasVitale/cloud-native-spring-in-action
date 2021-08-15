@@ -25,4 +25,5 @@ public class BookDataLoader {
 		bookRepository.save(book1);
 		bookRepository.save(book2);
 	}
+
 }

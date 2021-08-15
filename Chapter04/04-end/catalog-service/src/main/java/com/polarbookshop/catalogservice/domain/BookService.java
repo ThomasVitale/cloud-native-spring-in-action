@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class BookService {
+
     private final BookRepository bookRepository;
 
     public Collection<Book> viewBookList() {
@@ -47,4 +48,5 @@ public class BookService {
         bookToUpdate.setPrice(book.getPrice());
         return bookRepository.save(bookToUpdate);
     }
+
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class BookRepositoryImpl implements BookRepository {
+
 	private static final Map<String, Book> books = new ConcurrentHashMap<>();
 
 	@Override
@@ -39,4 +40,5 @@ public class BookRepositoryImpl implements BookRepository {
 	public void deleteByIsbn(String isbn) {
 		books.remove(isbn);
 	}
+
 }
