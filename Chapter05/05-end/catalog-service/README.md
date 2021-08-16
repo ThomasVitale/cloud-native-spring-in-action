@@ -33,23 +33,23 @@ java -jar build/libs/catalog-service-0.0.1-SNAPSHOT.jar
 Run PostgreSQL as a Docker container
 
 ```bash
-docker run --name polardb-catalog -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=polardb_catalog -p 5432:5432 -d postgres:13
+docker run --name polar-postgres-catalog -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=polardb_catalog -p 5432:5432 -d postgres:13
 ```
 
 ### Container Commands
 
 | Docker Command	              | Description       |
 |:-------------------------------:|:-----------------:|
-| `docker stop polardb-catalog`   | Stop container.   |
-| `docker start polardb-catalog`  | Start container.  |
-| `docker remove polardb-catalog` | Remove container. |
+| `docker stop polar-postgres-catalog`   | Stop container.   |
+| `docker start polar-postgres-catalog`  | Start container.  |
+| `docker remove polar-postgres-catalog` | Remove container. |
 
 ### Database Commands
 
 Start an interactive PSQL console:
 
 ```bash
-docker exec -it polardb-catalog psql -U admin -d polardb_catalog
+docker exec -it polar-postgres-catalog psql -U admin -d polardb_catalog
 ```
 
 | PSQL Command	             | Description                    |
