@@ -22,8 +22,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.stream.binder.test.OutputDestination;
 import org.springframework.cloud.stream.binder.test.TestChannelBinderConfiguration;
 import org.springframework.context.annotation.Import;
-import org.springframework.integration.support.MessageBuilder;
-import org.springframework.messaging.Message;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -70,7 +68,7 @@ class OrderControllerIntegrationTests {
 	}
 
 	@Test
-	void whenGetRequestWithIdThenOrderReturned() {
+	void whenGetOrdersThenReturn() throws IOException {
 		String bookIsbn = "1234567893";
 		Book book = new Book(bookIsbn, "Title", "Author", 9.90);
 		given(bookClient.getBookByIsbn(bookIsbn)).willReturn(Mono.just(book));
@@ -81,14 +79,13 @@ class OrderControllerIntegrationTests {
 				.expectStatus().is2xxSuccessful()
 				.expectBody(Order.class).returnResult().getResponseBody();
 		assertThat(expectedOrder).isNotNull();
+		assertThat(objectMapper.readValue(output.receive().getPayload(), OrderAcceptedMessage.class))
+				.isEqualTo(new OrderAcceptedMessage(expectedOrder.getId()));
 
-		Order fetchedOrder = webTestClient.get().uri("/orders/" + expectedOrder.getId())
+		webTestClient.get().uri("/orders")
 				.exchange()
 				.expectStatus().is2xxSuccessful()
-				.expectBody(Order.class).returnResult().getResponseBody();
-
-		assertThat(fetchedOrder).isNotNull();
-		assertThat(fetchedOrder).usingRecursiveComparison().isEqualTo(expectedOrder);
+				.expectBodyList(Order.class).contains(expectedOrder);
 	}
 
 	@Test
@@ -105,10 +102,10 @@ class OrderControllerIntegrationTests {
 				.expectBody(Order.class).returnResult().getResponseBody();
 
 		assertThat(createdOrder).isNotNull();
-		assertThat(createdOrder.getBookIsbn()).isEqualTo(orderRequest.getIsbn());
-		assertThat(createdOrder.getQuantity()).isEqualTo(orderRequest.getQuantity());
-		assertThat(createdOrder.getBookName()).isEqualTo(book.getTitle() + " - " + book.getAuthor());
-		assertThat(createdOrder.getBookPrice()).isEqualTo(book.getPrice());
+		assertThat(createdOrder.getBookIsbn()).isEqualTo(orderRequest.isbn());
+		assertThat(createdOrder.getQuantity()).isEqualTo(orderRequest.quantity());
+		assertThat(createdOrder.getBookName()).isEqualTo(book.title() + " - " + book.author());
+		assertThat(createdOrder.getBookPrice()).isEqualTo(book.price());
 		assertThat(createdOrder.getStatus()).isEqualTo(OrderStatus.ACCEPTED);
 
 		assertThat(objectMapper.readValue(output.receive().getPayload(), OrderAcceptedMessage.class))
@@ -128,8 +125,8 @@ class OrderControllerIntegrationTests {
 				.expectBody(Order.class).returnResult().getResponseBody();
 
 		assertThat(createdOrder).isNotNull();
-		assertThat(createdOrder.getBookIsbn()).isEqualTo(orderRequest.getIsbn());
-		assertThat(createdOrder.getQuantity()).isEqualTo(orderRequest.getQuantity());
+		assertThat(createdOrder.getBookIsbn()).isEqualTo(orderRequest.isbn());
+		assertThat(createdOrder.getQuantity()).isEqualTo(orderRequest.quantity());
 		assertThat(createdOrder.getStatus()).isEqualTo(OrderStatus.REJECTED);
 	}
 }

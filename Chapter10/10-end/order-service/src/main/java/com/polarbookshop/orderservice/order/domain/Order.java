@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table("orders")
-@Data @AllArgsConstructor
-@NoArgsConstructor
+@Data @AllArgsConstructor @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Order extends PersistableEntity {
 
@@ -25,4 +24,5 @@ public class Order extends PersistableEntity {
 		this.quantity = quantity;
 		this.status = status;
 	}
+	
 }

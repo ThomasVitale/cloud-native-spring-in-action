@@ -66,4 +66,5 @@ class OrderRequestValidationTests {
 		assertThat(violations.iterator().next().getMessage())
 				.isEqualTo("You cannot order more than 5 items.");
 	}
+
 }

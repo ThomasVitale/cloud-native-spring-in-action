@@ -3,11 +3,11 @@ kind: Service
 metadata:
   name: catalog-service
   labels:
-    app: catalog-app
+    app: catalog-service
 spec:
   type: ClusterIP
   selector:
-    app: catalog-app
+    app: catalog-service
   ports:
   - protocol: TCP
     port: 9001

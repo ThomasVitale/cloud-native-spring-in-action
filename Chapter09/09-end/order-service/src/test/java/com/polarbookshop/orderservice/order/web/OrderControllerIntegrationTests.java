@@ -53,6 +53,25 @@ class OrderControllerIntegrationTests {
 	}
 
 	@Test
+	void whenGetOrdersThenReturn() {
+		String bookIsbn = "1234567893";
+		Book book = new Book(bookIsbn, "Title", "Author", 9.90);
+		given(bookClient.getBookByIsbn(bookIsbn)).willReturn(Mono.just(book));
+		OrderRequest orderRequest = new OrderRequest(bookIsbn, 1);
+		Order expectedOrder = webTestClient.post().uri("/orders")
+				.bodyValue(orderRequest)
+				.exchange()
+				.expectStatus().is2xxSuccessful()
+				.expectBody(Order.class).returnResult().getResponseBody();
+		assertThat(expectedOrder).isNotNull();
+
+		webTestClient.get().uri("/orders")
+				.exchange()
+				.expectStatus().is2xxSuccessful()
+				.expectBodyList(Order.class).contains(expectedOrder);
+	}
+
+	@Test
 	void whenPostRequestAndBookExistsThenOrderAccepted() {
 		String bookIsbn = "1234567899";
 		Book book = new Book(bookIsbn, "Title", "Author", 9.90);

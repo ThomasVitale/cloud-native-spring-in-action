@@ -3,11 +3,11 @@ kind: Service
 metadata:
   name: dispatcher-service
   labels:
-    app: dispatcher-app
+    app: dispatcher-service
 spec:
   type: ClusterIP
   selector:
-    app: dispatcher-app
+    app: dispatcher-service
   ports:
   - protocol: TCP
     port: 9003

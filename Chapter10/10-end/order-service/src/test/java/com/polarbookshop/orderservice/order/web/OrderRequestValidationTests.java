@@ -7,8 +7,6 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import com.polarbookshop.orderservice.order.domain.Order;
-import com.polarbookshop.orderservice.order.domain.OrderStatus;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -66,4 +64,5 @@ class OrderRequestValidationTests {
 		assertThat(violations.iterator().next().getMessage())
 				.isEqualTo("You cannot order more than 5 items.");
 	}
+
 }

@@ -48,12 +48,12 @@ class OrderControllerIntegrationTests {
 	}
 
 	private static String r2dbcUrl() {
-		return String.format("r2dbc:postgresql://%s:%s/%s", postgresql.getHost(),
-				postgresql.getFirstMappedPort(), postgresql.getDatabaseName());
+		return String.format("r2dbc:postgresql://%s:%s/%s", postgresql.getContainerIpAddress(),
+				postgresql.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT), postgresql.getDatabaseName());
 	}
 
 	@Test
-	void whenGetRequestWithIdThenOrderReturned() {
+	void whenGetOrdersThenReturn() {
 		String bookIsbn = "1234567893";
 		Book book = new Book(bookIsbn, "Title", "Author", 9.90);
 		given(bookClient.getBookByIsbn(bookIsbn)).willReturn(Mono.just(book));
@@ -65,13 +65,10 @@ class OrderControllerIntegrationTests {
 				.expectBody(Order.class).returnResult().getResponseBody();
 		assertThat(expectedOrder).isNotNull();
 
-		Order fetchedOrder = webTestClient.get().uri("/orders/" + expectedOrder.getId())
+		webTestClient.get().uri("/orders")
 				.exchange()
 				.expectStatus().is2xxSuccessful()
-				.expectBody(Order.class).returnResult().getResponseBody();
-
-		assertThat(fetchedOrder).isNotNull();
-		assertThat(fetchedOrder).usingRecursiveComparison().isEqualTo(expectedOrder);
+				.expectBodyList(Order.class).contains(expectedOrder);
 	}
 
 	@Test
@@ -88,10 +85,10 @@ class OrderControllerIntegrationTests {
 				.expectBody(Order.class).returnResult().getResponseBody();
 
 		assertThat(createdOrder).isNotNull();
-		assertThat(createdOrder.getBookIsbn()).isEqualTo(orderRequest.getIsbn());
-		assertThat(createdOrder.getQuantity()).isEqualTo(orderRequest.getQuantity());
-		assertThat(createdOrder.getBookName()).isEqualTo(book.getTitle() + " - " + book.getAuthor());
-		assertThat(createdOrder.getBookPrice()).isEqualTo(book.getPrice());
+		assertThat(createdOrder.getBookIsbn()).isEqualTo(orderRequest.isbn());
+		assertThat(createdOrder.getQuantity()).isEqualTo(orderRequest.quantity());
+		assertThat(createdOrder.getBookName()).isEqualTo(book.title() + " - " + book.author());
+		assertThat(createdOrder.getBookPrice()).isEqualTo(book.price());
 		assertThat(createdOrder.getStatus()).isEqualTo(OrderStatus.ACCEPTED);
 	}
 
@@ -108,8 +105,9 @@ class OrderControllerIntegrationTests {
 				.expectBody(Order.class).returnResult().getResponseBody();
 
 		assertThat(createdOrder).isNotNull();
-		assertThat(createdOrder.getBookIsbn()).isEqualTo(orderRequest.getIsbn());
-		assertThat(createdOrder.getQuantity()).isEqualTo(orderRequest.getQuantity());
+		assertThat(createdOrder.getBookIsbn()).isEqualTo(orderRequest.isbn());
+		assertThat(createdOrder.getQuantity()).isEqualTo(orderRequest.quantity());
 		assertThat(createdOrder.getStatus()).isEqualTo(OrderStatus.REJECTED);
 	}
+
 }
