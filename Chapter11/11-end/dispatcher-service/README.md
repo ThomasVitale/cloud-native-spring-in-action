@@ -19,7 +19,7 @@ java -jar build/libs/dispatcher-service-0.0.1-SNAPSHOT.jar
 Run RabbitMQ as a Docker container:
 
 ```bash
-docker run --name polarmq-broker \
+docker run --name polar-rabbitmq \
   -e RABBITMQ_DEFAULT_USER=user \
   -e RABBITMQ_DEFAULT_PASS=password \
   -p 5672:5672 \
@@ -31,9 +31,9 @@ docker run --name polarmq-broker \
 
 | Docker Command	              | Description       |
 |:-------------------------------:|:-----------------:|
-| `docker stop polarmq-broker`   | Stop container.   |
-| `docker start polarmq-broker`  | Start container.  |
-| `docker remove polarmq-broker` | Remove container. |
+| `docker stop polar-rabbitmq`   | Stop container.   |
+| `docker start polar-rabbitmq`  | Start container.  |
+| `docker remove polar-rabbitmq` | Remove container. |
 
 ## Running a RabbitMQ broker (Kubernetes)
 
@@ -44,10 +44,10 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 ```
 
 ```bash
-helm install polarmq-broker bitnami/rabbitmq \
+helm install polar-rabbitmq bitnami/rabbitmq \
   --set auth.username=user \
   --set auth.password=password \
-  --set image.tag=3.8 \
-  --set service.port=5672 \
-  --set service.managerPort=15672
+  --set fullnameOverride=polar-rabbitmq \
+  --set clustering.enabled=false \
+  --set persistence.enabled=false
 ```

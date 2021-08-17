@@ -30,4 +30,5 @@ public class FallbackConfiguration {
 	public Mono<ServerResponse> handlePostFallback(ServerRequest request) {
 		return ServerResponse.status(HttpStatus.SERVICE_UNAVAILABLE).build();
 	}
+	
 }

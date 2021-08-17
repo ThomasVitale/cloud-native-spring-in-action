@@ -15,10 +15,11 @@ deploy:
       - name: polar-postgres-catalog
         remoteChart: bitnami/postgresql
         setValues:
+          fullnameOverride: polar-postgres-catalog
           postgresqlUsername: admin
           postgresqlPassword: admin
           postgresqlDatabase: polardb_catalog
-          image.tag: 13
+          persistence.enabled: false
   kubectl:
     manifests:
       - k8s/*.yml

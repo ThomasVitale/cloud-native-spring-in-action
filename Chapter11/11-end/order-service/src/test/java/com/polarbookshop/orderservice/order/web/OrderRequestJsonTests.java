@@ -12,7 +12,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class OrderRequestJsonTests {
 
     @Autowired
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     private JacksonTester<OrderRequest> json;
 
     @Test

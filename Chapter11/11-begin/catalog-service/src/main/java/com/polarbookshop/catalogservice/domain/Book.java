@@ -16,8 +16,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data @AllArgsConstructor
-@NoArgsConstructor
+@Data @AllArgsConstructor @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Book extends PersistableEntity {
 
@@ -39,4 +38,5 @@ public class Book extends PersistableEntity {
     private Double price;
 
     private String publisher;
+    
 }

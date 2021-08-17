@@ -19,16 +19,16 @@ java -jar build/libs/edge-service-0.0.1-SNAPSHOT.jar
 Run Redis as a Docker container:
 
 ```bash
-docker run --name polardb-redis -p 6379:6379 -d redis:6
+docker run --name polar-redis -p 6379:6379 -d redis:6
 ```
 
 ### Container Commands
 
 | Docker Command	              | Description       |
 |:-------------------------------:|:-----------------:|
-| `docker stop polardb-redis`   | Stop container.   |
-| `docker start polardb-redis`  | Start container.  |
-| `docker remove polardb-redis` | Remove container. |
+| `docker stop polar-redis`   | Stop container.   |
+| `docker start polar-redis`  | Start container.  |
+| `docker remove polar-redis` | Remove container. |
 
 ## Running a Redis Database (Kubernetes)
 
@@ -40,7 +40,8 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 
 ```bash
 helm install polardb-redis bitnami/redis \
-  --set cluster.enabled=false \
-  --set image.tag=6 \
-  --set password=admin
+  --set fullnameOverride=polar-redis
+  --set architecture=standalone
+  --set auth.password=admin \
+  --set master.persistence.enabled=false
 ```

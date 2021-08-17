@@ -3,11 +3,11 @@ kind: Service
 metadata:
   name: order-service
   labels:
-    app: order-app
+    app: order-service
 spec:
   type: ClusterIP
   selector:
-    app: order-app
+    app: order-service
   ports:
   - protocol: TCP
     port: 9002
