@@ -25,4 +25,5 @@ public class Order extends PersistableEntity {
 		this.quantity = quantity;
 		this.status = status;
 	}
+
 }

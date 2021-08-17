@@ -33,7 +33,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/polardb_catalog
     hikari:
       connection-timeout: 5000 #ms
-      maximum-pool-size: 20
+      maximum-pool-size: 10
       pool-name: polardb-catalog-pool
   jpa:
     hibernate.ddl-auto: validate

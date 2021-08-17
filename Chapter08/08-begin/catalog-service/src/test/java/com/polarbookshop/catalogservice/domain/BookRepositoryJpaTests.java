@@ -85,4 +85,5 @@ class BookRepositoryJpaTests {
 
         assertThat(entityManager.find(Book.class, persistedBook.getId())).isNull();
     }
+    
 }

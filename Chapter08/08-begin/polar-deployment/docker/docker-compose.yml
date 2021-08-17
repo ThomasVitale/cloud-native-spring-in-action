@@ -1,17 +1,10 @@
 version: "3.8"
 services:
-  polar-postgres-catalog:
-    image: "postgres:13"
-    container_name: "polar-postgres-catalog"
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_DB=polardb_catalog
+
+  # Applications
+
   catalog-service:
     depends_on:
-      - config-service
       - polar-postgres-catalog
     image: "polarbookshop/catalog-service:0.0.1-SNAPSHOT"
     container_name: "catalog-service"
@@ -25,6 +18,7 @@ services:
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8001
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres-catalog:5432/polardb_catalog
+  
   config-service:
     image: "polarbookshop/config-service:0.0.1-SNAPSHOT"
     container_name: "config-service"
@@ -36,3 +30,15 @@ services:
       - BPL_JVM_THREAD_COUNT=50
       # JVM environment variable to enable debug through a socket on port 9888
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:9888
+
+  # Backing Services
+
+  polar-postgres-catalog:
+    image: "postgres:13"
+    container_name: "polar-postgres-catalog"
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=polardb_catalog

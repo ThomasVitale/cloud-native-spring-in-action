@@ -53,28 +53,6 @@ class OrderControllerIntegrationTests {
 	}
 
 	@Test
-	void whenGetRequestWithIdThenOrderReturned() {
-		String bookIsbn = "1234567893";
-		Book book = new Book(bookIsbn, "Title", "Author", 9.90);
-		given(bookClient.getBookByIsbn(bookIsbn)).willReturn(Mono.just(book));
-		OrderRequest orderRequest = new OrderRequest(bookIsbn, 1);
-		Order expectedOrder = webTestClient.post().uri("/orders")
-				.bodyValue(orderRequest)
-				.exchange()
-				.expectStatus().is2xxSuccessful()
-				.expectBody(Order.class).returnResult().getResponseBody();
-		assertThat(expectedOrder).isNotNull();
-
-		Order fetchedOrder = webTestClient.get().uri("/orders/" + expectedOrder.getId())
-				.exchange()
-				.expectStatus().is2xxSuccessful()
-				.expectBody(Order.class).returnResult().getResponseBody();
-
-		assertThat(fetchedOrder).isNotNull();
-		assertThat(fetchedOrder).usingRecursiveComparison().isEqualTo(expectedOrder);
-	}
-
-	@Test
 	void whenPostRequestAndBookExistsThenOrderAccepted() {
 		String bookIsbn = "1234567899";
 		Book book = new Book(bookIsbn, "Title", "Author", 9.90);
@@ -88,10 +66,10 @@ class OrderControllerIntegrationTests {
 				.expectBody(Order.class).returnResult().getResponseBody();
 
 		assertThat(createdOrder).isNotNull();
-		assertThat(createdOrder.getBookIsbn()).isEqualTo(orderRequest.getIsbn());
-		assertThat(createdOrder.getQuantity()).isEqualTo(orderRequest.getQuantity());
-		assertThat(createdOrder.getBookName()).isEqualTo(book.getTitle() + " - " + book.getAuthor());
-		assertThat(createdOrder.getBookPrice()).isEqualTo(book.getPrice());
+		assertThat(createdOrder.getBookIsbn()).isEqualTo(orderRequest.isbn());
+		assertThat(createdOrder.getQuantity()).isEqualTo(orderRequest.quantity());
+		assertThat(createdOrder.getBookName()).isEqualTo(book.title() + " - " + book.author());
+		assertThat(createdOrder.getBookPrice()).isEqualTo(book.price());
 		assertThat(createdOrder.getStatus()).isEqualTo(OrderStatus.ACCEPTED);
 	}
 
@@ -108,8 +86,9 @@ class OrderControllerIntegrationTests {
 				.expectBody(Order.class).returnResult().getResponseBody();
 
 		assertThat(createdOrder).isNotNull();
-		assertThat(createdOrder.getBookIsbn()).isEqualTo(orderRequest.getIsbn());
-		assertThat(createdOrder.getQuantity()).isEqualTo(orderRequest.getQuantity());
+		assertThat(createdOrder.getBookIsbn()).isEqualTo(orderRequest.isbn());
+		assertThat(createdOrder.getQuantity()).isEqualTo(orderRequest.quantity());
 		assertThat(createdOrder.getStatus()).isEqualTo(OrderStatus.REJECTED);
 	}
+
 }
