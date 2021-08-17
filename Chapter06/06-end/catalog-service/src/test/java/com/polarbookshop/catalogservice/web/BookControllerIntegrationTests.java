@@ -74,4 +74,5 @@ class BookControllerIntegrationTests {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(response.getBody()).isEqualTo("The book with ISBN " + bookIsbn + " was not found.");
     }
+
 }

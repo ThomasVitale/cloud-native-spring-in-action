@@ -17,4 +17,5 @@ public class YearAttributeConverter implements AttributeConverter<Year, Integer>
     public Year convertToEntityAttribute(Integer dbData) {
         return Year.of(dbData);
     }
+
 }
