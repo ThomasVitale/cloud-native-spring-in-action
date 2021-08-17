@@ -24,7 +24,7 @@ public class OrderFunctions {
 				return;
 			}
 			OrderAcceptedMessage orderAcceptedMessage = new OrderAcceptedMessage(order.getId());
-			log.info("Sending order accepted event with id: " + order.getId());
+			log.info("Sending order accepted event with id: {}", order.getId());
 			streamBridge.send("order-accepted", orderAcceptedMessage);
 		};
 	}
@@ -32,7 +32,7 @@ public class OrderFunctions {
 	@Bean
 	public Consumer<OrderDispatchedMessage> dispatchOrder(OrderService orderService) {
 		return orderDispatchedMessage -> {
-			log.info("The order with id " + orderDispatchedMessage.orderId() + " has been dispatched.");
+			log.info("The order with id {} has been dispatched", orderDispatchedMessage.orderId());
 			orderService.updateOrderStatus(orderDispatchedMessage.orderId(), OrderStatus.DISPATCHED);
 		};
 	}

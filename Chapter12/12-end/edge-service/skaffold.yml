@@ -15,10 +15,10 @@ deploy:
       - name: polar-redis
         remoteChart: bitnami/redis
         setValues:
-          cluster.enabled: false
+          architecture: standalone
           fullnameOverride: polar-redis
-          image.tag: 6
-          password: admin
+          master.persistence.enabled: false
+          auth.password: admin
   kubectl:
     manifests:
       - k8s/*.yml

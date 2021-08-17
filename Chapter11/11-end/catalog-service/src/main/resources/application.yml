@@ -38,7 +38,11 @@ spring:
   jpa:
     hibernate.ddl-auto: validate
 
-management.endpoints.web.exposure.include: refresh
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
 
 polar:
   greeting: Welcome to the local book catalog!

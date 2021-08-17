@@ -27,6 +27,3 @@ spring:
     username: user
     password: password
     connection-timeout: 15s
-
-
-

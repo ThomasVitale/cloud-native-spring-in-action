@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: edge-app
+  name: edge-service
   labels:
-    app: edge-app
+    app: edge-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: edge-app
+      app: edge-service
   template:
     metadata:
       labels:
-        app: edge-app
+        app: edge-service
     spec:
       terminationGracePeriodSeconds: 20
       containers:
-        - name: edge-app
+        - name: edge-service
           image: polarbookshop/edge-service:0.0.1-SNAPSHOT
           lifecycle:
             preStop:
@@ -33,9 +33,3 @@ spec:
               value: polardb-redis-master
             - name: SPRING_REDIS_PASSWORD
               value: admin
-          resources:
-            requests:
-              memory: "512Mi"
-              cpu: "0.5"
-            limits:
-              memory: "512Mi"

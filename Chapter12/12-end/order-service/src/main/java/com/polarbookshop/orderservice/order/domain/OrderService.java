@@ -4,7 +4,6 @@ import java.util.function.Consumer;
 
 import com.polarbookshop.orderservice.book.Book;
 import com.polarbookshop.orderservice.book.BookClient;
-import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -12,12 +11,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
 public class OrderService {
 
 	private final BookClient bookClient;
 	private final Consumer<Order> acceptedOrderConsumer;
 	private final OrderRepository orderRepository;
+
+	public OrderService(BookClient bookClient, Consumer<Order> acceptedOrderConsumer, OrderRepository orderRepository) {
+		this.bookClient = bookClient;
+		this.acceptedOrderConsumer = acceptedOrderConsumer;
+		this.orderRepository = orderRepository;
+	}
 
 	public Flux<Order> getAllOrders(String userId) {
 		return orderRepository.findAllByCreatedBy(userId);
@@ -43,9 +47,9 @@ public class OrderService {
 	}
 
 	private Order buildAcceptedOrder(Book book, int quantity) {
-		return new Order(book.getIsbn(),
-				book.getTitle() + " - " + book.getAuthor(),
-				book.getPrice(),
+		return new Order(book.isbn(),
+				book.title() + " - " + book.author(),
+				book.price(),
 				quantity,
 				OrderStatus.ACCEPTED);
 	}

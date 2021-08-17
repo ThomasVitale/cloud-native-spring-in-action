@@ -22,8 +22,7 @@ class BookClientTests {
 		this.mockWebServer = new MockWebServer();
 		this.mockWebServer.start();
 
-		BookClientProperties bookClientProperties = new BookClientProperties();
-		bookClientProperties.setCatalogServiceUrl(mockWebServer.url("/").uri());
+		BookClientProperties bookClientProperties = new BookClientProperties(mockWebServer.url("/").uri());
 		this.bookClient = new BookClient(bookClientProperties, WebClient.builder());
 	}
 
@@ -45,7 +44,7 @@ class BookClientTests {
 		Mono<Book> book = bookClient.getBookByIsbn(bookIsbn);
 
 		StepVerifier.create(book)
-				.expectNextMatches(b -> b.getIsbn().equals(bookIsbn))
+				.expectNextMatches(b -> b.isbn().equals(bookIsbn))
 				.verifyComplete();
 	}
 

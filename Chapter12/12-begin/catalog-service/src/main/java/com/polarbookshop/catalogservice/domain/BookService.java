@@ -2,14 +2,16 @@ package com.polarbookshop.catalogservice.domain;
 
 import java.util.Optional;
 
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class BookService {
+
     private final BookRepository bookRepository;
+
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
 
     public Iterable<Book> viewBookList() {
         return bookRepository.findAll();
@@ -39,11 +41,12 @@ public class BookService {
         if (existingBook.isEmpty()) {
             return addBookToCatalog(book);
         }
-        var bookToUpdate = existingBook.get();
+        Book bookToUpdate = existingBook.get();
         bookToUpdate.setTitle(book.getTitle());
         bookToUpdate.setAuthor(book.getAuthor());
         bookToUpdate.setPublishingYear(book.getPublishingYear());
         bookToUpdate.setPrice(book.getPrice());
+        bookToUpdate.setPublisher(book.getPublisher());
         return bookRepository.save(bookToUpdate);
     }
 

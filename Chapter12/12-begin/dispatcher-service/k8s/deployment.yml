@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dispatcher-app
+  name: dispatcher-service
   labels:
-    app: dispatcher-app
+    app: dispatcher-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dispatcher-app
+      app: dispatcher-service
   template:
     metadata:
       labels:
-        app: dispatcher-app
+        app: dispatcher-service
     spec:
       terminationGracePeriodSeconds: 20
       containers:
-        - name: dispatcher-app
+        - name: dispatcher-service
           image: polarbookshop/dispatcher-service:0.0.1-SNAPSHOT
           lifecycle:
             preStop:
@@ -27,9 +27,3 @@ spec:
           env:
             - name: SPRING_RABBIT_HOST
               value: polarmq-broker-rabbitmq
-          resources:
-            requests:
-              memory: "512Mi"
-              cpu: "0.5"
-            limits:
-              memory: "512Mi"
