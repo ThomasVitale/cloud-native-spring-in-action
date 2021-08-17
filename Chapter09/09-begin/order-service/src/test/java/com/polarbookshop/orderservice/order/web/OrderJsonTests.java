@@ -14,7 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class OrderJsonTests {
 
     @Autowired
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     private JacksonTester<Order> json;
 
     @Test
@@ -31,4 +30,5 @@ class OrderJsonTests {
         assertThat(json.write(order)).extractingJsonPathStringValue("@.status")
                 .isEqualTo("ACCEPTED");
     }
+
 }

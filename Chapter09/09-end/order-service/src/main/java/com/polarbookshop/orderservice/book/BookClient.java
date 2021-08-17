@@ -16,7 +16,7 @@ public class BookClient {
 
 	public BookClient(BookClientProperties bookClientProperties, WebClient.Builder webClientBuilder) {
 		this.webClient = webClientBuilder
-				.baseUrl(bookClientProperties.getCatalogServiceUrl().toString())
+				.baseUrl(bookClientProperties.catalogServiceUrl().toString())
 				.build();
 	}
 
@@ -28,4 +28,5 @@ public class BookClient {
 				.onErrorResume(WebClientResponseException.NotFound.class, exception -> Mono.empty())
 				.retryWhen(Retry.backoff(3, Duration.ofMillis(100)));
 	}
+
 }

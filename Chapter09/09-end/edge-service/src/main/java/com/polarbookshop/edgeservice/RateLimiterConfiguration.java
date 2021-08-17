@@ -13,4 +13,5 @@ public class RateLimiterConfiguration {
 	public KeyResolver keyResolver() {
 		return exchange -> Mono.just("ONE_BUCKET");
 	}
+	
 }

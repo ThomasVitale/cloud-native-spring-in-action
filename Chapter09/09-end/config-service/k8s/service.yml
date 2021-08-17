@@ -3,11 +3,11 @@ kind: Service
 metadata:
   name: config-service
   labels:
-    app: config-app
+    app: config-service
 spec:
   type: ClusterIP
   selector:
-    app: config-app
+    app: config-service
   ports:
   - protocol: TCP
     port: 8888

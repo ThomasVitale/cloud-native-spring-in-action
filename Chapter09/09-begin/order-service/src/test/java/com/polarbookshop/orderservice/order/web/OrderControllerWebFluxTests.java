@@ -26,9 +26,9 @@ class OrderControllerWebFluxTests {
 	@Test
 	void whenBookNotAvailableThenRejectOrder() {
 		OrderRequest orderRequest = new OrderRequest("1234567890", 3);
-		Order expectedOrder = new Order(orderRequest.getIsbn(), orderRequest.getQuantity(),
+		Order expectedOrder = new Order(orderRequest.isbn(), orderRequest.quantity(),
 				OrderStatus.REJECTED);
-		given(orderService.submitOrder(orderRequest.getIsbn(), orderRequest.getQuantity()))
+		given(orderService.submitOrder(orderRequest.isbn(), orderRequest.quantity()))
 				.willReturn(Mono.just(expectedOrder));
 
 		Order createdOrder = webClient.post().uri("/orders/")
@@ -40,4 +40,5 @@ class OrderControllerWebFluxTests {
 		assertThat(createdOrder).isNotNull();
 		assertThat(createdOrder.getStatus()).isEqualTo(OrderStatus.REJECTED);
 	}
+
 }

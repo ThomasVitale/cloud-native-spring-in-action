@@ -39,4 +39,5 @@ public class Book extends PersistableEntity {
     private Double price;
 
     private String publisher;
+    
 }

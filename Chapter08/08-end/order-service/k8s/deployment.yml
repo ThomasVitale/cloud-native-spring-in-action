@@ -16,7 +16,7 @@ spec:
     spec:
       terminationGracePeriodSeconds: 20
       containers:
-        - name: catalog-service
+        - name: order-service
           image: polarbookshop/order-service:0.0.1-SNAPSHOT
           lifecycle:
             preStop:

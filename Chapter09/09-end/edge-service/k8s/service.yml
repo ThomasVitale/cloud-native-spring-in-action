@@ -3,11 +3,11 @@ kind: Service
 metadata:
   name: edge-service
   labels:
-    app: edge-app
+    app: edge-service
 spec:
   type: ClusterIP
   selector:
-    app: edge-app
+    app: edge-service
   ports:
   - protocol: TCP
     port: 9000
