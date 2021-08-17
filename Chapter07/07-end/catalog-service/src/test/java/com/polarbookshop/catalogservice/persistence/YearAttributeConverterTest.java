@@ -23,4 +23,5 @@ class YearAttributeConverterTest {
         Year actualYear = converter.convertToEntityAttribute(expectedYear);
         assertThat(actualYear.getValue()).isEqualTo(expectedYear);
     }
+    
 }

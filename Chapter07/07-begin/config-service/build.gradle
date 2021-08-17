@@ -27,6 +27,11 @@ dependencyManagement {
     }
 }
 
+bootBuildImage {
+    imageName = "polarbookshop/${project.name}:${project.version}"
+    environment = ["BP_JVM_VERSION": "16.*"]
+}
+
 test {
     useJUnitPlatform()
 }
