@@ -1,5 +1,6 @@
 package com.polarbookshop.orderservice.order.persistence;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,6 +13,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Version;
 
 @Getter @Setter @ToString
+@EqualsAndHashCode
 public class PersistableEntity {
 
     @Id

@@ -6,7 +6,6 @@
 |:---------------:|:--------:|:------------:|:------:|:--------------:|:---------------------------------|
 | `/orders`       | `GET`    |              | 200    | Orders         | Get all the orders.              |
 | `/orders`       | `POST`   | OrderRequest | 200    | Order          | Submit a new order.              |
-| `/orders/{id}`  | `GET`    |              | 200    | Order          | Get the order with the given id. |
 
 ## Useful Commands
 
@@ -27,23 +26,23 @@ java -jar build/libs/order-service-0.0.1-SNAPSHOT.jar
 Run PostgreSQL as a Docker container:
 
 ```bash
-docker run --name polardb-order -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=polardb_order -p 5433:5432 -d postgres:13
+docker run --name polar-postgres-order -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=polardb_order -p 5433:5432 -d postgres:13
 ```
 
 ### Container Commands
 
 | Docker Command	              | Description       |
 |:-------------------------------:|:-----------------:|
-| `docker stop polardb-order`   | Stop container.   |
-| `docker start polardb-order`  | Start container.  |
-| `docker remove polardb-order` | Remove container. |
+| `docker stop polar-postgres-order`   | Stop container.   |
+| `docker start polar-postgres-order`  | Start container.  |
+| `docker remove polar-postgres-order` | Remove container. |
 
 ### Database Commands
 
 Start an interactive PSQL console:
 
 ```bash
-docker exec -it polardb-order psql -U admin -d polardb_order
+docker exec -it polar-postgres-order psql -U admin -d polardb_order
 ```
 
 | PSQL Command	             | Description                    |
@@ -62,10 +61,11 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 ```
 
 ```bash
-helm install polardb-order bitnami/postgresql \
+helm install polar-postgres-order bitnami/postgresql \
+  --set fullnameOverride=polar-postgres-order \
   --set postgresqlUsername=admin \
   --set postgresqlPassword=admin \
   --set postgresqlDatabase=polardb_order \
-  --set image.tag=13 \
+  --set persistence.enabled=false \
   --set service.port=5433
 ```

@@ -1,12 +1,19 @@
 server:
   port: 8888
-  mbeanregistry:
-    enabled: true
+  tomcat:
+    connection-timeout: 5s
+    threads:
+      max: 50
+      min-spare: 5
+    mbeanregistry:
+      enabled: true
 
 spring:
   application:
     name: config-service
   cloud:
+    bus:
+      enabled: false
     config:
       server:
         git:

@@ -1,15 +1,12 @@
 package com.polarbookshop.catalogservice.config;
 
-import lombok.Data;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConstructorBinding;
 
 @ConfigurationProperties(prefix = "polar")
-@Data
-public class PolarProperties {
+@ConstructorBinding
+public record PolarProperties(
 
-	/**
-	 * A message to welcome users.
-	 */
-	private String greeting;
-}
+		String greeting
+
+){}

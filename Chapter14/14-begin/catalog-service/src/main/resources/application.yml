@@ -2,10 +2,10 @@ server:
   port: 9001
   shutdown: graceful
   tomcat:
-    connection-timeout: 5s
+    connection-timeout: 2s
     threads:
-      max: 100
-      min-spare: 10
+      max: 50
+      min-spare: 5
 
 spring:
   application:
@@ -15,6 +15,8 @@ spring:
   config:
     import: "optional:configserver:"
   cloud:
+    bus:
+      enabled: false
     config:
       uri: "http://localhost:8888"
       username: user
@@ -27,14 +29,15 @@ spring:
         initial-interval: 1000 # 1s
         max-interval: 2000 # 2s
         multiplier: 1.1
-  profiles.active: test-data
+  profiles:
+    active: test-data
   datasource:
     username: user
     password: password
     url: jdbc:postgresql://localhost:5432/polardb_catalog
     hikari:
       connection-timeout: 5000 #ms
-      maximum-pool-size: 20
+      maximum-pool-size: 10
       pool-name: polardb-catalog-pool
   jpa:
     hibernate.ddl-auto: validate
@@ -49,6 +52,12 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${KEYCLOAK_URL:http://localhost:8080}/auth/realms/PolarBookshop
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
 
 polar:
   greeting: Welcome to the local book catalog!

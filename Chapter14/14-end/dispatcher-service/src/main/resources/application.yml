@@ -7,6 +7,8 @@ spring:
   config:
     import: "optional:configserver:"
   cloud:
+    bus:
+      enabled: false
     config:
       uri: "http://localhost:8888"
       username: user

@@ -4,7 +4,6 @@ import javax.validation.Valid;
 
 import com.polarbookshop.orderservice.order.domain.Order;
 import com.polarbookshop.orderservice.order.domain.OrderService;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -20,10 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("orders")
-@RequiredArgsConstructor
 public class OrderController {
+
 	private static final Logger log = LoggerFactory.getLogger(OrderController.class);
 	private final OrderService orderService;
+
+	public OrderController(OrderService orderService) {
+		this.orderService = orderService;
+	}
 
 	@GetMapping
 	public Flux<Order> getAllOrders(@AuthenticationPrincipal Jwt jwt) {
@@ -33,8 +36,8 @@ public class OrderController {
 
 	@PostMapping
 	public Mono<Order> submitOrder(@RequestBody @Valid OrderRequest orderRequest) {
-		log.info("Submitting a new order for book with ISBN {}", orderRequest.getIsbn());
-		return orderService.submitOrder(orderRequest.getIsbn(), orderRequest.getQuantity());
+		log.info("Submitting a new order for book with ISBN {}", orderRequest.isbn());
+		return orderService.submitOrder(orderRequest.isbn(), orderRequest.quantity());
 	}
 
 }

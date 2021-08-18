@@ -5,11 +5,9 @@ services:
 
   catalog-service:
     depends_on:
-      - config-service
       - fluent-bit
       - polar-keycloak
       - polar-postgres-catalog
-      - polar-rabbitmq
     image: "polarbookshop/catalog-service:0.0.1-SNAPSHOT"
     container_name: "catalog-service"
     ports:
@@ -29,32 +27,9 @@ services:
       driver: fluentd
       options:
         fluentd-address: 127.0.0.1:24224
-
-  config-service:
-    depends_on:
-      - fluent-bit
-      - polar-rabbitmq
-    image: "polarbookshop/config-service:0.0.1-SNAPSHOT"
-    container_name: "config-service"
-    ports:
-      - 8888:8888
-      - 9888:9888
-    environment:
-      # Buildpacks environment variable to configure the number of threads in memory calculation
-      - BPL_JVM_THREAD_COUNT=50
-      # JVM environment variable to enable debug through a socket on port 9888
-      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:9888
-      - ENCRYPT_KEY=sharedkey
-      - SPRING_RABBITMQ_HOST=polar-rabbitmq
-      - ZIPKIN_URL=http://tempo:9411
-    logging:
-      driver: fluentd
-      options:
-        fluentd-address: 127.0.0.1:24224
   
   order-service:
     depends_on:
-      - config-service
       - fluent-bit
       - polar-keycloak
       - polar-rabbitmq
@@ -81,10 +56,8 @@ services:
   
   edge-service:
     depends_on:
-      - config-service
       - fluent-bit
       - polar-keycloak
-      - polar-rabbitmq
       - polar-redis
     image: "polarbookshop/edge-service:0.0.1-SNAPSHOT"
     container_name: "edge-service"
@@ -109,7 +82,6 @@ services:
 
   dispatcher-service:
     depends_on:
-      - config-service
       - fluent-bit
       - polar-rabbitmq
     image: polarbookshop/dispatcher-service:0.0.1-SNAPSHOT
@@ -120,6 +92,27 @@ services:
       # JVM environment variable to enable debug through a socket on port 8003
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8003
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+      - SPRING_RABBITMQ_HOST=polar-rabbitmq
+      - ZIPKIN_URL=http://tempo:9411
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: 127.0.0.1:24224
+  
+  config-service:
+    depends_on:
+      - fluent-bit
+    image: "polarbookshop/config-service:0.0.1-SNAPSHOT"
+    container_name: "config-service"
+    ports:
+      - 8888:8888
+      - 9888:9888
+    environment:
+      # Buildpacks environment variable to configure the number of threads in memory calculation
+      - BPL_JVM_THREAD_COUNT=50
+      # JVM environment variable to enable debug through a socket on port 9888
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:9888
+      - ENCRYPT_KEY=sharedkey
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
       - ZIPKIN_URL=http://tempo:9411
     logging:
