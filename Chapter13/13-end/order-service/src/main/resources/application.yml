@@ -1,7 +1,7 @@
 server:
   port: 9002
   netty:
-    connection-timeout: 5s
+    connection-timeout: 2s
   shutdown: graceful
 
 spring:
@@ -24,6 +24,8 @@ spring:
   config:
     import: "optional:configserver:"
   cloud:
+    bus:
+      enabled: false
     config:
       uri: "http://localhost:8888"
       username: user
@@ -61,8 +63,6 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${KEYCLOAK_URL:http://localhost:8080}/auth/realms/PolarBookshop
-
-logging.level.reactor.core.*: debug
 
 polar:
   catalog-service-url: "http://localhost:9001/books/"

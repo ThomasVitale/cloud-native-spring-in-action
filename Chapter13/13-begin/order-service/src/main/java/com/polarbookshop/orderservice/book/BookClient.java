@@ -16,7 +16,7 @@ public class BookClient {
 
 	public BookClient(BookClientProperties bookClientProperties, WebClient.Builder webClientBuilder) {
 		this.webClient = webClientBuilder
-				.baseUrl(bookClientProperties.getCatalogServiceUrl().toString())
+				.baseUrl(bookClientProperties.catalogServiceUrl().toString())
 				.build();
 	}
 

@@ -18,7 +18,6 @@ import org.testcontainers.utility.DockerImageName;
 import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
@@ -35,7 +34,6 @@ import static org.mockito.BDDMockito.given;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(TestChannelBinderConfiguration.class)
 @AutoConfigureWireMock(port = 0)
-@AutoConfigureWebTestClient
 @Testcontainers
 class OrderControllerIntegrationTests {
 
@@ -164,10 +162,10 @@ class OrderControllerIntegrationTests {
 				.expectStatus().is2xxSuccessful()
 				.expectBody(Order.class)
 				.value(order -> {
-					assertThat(order.getBookIsbn()).isEqualTo(orderRequest.getIsbn());
-					assertThat(order.getQuantity()).isEqualTo(orderRequest.getQuantity());
-					assertThat(order.getBookName()).isEqualTo(book.getTitle() + " - " + book.getAuthor());
-					assertThat(order.getBookPrice()).isEqualTo(book.getPrice());
+					assertThat(order.getBookIsbn()).isEqualTo(orderRequest.isbn());
+					assertThat(order.getQuantity()).isEqualTo(orderRequest.quantity());
+					assertThat(order.getBookName()).isEqualTo(book.title() + " - " + book.author());
+					assertThat(order.getBookPrice()).isEqualTo(book.price());
 					assertThat(order.getStatus()).isEqualTo(OrderStatus.ACCEPTED);
 				})
 				.returnResult().getResponseBody();
@@ -190,8 +188,8 @@ class OrderControllerIntegrationTests {
 				.expectStatus().is2xxSuccessful()
 				.expectBody(Order.class)
 				.value(order -> {
-					assertThat(order.getBookIsbn()).isEqualTo(orderRequest.getIsbn());
-					assertThat(order.getQuantity()).isEqualTo(orderRequest.getQuantity());
+					assertThat(order.getBookIsbn()).isEqualTo(orderRequest.isbn());
+					assertThat(order.getQuantity()).isEqualTo(orderRequest.quantity());
 					assertThat(order.getStatus()).isEqualTo(OrderStatus.REJECTED);
 				});
 	}

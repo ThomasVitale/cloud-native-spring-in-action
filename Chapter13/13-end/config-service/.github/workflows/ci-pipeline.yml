@@ -1,9 +1,12 @@
 name: CI Pipeline
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
-    name: Run unit and integration tests
+    name: Build
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout repository
@@ -12,5 +15,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 16
-      - name: Build and test application
-        run: ./gradlew build
+      - name: Compile and test application
+        run: |
+          chmod +x gradlew
+          ./gradlew build

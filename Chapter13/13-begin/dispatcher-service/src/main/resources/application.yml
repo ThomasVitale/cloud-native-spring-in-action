@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: dispatcher-service
   config:
     import: "optional:configserver:"
   cloud:
@@ -27,6 +29,3 @@ spring:
     username: user
     password: password
     connection-timeout: 15s
-
-
-

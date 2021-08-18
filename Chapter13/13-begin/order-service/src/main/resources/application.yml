@@ -1,10 +1,12 @@
 server:
   port: 9002
   netty:
-    connection-timeout: 5s
+    connection-timeout: 2s
   shutdown: graceful
 
 spring:
+  application:
+    name: order-service
   lifecycle:
     timeout-per-shutdown-phase: 15s
   r2dbc:
@@ -57,8 +59,6 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${KEYCLOAK_URL:http://localhost:8080}/auth/realms/PolarBookshop
-
-logging.level.reactor.core.*: debug
 
 polar:
   catalog-service-url: "http://localhost:9001/books/"

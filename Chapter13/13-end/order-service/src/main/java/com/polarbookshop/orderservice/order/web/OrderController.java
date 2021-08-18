@@ -4,7 +4,6 @@ import javax.validation.Valid;
 
 import com.polarbookshop.orderservice.order.domain.Order;
 import com.polarbookshop.orderservice.order.domain.OrderService;
-import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -18,10 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("orders")
-@RequiredArgsConstructor
 public class OrderController {
 
 	private final OrderService orderService;
+
+	public OrderController(OrderService orderService) {
+		this.orderService = orderService;
+	}
 
 	@GetMapping
 	public Flux<Order> getAllOrders(@AuthenticationPrincipal Jwt jwt) {
@@ -30,7 +32,7 @@ public class OrderController {
 
 	@PostMapping
 	public Mono<Order> submitOrder(@RequestBody @Valid OrderRequest orderRequest) {
-		return orderService.submitOrder(orderRequest.getIsbn(), orderRequest.getQuantity());
+		return orderService.submitOrder(orderRequest.isbn(), orderRequest.quantity());
 	}
 
 }

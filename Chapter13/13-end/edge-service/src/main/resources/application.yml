@@ -1,7 +1,7 @@
 server:
   port: 9000
   netty:
-    connection-timeout: 5s
+    connection-timeout: 2s
   shutdown: graceful
 
 spring:
@@ -12,13 +12,15 @@ spring:
   config:
     import: "optional:configserver:"
   cloud:
+    bus:
+      enabled: false # Disabled on dev environment only
     config:
       uri: "http://localhost:8888"
       username: user
       password: password
       request-connect-timeout: 1000 # 1s
       request-read-timeout: 5000 # 5s
-      fail-fast: false
+      fail-fast: false # Disabled on dev environment only
       retry:
         max-attempts: 6
         initial-interval: 1000 # 1s
@@ -26,7 +28,7 @@ spring:
         multiplier: 1.1
     gateway:
       httpclient:
-        connect-timeout: 5000
+        connect-timeout: 2000
         response-timeout: 5s
         pool:
           type: elastic
@@ -76,7 +78,7 @@ spring:
     password: password
     connection-timeout: 15s
   redis:
-    connect-timeout: 5s
+    connect-timeout: 2s
     host: localhost
     port: 6379
     timeout: 500ms

@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: dispatcher-service
   config:
     import: "optional:configserver:"
   cloud:

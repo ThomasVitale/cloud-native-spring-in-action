@@ -4,17 +4,14 @@ import java.net.URI;
 
 import javax.validation.constraints.NotNull;
 
-import lombok.Data;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConstructorBinding;
 
 @ConfigurationProperties(prefix = "polar")
-@Data
-public class BookClientProperties {
+@ConstructorBinding
+public record BookClientProperties(
 
-	/**
-	 * The URL of the CatalogService application.
-	 */
-	@NotNull
-	private URI catalogServiceUrl;
-}
+		@NotNull
+		URI catalogServiceUrl
+
+){}

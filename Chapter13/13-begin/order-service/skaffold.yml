@@ -14,12 +14,12 @@ deploy:
     releases:
       - name: polar-postgres-order
         remoteChart: bitnami/postgresql
-        remote: true
         setValues:
+          fullnameOverride: polar-postgres-order
           postgresqlUsername: admin
           postgresqlPassword: admin
           postgresqlDatabase: polardb_order
-          image.tag: 13
+          persistence.enabled: false
           service.port: 5433
   kubectl:
     manifests:
