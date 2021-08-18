@@ -86,7 +86,9 @@ jobs:
           Chapter14/14-end/config-service,
           Chapter14/14-end/order-service,
           Chapter14/14-end/edge-service,
-          Chapter14/14-end/dispatcher-service
+          Chapter14/14-end/dispatcher-service,
+          Chapter16/16-end/quote-service,
+          Chapter16/16-end/quote-function
         ]
     steps:
       - name: Checkout repository
@@ -95,7 +97,13 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 16
-      - name: Assemble and test
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+      - name: Compile and test application
         run: |
           cd ${{ matrix.project }}
           chmod +x gradlew
