@@ -1,7 +1,5 @@
 package com.polarbookshop.catalogservice.web;
 
-import java.time.Year;
-
 import com.polarbookshop.catalogservice.domain.Book;
 import org.junit.jupiter.api.Test;
 
@@ -19,26 +17,25 @@ class BookJsonTests {
 
     @Test
     void testSerialize() throws Exception {
-        Book book = new Book("1234567890", "Title", "Author", Year.of(1973), 9.90);
-        assertThat(json.write(book)).extractingJsonPathStringValue("@.isbn")
+        var book = new Book("1234567890", "Title", "Author", 9.90);
+        var jsonContent = json.write(book);
+        assertThat(jsonContent).extractingJsonPathStringValue("@.isbn")
                 .isEqualTo("1234567890");
-        assertThat(json.write(book)).extractingJsonPathStringValue("@.title")
+        assertThat(jsonContent).extractingJsonPathStringValue("@.title")
                 .isEqualTo("Title");
-        assertThat(json.write(book)).extractingJsonPathStringValue("@.author")
+        assertThat(jsonContent).extractingJsonPathStringValue("@.author")
                 .isEqualTo("Author");
-        assertThat(json.write(book)).extractingJsonPathStringValue("@.publishingYear")
-                .isEqualTo("1973");
-        assertThat(json.write(book)).extractingJsonPathNumberValue("@.price")
+        assertThat(jsonContent).extractingJsonPathNumberValue("@.price")
                 .isEqualTo(9.90);
     }
 
     @Test
     void testDeserialize() throws Exception {
-        String content = "{\"isbn\":\"1234567890\",\"title\":\"Title\", \"author\":\"Author\", \"publishingYear\":\"1973\", \"price\":9.90}";
+        String content = "{\"isbn\":\"1234567890\",\"title\":\"Title\", \"author\":\"Author\", \"price\":9.90}";
         assertThat(json.parse(content))
                 .usingRecursiveComparison()
-                .isEqualTo(new Book("1234567890", "Title", "Author", Year.of(1973), 9.90));
-        assertThat(json.parseObject(content).getIsbn()).isEqualTo("1234567890");
+                .isEqualTo(new Book("1234567890", "Title", "Author", 9.90));
+        assertThat(json.parseObject(content).isbn()).isEqualTo("1234567890");
     }
 
 }

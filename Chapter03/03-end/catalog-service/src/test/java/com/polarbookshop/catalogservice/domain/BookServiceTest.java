@@ -1,7 +1,5 @@
 package com.polarbookshop.catalogservice.domain;
 
-import java.time.Year;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,7 +21,7 @@ class BookServiceTest {
     @Test
     void whenBookToCreateAlreadyExistsThenThrows() {
         String bookIsbn = "1234561232";
-        Book bookToCreate = new Book(bookIsbn, "Title", "Author", Year.of(2000), 9.90);
+        Book bookToCreate = new Book(bookIsbn, "Title", "Author", 9.90);
         when(bookRepository.existsByIsbn(bookIsbn)).thenReturn(true);
         assertThatThrownBy(() -> bookService.addBookToCatalog(bookToCreate))
                 .isInstanceOf(BookAlreadyExistsException.class)

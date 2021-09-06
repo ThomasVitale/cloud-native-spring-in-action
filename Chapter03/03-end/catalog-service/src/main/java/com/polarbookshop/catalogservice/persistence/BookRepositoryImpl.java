@@ -32,7 +32,7 @@ public class BookRepositoryImpl implements BookRepository {
 
 	@Override
 	public Book save(Book book) {
-		books.put(book.getIsbn(), book);
+		books.put(book.isbn(), book);
 		return book;
 	}
 
