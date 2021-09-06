@@ -31,7 +31,7 @@ class BookJsonTests {
 
     @Test
     void testDeserialize() throws Exception {
-        String content = "{\"isbn\":\"1234567890\",\"title\":\"Title\", \"author\":\"Author\", \"price\":9.90}";
+        var content = "{\"isbn\":\"1234567890\",\"title\":\"Title\", \"author\":\"Author\", \"price\":9.90}";
         assertThat(json.parse(content))
                 .usingRecursiveComparison()
                 .isEqualTo(new Book("1234567890", "Title", "Author", 9.90));
