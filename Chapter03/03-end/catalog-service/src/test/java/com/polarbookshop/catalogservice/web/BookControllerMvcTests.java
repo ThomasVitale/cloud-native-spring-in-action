@@ -21,7 +21,7 @@ class BookControllerMvcTests {
     private BookService bookService;
 
     @Test
-    void whenGetBookNotExistingThenShouldReturn404() throws Exception {
+    void whenGetBookNotExistingThenShouldReturn404() {
         var isbn = "73737313940";
         given(bookService.viewBookDetails(isbn)).willThrow(BookNotFoundException.class);
         webTestClient

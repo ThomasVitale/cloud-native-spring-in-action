@@ -24,8 +24,8 @@ public class BookService {
     }
 
     public Book addBookToCatalog(Book book) {
-        if (bookRepository.existsByIsbn(book.getIsbn())) {
-            throw new BookAlreadyExistsException(book.getIsbn());
+        if (bookRepository.existsByIsbn(book.isbn())) {
+            throw new BookAlreadyExistsException(book.isbn());
         }
         return bookRepository.save(book);
     }
@@ -42,11 +42,11 @@ public class BookService {
         if (existingBook.isEmpty()) {
             return addBookToCatalog(book);
         }
-        Book bookToUpdate = existingBook.get();
-        bookToUpdate.setTitle(book.getTitle());
-        bookToUpdate.setAuthor(book.getAuthor());
-        bookToUpdate.setPublishingYear(book.getPublishingYear());
-        bookToUpdate.setPrice(book.getPrice());
+        Book bookToUpdate = new Book(
+                isbn,
+                book.title(),
+                book.author(),
+                book.price());
         return bookRepository.save(bookToUpdate);
     }
 
