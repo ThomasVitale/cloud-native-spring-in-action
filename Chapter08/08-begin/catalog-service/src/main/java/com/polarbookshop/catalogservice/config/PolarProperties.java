@@ -7,6 +7,6 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 @ConstructorBinding
 public record PolarProperties(
 
-	String greeting
+		String greeting
 
 ){}

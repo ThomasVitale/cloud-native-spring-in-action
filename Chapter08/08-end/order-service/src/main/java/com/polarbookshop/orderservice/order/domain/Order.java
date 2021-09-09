@@ -1,28 +1,45 @@
 package com.polarbookshop.orderservice.order.domain;
 
-import com.polarbookshop.orderservice.order.persistence.PersistableEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import java.time.Instant;
 
+import com.polarbookshop.orderservice.book.Book;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table("orders")
-@Data @AllArgsConstructor @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class Order extends PersistableEntity {
+public record Order (
 
-	private String bookIsbn;
-	private String bookName;
-	private Double bookPrice;
-	private Integer quantity;
-	private OrderStatus status;
+	@Id
+	Long id,
 
-	public Order(String bookIsbn, int quantity, OrderStatus status) {
-		this.bookIsbn = bookIsbn;
-		this.quantity = quantity;
-		this.status = status;
+	String bookIsbn,
+	String bookName,
+	Double bookPrice,
+	Integer quantity,
+	OrderStatus status,
+
+	@CreatedDate
+	Instant createdDate,
+
+	@LastModifiedDate
+	Instant lastModifiedDate,
+
+	@Version
+	Integer version
+){
+
+	public static Order buildRejectedOrder(String bookIsbn, int quantity) {
+		return new Order(null, bookIsbn, null, null, quantity,
+				OrderStatus.REJECTED, null, null, null);
+	}
+
+	public static Order buildAcceptedOrder(Book book, int quantity) {
+		return new Order(null, book.isbn(), book.title() + " - " + book.author(),
+				book.price(), quantity, OrderStatus.ACCEPTED, null, null, null);
 	}
 
 }

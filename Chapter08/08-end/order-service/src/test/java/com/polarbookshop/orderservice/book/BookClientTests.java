@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
 class BookClientTests {
@@ -22,7 +24,7 @@ class BookClientTests {
 		this.mockWebServer = new MockWebServer();
 		this.mockWebServer.start();
 
-		BookClientProperties bookClientProperties = new BookClientProperties(mockWebServer.url("/").uri());
+		var bookClientProperties = new BookClientProperties(mockWebServer.url("/").uri());
 		this.bookClient = new BookClient(bookClientProperties, WebClient.builder());
 	}
 
@@ -33,10 +35,10 @@ class BookClientTests {
 
 	@Test
 	void whenBookExistsThenReturnBook() {
-		String bookIsbn = "1234567890";
+		var bookIsbn = "1234567890";
 
-		MockResponse mockResponse = new MockResponse()
-				.addHeader("Content-Type", "application/json; charset=utf-8")
+		var mockResponse = new MockResponse()
+				.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.setBody("{\"isbn\":\"" + bookIsbn + "\",\"title\":\"Book Title\", \"author\":\"Book Author\", \"publishingYear\":\"1973\", \"price\":\"9.90\"}");
 
 		mockWebServer.enqueue(mockResponse);
@@ -50,10 +52,10 @@ class BookClientTests {
 
 	@Test
 	void whenBookNotExistsThenReturnEmpty() {
-		String bookIsbn = "1234567891";
+		var bookIsbn = "1234567891";
 
-		MockResponse mockResponse = new MockResponse()
-				.addHeader("Content-Type", "application/json; charset=utf-8")
+		var mockResponse = new MockResponse()
+				.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.setResponseCode(404);
 
 		mockWebServer.enqueue(mockResponse);

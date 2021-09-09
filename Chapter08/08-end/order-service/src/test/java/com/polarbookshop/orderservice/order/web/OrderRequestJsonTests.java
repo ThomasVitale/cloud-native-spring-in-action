@@ -16,7 +16,7 @@ class OrderRequestJsonTests {
 
     @Test
     void testDeserialize() throws Exception {
-        String content = "{\"isbn\":\"1234567890\", \"quantity\":\"1\"}";
+        var content = "{\"isbn\":\"1234567890\", \"quantity\":\"1\"}";
         assertThat(this.json.parse(content))
                 .usingRecursiveComparison().isEqualTo(new OrderRequest("1234567890", 1));
     }

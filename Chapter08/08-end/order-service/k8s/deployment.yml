@@ -14,10 +14,10 @@ spec:
       labels:
         app: order-service
     spec:
-      terminationGracePeriodSeconds: 20
       containers:
         - name: order-service
           image: polarbookshop/order-service:0.0.1-SNAPSHOT
+          imagePullPolicy: Always
           lifecycle:
             preStop:
               exec:
@@ -25,5 +25,7 @@ spec:
           ports:
             - containerPort: 9002
           env:
-            - name: SPRING_DATASOURCE_URL
-              value: r2dbc:postgresql://polar-postgres-order:5432/polardb_order
+            - name: SPRING_R2DBC_URL
+              value: r2dbc:postgresql://polar-postgres-order/polardb_order
+            - name: SPRING_FLYWAY_URL
+              value: jdbc:postgresql://polar-postgres-order/polardb_order

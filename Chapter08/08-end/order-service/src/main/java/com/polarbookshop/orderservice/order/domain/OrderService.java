@@ -1,6 +1,5 @@
 package com.polarbookshop.orderservice.order.domain;
 
-import com.polarbookshop.orderservice.book.Book;
 import com.polarbookshop.orderservice.book.BookClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,21 +23,9 @@ public class OrderService {
 
 	public Mono<Order> submitOrder(String isbn, int quantity) {
 		return bookClient.getBookByIsbn(isbn)
-				.flatMap(book -> Mono.just(buildAcceptedOrder(book, quantity)))
-				.defaultIfEmpty(buildRejectedOrder(isbn, quantity))
+				.map(book -> Order.buildAcceptedOrder(book, quantity))
+				.defaultIfEmpty(Order.buildRejectedOrder(isbn, quantity))
 				.flatMap(orderRepository::save);
-	}
-
-	private Order buildAcceptedOrder(Book book, int quantity) {
-		return new Order(book.isbn(),
-				book.title() + " - " + book.author(),
-				book.price(),
-				quantity,
-				OrderStatus.ACCEPTED);
-	}
-
-	private Order buildRejectedOrder(String isbn, int quantity) {
-		return new Order(isbn, quantity, OrderStatus.REJECTED);
 	}
 
 }
