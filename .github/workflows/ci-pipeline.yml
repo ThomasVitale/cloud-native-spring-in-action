@@ -9,7 +9,8 @@ jobs:
       fail-fast: false
       matrix:
         project: [
-          Chapter02/02-end/greeting-service,
+          Chapter02/02-end/catalog-service,
+          Chapter03/03-begin/catalog-service,
           Chapter03/03-end/catalog-service,
           Chapter04/04-begin/catalog-service,
           Chapter04/04-end/catalog-service,
@@ -94,15 +95,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Set up JDK 16
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
+          distribution: temurin
           java-version: 16
-      - name: Cache Gradle packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-          restore-keys: ${{ runner.os }}-gradle
+          cache: gradle
       - name: Compile and test application
         run: |
           cd ${{ matrix.project }}
