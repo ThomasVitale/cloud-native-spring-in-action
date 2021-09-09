@@ -1,39 +1,38 @@
 package com.polarbookshop.catalogservice.domain;
 
-import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 
-import com.polarbookshop.catalogservice.persistence.JpaConfig;
+import com.polarbookshop.catalogservice.persistence.DataConfig;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataJpaTest
-@Import(JpaConfig.class)
+@DataJdbcTest
+@Import(DataConfig.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("integration")
-class BookRepositoryJpaTests {
+class BookRepositoryJdbcTests {
 
     @Autowired
     private BookRepository bookRepository;
 
     @Autowired
-    private TestEntityManager entityManager;
+    private JdbcAggregateTemplate jdbcAggregateTemplate;
 
     @Test
-    void findAllOrderByTitle() {
-        Book expectedBook1 = new Book("1234561235", "Title", "Author", Year.of(2000), 12.90, "Polar");
-        Book expectedBook2 = new Book("1234561236", "Another Title", "Author", Year.of(2000), 12.90, "Polar");
-        entityManager.persist(expectedBook1);
-        entityManager.persist(expectedBook2);
+    void findAllBooks() {
+        var book1 = new Book(null, "1234561235", "Title", "Author", 12.90, "Polarsophia", null, null, null);
+        var book2 = new Book(null, "1234561236", "Another Title", "Author", 12.90, "Polarsophia", null, null, null);
+        var expectedBook1 = jdbcAggregateTemplate.insert(book1);
+        var expectedBook2 = jdbcAggregateTemplate.insert(book2);
 
         Iterable<Book> actualBooks = bookRepository.findAll();
 
@@ -42,14 +41,16 @@ class BookRepositoryJpaTests {
 
     @Test
     void findBookByIsbnWhenExisting() {
-        String bookIsbn = "1234561235";
-        Book expectedBook = new Book(bookIsbn, "Title", "Author", Year.of(2000), 12.90, "Polar");
-        entityManager.persist(expectedBook);
+        var bookIsbn = "1234561235";
+        var book = new Book(null, bookIsbn, "Title", "Author", 12.90, "Polarsophia", null, null, null);
+        var expectedBook = jdbcAggregateTemplate.insert(book);
 
         Optional<Book> actualBook = bookRepository.findByIsbn(bookIsbn);
 
         assertThat(actualBook).isPresent();
-        assertThat(actualBook.get().getIsbn()).isEqualTo(expectedBook.getIsbn());
+        assertThat(actualBook.get())
+                .usingRecursiveComparison()
+                .isEqualTo(expectedBook);
     }
 
     @Test
@@ -60,9 +61,9 @@ class BookRepositoryJpaTests {
 
     @Test
     void existsByIsbnWhenExisting() {
-        String bookIsbn = "1234561235";
-        Book bookToCreate = new Book(bookIsbn, "Title", "Author", Year.of(2000), 12.90, "Polar");
-        entityManager.persist(bookToCreate);
+        var bookIsbn = "1234561235";
+        var bookToCreate = new Book(null, bookIsbn, "Title", "Author", 12.90, "Polarsophia", null, null, null);
+        jdbcAggregateTemplate.insert(bookToCreate);
 
         boolean existing = bookRepository.existsByIsbn(bookIsbn);
 
@@ -77,13 +78,13 @@ class BookRepositoryJpaTests {
 
     @Test
     void deleteByIsbn() {
-        String bookIsbn = "1234561235";
-        Book bookToCreate = new Book(bookIsbn, "Title", "Author", Year.of(2000), 12.90, "Polar");
-        Book persistedBook = entityManager.persist(bookToCreate);
+        var bookIsbn = "1234561235";
+        var bookToCreate = new Book(null, bookIsbn, "Title", "Author", 12.90, "Polarsophia", null, null, null);
+        var persistedBook = jdbcAggregateTemplate.insert(bookToCreate);
 
         bookRepository.deleteByIsbn(bookIsbn);
 
-        assertThat(entityManager.find(Book.class, persistedBook.getId())).isNull();
+        assertThat(jdbcAggregateTemplate.findById(persistedBook.id(), Book.class)).isNull();
     }
 
 }

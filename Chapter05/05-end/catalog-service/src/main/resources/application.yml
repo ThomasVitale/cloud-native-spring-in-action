@@ -25,21 +25,21 @@ spring:
   profiles:
     active: test-data
   datasource:
-    username: admin
-    password: admin
+    username: user
+    password: password
     url: jdbc:postgresql://localhost:5432/polardb_catalog
     hikari:
-      connection-timeout: 5000 #ms
-      maximum-pool-size: 10
-      pool-name: polardb-catalog-pool
-  jpa:
-    hibernate.ddl-auto: validate
+      connection-timeout: 2000 #ms
+      maximum-pool-size: 5
 
 management:
   endpoints:
     web:
       exposure:
         include: refresh
+  endpoint:
+    health:
+      enabled: false
 
 polar:
   greeting: Welcome to the local book catalog!

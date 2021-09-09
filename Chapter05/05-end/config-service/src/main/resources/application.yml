@@ -1,7 +1,7 @@
 server:
   port: 8888
   tomcat:
-    connection-timeout: 5s
+    connection-timeout: 2s
     threads:
       max: 50
       min-spare: 5

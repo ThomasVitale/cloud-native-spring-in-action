@@ -1,5 +1,6 @@
 package com.polarbookshop.catalogservice.persistence;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,7 +16,7 @@ public class BookRepositoryImpl implements BookRepository {
 	private static final Map<String, Book> books = new ConcurrentHashMap<>();
 
 	@Override
-	public Iterable<Book> findAll() {
+	public Collection<Book> findAll() {
 		return books.values();
 	}
 
@@ -31,7 +32,7 @@ public class BookRepositoryImpl implements BookRepository {
 
 	@Override
 	public Book save(Book book) {
-		books.put(book.getIsbn(), book);
+		books.put(book.isbn(), book);
 		return book;
 	}
 
