@@ -14,10 +14,10 @@ spec:
       labels:
         app: config-service
     spec:
-      terminationGracePeriodSeconds: 20
       containers:
-        - name: catalog-service
+        - name: config-service
           image: polarbookshop/config-service:0.0.1-SNAPSHOT
+          imagePullPolicy: Always
           lifecycle:
             preStop:
               exec:
