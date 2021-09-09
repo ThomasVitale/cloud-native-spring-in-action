@@ -34,11 +34,11 @@ services:
   # Backing Services
 
   polar-postgres-catalog:
-    image: "postgres:13"
+    image: "postgres:13.4"
     container_name: "polar-postgres-catalog"
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
       - POSTGRES_DB=polardb_catalog
