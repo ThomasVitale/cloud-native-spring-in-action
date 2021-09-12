@@ -10,9 +10,9 @@ There is a folder for each chapter, for which both an _initial_ and _final_ vers
 
 Chapter after chapter, you'll build, containerize, and deploy cloud native applications. Along the journey, you will need the following software installed.
 
-* Java 11+ or later
-    * [AdoptOpenJDK](https://adoptopenjdk.net)
-    * [SDKMAN](https://sdkman.io)
+* Java 16
+    * OpenJDK: [Eclipse Temurin](https://adoptium.net)
+    * JDK Management: [SDKMAN](https://sdkman.io)
 * Docker 20.10+
     * [Docker for Linux](https://docs.docker.com/engine/install/ubuntu/)
     * [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop)

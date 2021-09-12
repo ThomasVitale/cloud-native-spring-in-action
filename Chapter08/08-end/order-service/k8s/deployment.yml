@@ -25,6 +25,10 @@ spec:
           ports:
             - containerPort: 9002
           env:
+            - name: POLAR_CATALOG_SERVICE_URL
+              value: http://catalog-service
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: http://config-service
             - name: SPRING_R2DBC_URL
               value: r2dbc:postgresql://polar-postgres-order/polardb_order
             - name: SPRING_FLYWAY_URL
