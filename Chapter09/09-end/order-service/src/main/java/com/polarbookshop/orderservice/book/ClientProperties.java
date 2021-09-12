@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 
 @ConfigurationProperties(prefix = "polar")
 @ConstructorBinding
-public record BookClientProperties(
+public record ClientProperties (
 
 	@NotNull
 	URI catalogServiceUrl

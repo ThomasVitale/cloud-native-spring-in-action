@@ -13,7 +13,7 @@ spring:
     import: "optional:configserver:"
   cloud:
     config:
-      uri: "http://localhost:8888"
+      uri: http://localhost:8888
       request-connect-timeout: 1000 # 1s
       request-read-timeout: 5000 # 5s
       fail-fast: false
@@ -24,7 +24,7 @@ spring:
         multiplier: 1.1
     gateway:
       httpclient:
-        connect-timeout: 2000
+        connect-timeout: 2000 # 2s
         response-timeout: 5s
         pool:
           type: elastic
@@ -41,8 +41,6 @@ spring:
           args:
             retries: 3
             methods: GET
-            series: SERVER_ERROR
-            exceptions: java.io.IOException, java.util.concurrent.TimeoutException
             backoff:
               firstBackoff: 50ms
               maxBackOff: 500ms
@@ -71,12 +69,24 @@ spring:
     host: localhost
     port: 6379
     timeout: 500ms
-    password: admin
   session:
     store-type: redis
     timeout: 10m
     redis:
       namespace: polar:edge
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 20
+        permittedNumberOfCallsInHalfOpenState: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 15000
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 3s
 
 #logging:
 #  level:
