@@ -22,7 +22,14 @@ spec:
             - name: POSTGRES_PASSWORD
               value: password 
             - name: POSTGRES_DB
-              value: polardb_catalog 
+              value: polardb_catalog
+          resources:
+            requests:
+              cpu: 100m
+              memory: 60Mi
+            limits:
+              cpu: 200m
+              memory: 120Mi
 
 ---
 
