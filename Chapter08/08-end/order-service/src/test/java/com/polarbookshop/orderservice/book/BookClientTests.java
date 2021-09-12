@@ -24,8 +24,10 @@ class BookClientTests {
 		this.mockWebServer = new MockWebServer();
 		this.mockWebServer.start();
 
-		var bookClientProperties = new BookClientProperties(mockWebServer.url("/").uri());
-		this.bookClient = new BookClient(bookClientProperties, WebClient.builder());
+		var webClient = WebClient.builder()
+				.baseUrl(mockWebServer.url("/").uri().toString())
+				.build();
+		this.bookClient = new BookClient(webClient);
 	}
 
 	@AfterEach
@@ -39,7 +41,15 @@ class BookClientTests {
 
 		var mockResponse = new MockResponse()
 				.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-				.setBody("{\"isbn\":\"" + bookIsbn + "\",\"title\":\"Book Title\", \"author\":\"Book Author\", \"publishingYear\":\"1973\", \"price\":\"9.90\"}");
+				.setBody("""
+							{
+								"isbn": %s,
+								"title": "Title",
+								"author": "Author",
+								"price": 9.90,
+								"publisher": "Polarsophia"
+							}
+						""".formatted(bookIsbn));
 
 		mockWebServer.enqueue(mockResponse);
 

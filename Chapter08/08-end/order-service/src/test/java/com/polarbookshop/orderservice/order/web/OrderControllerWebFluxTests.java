@@ -26,11 +26,13 @@ class OrderControllerWebFluxTests {
 	@Test
 	void whenBookNotAvailableThenRejectOrder() {
 		var orderRequest = new OrderRequest("1234567890", 3);
-		var expectedOrder = Order.buildRejectedOrder(orderRequest.isbn(), orderRequest.quantity());
+		var expectedOrder = OrderService.buildRejectedOrder(orderRequest.isbn(), orderRequest.quantity());
 		given(orderService.submitOrder(orderRequest.isbn(), orderRequest.quantity()))
 				.willReturn(Mono.just(expectedOrder));
 
-		Order createdOrder = webClient.post().uri("/orders/")
+		Order createdOrder = webClient
+				.post()
+				.uri("/orders/")
 				.bodyValue(orderRequest)
 				.exchange()
 				.expectStatus().is2xxSuccessful()
