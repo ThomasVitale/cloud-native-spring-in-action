@@ -14,10 +14,10 @@ spec:
       labels:
         app: dispatcher-service
     spec:
-      terminationGracePeriodSeconds: 20
       containers:
         - name: dispatcher-service
           image: polarbookshop/dispatcher-service:0.0.1-SNAPSHOT
+          imagePullPolicy: Always
           lifecycle:
             preStop:
               exec:
@@ -25,5 +25,7 @@ spec:
           ports:
             - containerPort: 9003
           env:
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: http://config-service
             - name: SPRING_RABBIT_HOST
-              value: polarmq-broker-rabbitmq
+              value: polar-rabbitmq

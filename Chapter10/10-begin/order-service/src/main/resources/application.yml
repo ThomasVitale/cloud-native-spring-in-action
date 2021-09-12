@@ -1,8 +1,8 @@
 server:
   port: 9002
+  shutdown: graceful
   netty:
     connection-timeout: 2s
-  shutdown: graceful
 
 spring:
   application:
@@ -10,11 +10,11 @@ spring:
   lifecycle:
     timeout-per-shutdown-phase: 15s
   r2dbc:
-    username: admin
-    password: admin
+    username: user
+    password: password
     url: r2dbc:postgresql://localhost:5433/polardb_order
     pool:
-      max-create-connection-time: 5s
+      max-create-connection-time: 2s
       initial-size: 5
       max-size: 10
   flyway:
@@ -25,7 +25,7 @@ spring:
     import: "optional:configserver:"
   cloud:
     config:
-      uri: "http://localhost:8888"
+      uri: http://localhost:8888
       request-connect-timeout: 1000 # 1s
       request-read-timeout: 5000 # 5s
       fail-fast: false
@@ -36,4 +36,4 @@ spring:
         multiplier: 1.1
 
 polar:
-  catalog-service-url: "http://localhost:9001/books/"
+  catalog-service-url: "http://localhost:9001"

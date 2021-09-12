@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: polar-postgres-catalog
+  labels:
+    db: polar-postgres-catalog
+spec:
+  selector:
+    matchLabels:
+      db: polar-postgres-catalog
+  template:
+    metadata:
+      labels:
+        db: polar-postgres-catalog
+    spec:
+      containers:
+        - name: polar-postgres-catalog
+          image: postgres:13.4
+          env:
+            - name: POSTGRES_USER
+              value: user
+            - name: POSTGRES_PASSWORD
+              value: password 
+            - name: POSTGRES_DB
+              value: polardb_catalog 
+          resources:
+            requests:
+              cpu: 100m
+              memory: 60Mi
+            limits:
+              cpu: 200m
+              memory: 120Mi
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: polar-postgres-catalog
+  labels:
+    db: polar-postgres-catalog
+spec:
+  type: ClusterIP
+  selector:
+    db: polar-postgres-catalog
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432

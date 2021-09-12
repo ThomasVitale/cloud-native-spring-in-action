@@ -10,5 +10,5 @@ spec:
     app: edge-service
   ports:
   - protocol: TCP
-    port: 9000
+    port: 80
     targetPort: 9000

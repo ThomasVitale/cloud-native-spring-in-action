@@ -20,11 +20,11 @@ public class OrderFunctions {
 	@Bean
 	public Consumer<Order> publishOrderAcceptedEvent(StreamBridge streamBridge) {
 		return order -> {
-			if (!order.getStatus().equals(OrderStatus.ACCEPTED)) {
+			if (!order.status().equals(OrderStatus.ACCEPTED)) {
 				return;
 			}
-			OrderAcceptedMessage orderAcceptedMessage = new OrderAcceptedMessage(order.getId());
-			log.info("Sending order accepted event with id: {}", order.getId());
+			OrderAcceptedMessage orderAcceptedMessage = new OrderAcceptedMessage(order.id());
+			log.info("Sending order accepted event with id: {}", order.id());
 			streamBridge.send("order-accepted", orderAcceptedMessage);
 		};
 	}

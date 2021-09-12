@@ -14,10 +14,10 @@ spec:
       labels:
         app: catalog-service
     spec:
-      terminationGracePeriodSeconds: 20
       containers:
         - name: catalog-service
           image: polarbookshop/catalog-service:0.0.1-SNAPSHOT
+          imagePullPolicy: Always
           lifecycle:
             preStop:
               exec:
@@ -25,7 +25,9 @@ spec:
           ports:
             - containerPort: 9001
           env:
-            - name: SPRING_CONFIG_IMPORT
-              value: optional:configserver:http://config-service:8888
+            - name: BPL_JVM_THREAD_COUNT
+              value: "50"
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: http://config-service:8888
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://polardb-catalog-postgresql:5432/polardb_catalog
+              value: jdbc:postgresql://polar-postgres-catalog/polardb_catalog

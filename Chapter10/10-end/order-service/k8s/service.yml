@@ -10,5 +10,5 @@ spec:
     app: order-service
   ports:
   - protocol: TCP
-    port: 9002
+    port: 80
     targetPort: 9002
