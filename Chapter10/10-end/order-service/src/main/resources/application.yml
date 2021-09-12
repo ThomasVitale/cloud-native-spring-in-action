@@ -40,7 +40,7 @@ spring:
       bindings:
         dispatchOrder-in-0:
           destination: order-dispatched
-          group: polar-updater
+          group: ${spring.application.name}
         acceptOrder-out-0:
           destination: order-accepted
       rabbit:
