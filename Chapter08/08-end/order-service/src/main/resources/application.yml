@@ -36,4 +36,4 @@ spring:
         multiplier: 1.1
 
 polar:
-  catalog-service-url: "http://localhost:9001/books/"
+  catalog-service-url: "http://localhost:9001"

@@ -27,7 +27,7 @@ import static org.mockito.BDDMockito.given;
 class OrderServiceApplicationTests {
 
 	@Container
-	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:13"));
+	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:13.4"));
 
 	@Autowired
 	private WebTestClient webTestClient;
@@ -64,7 +64,9 @@ class OrderServiceApplicationTests {
 		webTestClient.get().uri("/orders")
 				.exchange()
 				.expectStatus().is2xxSuccessful()
-				.expectBodyList(Order.class).contains(expectedOrder);
+				.expectBodyList(Order.class).value(orders -> {
+					assertThat(orders.stream().filter(order -> order.bookIsbn().equals(bookIsbn)).findAny()).isNotEmpty();
+				});
 	}
 
 	@Test

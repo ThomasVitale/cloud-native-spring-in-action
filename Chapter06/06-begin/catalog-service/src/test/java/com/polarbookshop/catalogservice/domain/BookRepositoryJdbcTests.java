@@ -1,6 +1,8 @@
 package com.polarbookshop.catalogservice.domain;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import com.polarbookshop.catalogservice.persistence.DataConfig;
 import org.junit.jupiter.api.Test;
@@ -35,7 +37,9 @@ class BookRepositoryJdbcTests {
 
         Iterable<Book> actualBooks = bookRepository.findAll();
 
-        assertThat(actualBooks).asList().hasSizeGreaterThan(2);
+        assertThat(StreamSupport.stream(actualBooks.spliterator(), true)
+                .filter(book -> book.isbn().equals(book1.isbn()) || book.isbn().equals(book2.isbn()))
+                .collect(Collectors.toList())).hasSize(2);
     }
 
     @Test

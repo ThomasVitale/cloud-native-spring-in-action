@@ -30,7 +30,7 @@ services:
     environment:
       # JVM environment variable to enable debug through a socket on port 8002
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8002
-      - POLAR_CATALOG_SERVICE_URL=http://catalog-service:9001/books/
+      - POLAR_CATALOG_SERVICE_URL=http://catalog-service:9001
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - SPRING_R2DBC_URL=r2dbc:postgresql://polar-postgres-order:5432/polardb_order
       - SPRING_FLYWAY_URL=jdbc:postgresql://polar-postgres-order:5432/polardb_order
