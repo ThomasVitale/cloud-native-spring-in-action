@@ -9,6 +9,6 @@ spec:
   selector:
     app: catalog-service
   ports:
-    - protocol: TCP
-      port: 9001
-      targetPort: 9001
+  - protocol: TCP
+    port: 80
+    targetPort: 9001

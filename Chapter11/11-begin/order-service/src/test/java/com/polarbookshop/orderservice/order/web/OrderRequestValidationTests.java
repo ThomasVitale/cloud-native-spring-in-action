@@ -7,6 +7,8 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import com.polarbookshop.orderservice.order.domain.Order;
+import com.polarbookshop.orderservice.order.domain.OrderStatus;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -24,14 +26,14 @@ class OrderRequestValidationTests {
 
 	@Test
 	void whenAllFieldsCorrectThenValidationSucceeds() {
-		OrderRequest orderRequest = new OrderRequest("1234567890", 1);
+		var orderRequest = new OrderRequest("1234567890", 1);
 		Set<ConstraintViolation<OrderRequest>> violations = validator.validate(orderRequest);
 		assertThat(violations).isEmpty();
 	}
 
 	@Test
 	void whenIsbnNotDefinedThenValidationFails() {
-		OrderRequest orderRequest = new OrderRequest("", 1);
+		var orderRequest = new OrderRequest("", 1);
 		Set<ConstraintViolation<OrderRequest>> violations = validator.validate(orderRequest);
 		assertThat(violations).hasSize(1);
 		assertThat(violations.iterator().next().getMessage())
@@ -40,7 +42,7 @@ class OrderRequestValidationTests {
 
 	@Test
 	void whenQuantityIsNotDefinedThenValidationFails() {
-		OrderRequest orderRequest = new OrderRequest("1234567890", null);
+		var orderRequest = new OrderRequest("1234567890", null);
 		Set<ConstraintViolation<OrderRequest>> violations = validator.validate(orderRequest);
 		assertThat(violations).hasSize(1);
 		assertThat(violations.iterator().next().getMessage())
@@ -49,7 +51,7 @@ class OrderRequestValidationTests {
 
 	@Test
 	void whenQuantityIsLowerThanMinThenValidationFails() {
-		OrderRequest orderRequest = new OrderRequest("1234567890", 0);
+		var orderRequest = new OrderRequest("1234567890", 0);
 		Set<ConstraintViolation<OrderRequest>> violations = validator.validate(orderRequest);
 		assertThat(violations).hasSize(1);
 		assertThat(violations.iterator().next().getMessage())
@@ -58,7 +60,7 @@ class OrderRequestValidationTests {
 
 	@Test
 	void whenQuantityIsGreaterThanMaxThenValidationFails() {
-		OrderRequest orderRequest = new OrderRequest("1234567890", 7);
+		var orderRequest = new OrderRequest("1234567890", 7);
 		Set<ConstraintViolation<OrderRequest>> violations = validator.validate(orderRequest);
 		assertThat(violations).hasSize(1);
 		assertThat(violations.iterator().next().getMessage())

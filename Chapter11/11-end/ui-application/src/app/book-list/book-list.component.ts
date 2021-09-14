@@ -21,24 +21,23 @@ export class BookListComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    private bookService : BookService,
+    private bookService: BookService,
     private breakpointObserver: BreakpointObserver,
     private router: Router
   ) {}
 
-  ngOnInit() : void {
-    this.bookService.getBooks().subscribe(books => this.books = books)
+  ngOnInit(): void {
+    this.bookService.getBooks().subscribe(books => this.books = books);
   }
 
-  removeBook(isbn: string) : void {
+  removeBook(isbn: string): void {
     this.bookService.deleteBook(isbn)
       .subscribe(() => {
         this.router.navigateByUrl('/browse-books');
       });
   }
 
-  createOrder(book: Book) : void {
-    console.log("Blah blah");
+  createOrder(book: Book): void {
     const dialogRef = this.dialog.open(OrderDialogComponent, {
       width: '250px',
       data: book

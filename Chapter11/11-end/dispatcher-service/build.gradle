@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.5.3'
+	id 'org.springframework.boot' version '2.6.0-M2'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
@@ -8,18 +8,15 @@ group = 'com.polarbookshop'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '16'
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
+description = 'Provides functionality for dispatching orders.'
 
 repositories {
 	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
 }
 
 ext {
-	set('springCloudVersion', "2020.0.3")
+	set('springCloudVersion', "2021.0.0-M1")
 }
 
 dependencies {
@@ -27,6 +24,7 @@ dependencies {
 	//implementation 'org.springframework.cloud:spring-cloud-function-context'
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
+	implementation 'org.springframework.retry:spring-retry'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
@@ -49,6 +47,14 @@ dependencyManagement {
 bootBuildImage {
 	imageName = "polarbookshop/${project.name}:${project.version}"
 	environment = ["BP_JVM_VERSION": "16.*"]
+
+	docker {
+		publishRegistry {
+			username = project.findProperty("registryUsername")
+			password = project.findProperty("registryToken")
+			url = project.findProperty("registryUrl")
+		}
+	}
 }
 
 test {
