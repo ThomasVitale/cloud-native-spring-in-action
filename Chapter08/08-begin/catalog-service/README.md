@@ -29,20 +29,3 @@ After building the application, you can also run it from the Java CLI:
 ```bash
 java -jar build/libs/catalog-service-0.0.1-SNAPSHOT.jar
 ```
-
-## Running a PostgreSQL Database (Kubernetes)
-
-Run PostgreSQL as a Helm chart:
-
-```bash
-helm repo add bitnami https://charts.bitnami.com/bitnami
-```
-
-```bash
-helm install polar-postgres-catalog bitnami/postgresql \
-  --set fullnameOverride=polar-postgres-catalog \
-  --set postgresqlUsername=admin \
-  --set postgresqlPassword=admin \
-  --set postgresqlDatabase=polardb_catalog \
-  --set persistence.enabled=false
-```

@@ -16,6 +16,11 @@ spec:
       containers:
         - name: polar-rabbitmq
           image: rabbitmq:3.8-management
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              value: user
+            - name: RABBITMQ_DEFAULT_PASS
+              value: password 
           resources:
             requests:
               cpu: 100m
