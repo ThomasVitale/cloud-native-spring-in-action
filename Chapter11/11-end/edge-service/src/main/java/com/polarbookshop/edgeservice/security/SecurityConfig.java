@@ -23,7 +23,7 @@ public class SecurityConfig {
 	SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http, ReactiveClientRegistrationRepository clientRegistrationRepository) {
 		return http
 				.authorizeExchange(exchange -> exchange
-						.pathMatchers("/", "/*.css", "/*.js", "/favicon.ico").permitAll()
+						.pathMatchers("/", "/books/**", "/*.css", "/*.js", "/favicon.ico").permitAll()
 						.anyExchange().authenticated()
 				)
 				.exceptionHandling(exceptionHandling -> exceptionHandling
