@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
 
   title = 'Polar Bookshop';
 
-  isAuthenticated: boolean = false;
+  isAuthenticated = false;
   user: User | undefined;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
     );
 
   constructor(
-    private authService: AuthService, 
+    private authService: AuthService,
     private breakpointObserver: BreakpointObserver,
     private httpXsrfTokenExtractor: HttpXsrfTokenExtractor,
   ) {}
@@ -49,6 +49,6 @@ export class AppComponent implements OnInit {
   }
 
   isEmployee(): boolean {
-    return this.user ? this.user.roles.find(role => role === 'employee') != undefined : false;
+    return this.user ? this.user.roles.find(role => role === 'employee') !== undefined : false;
   }
 }

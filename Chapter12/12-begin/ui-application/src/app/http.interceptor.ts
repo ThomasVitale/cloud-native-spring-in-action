@@ -16,14 +16,14 @@ export class HttpInterceptorImpl implements HttpInterceptor {
   constructor(private authService: AuthService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    let finalRequest = this.prepareRequest(request);
+    const finalRequest = this.prepareRequest(request);
     return next.handle(finalRequest).pipe(tap(() => {},
       (err: any) => {
         if (err instanceof HttpErrorResponse) {
           if (!request.url.endsWith('/user') && err.status === 401) {
             this.authService.login();
           } else if (request.url.endsWith('/user') && err.status === 401) {
-            console.log("Unauthenticated session");
+            console.log('Unauthenticated session');
           }
         }
       }

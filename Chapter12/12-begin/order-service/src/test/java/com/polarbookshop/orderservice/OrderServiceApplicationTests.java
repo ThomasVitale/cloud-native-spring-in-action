@@ -1,4 +1,4 @@
-package com.polarbookshop.orderservice.order.web;
+package com.polarbookshop.orderservice;
 
 import java.io.IOException;
 
@@ -8,6 +8,7 @@ import com.polarbookshop.orderservice.book.BookClient;
 import com.polarbookshop.orderservice.order.domain.Order;
 import com.polarbookshop.orderservice.order.domain.OrderStatus;
 import com.polarbookshop.orderservice.order.event.OrderAcceptedMessage;
+import com.polarbookshop.orderservice.order.web.OrderRequest;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -31,10 +32,10 @@ import static org.mockito.BDDMockito.given;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(TestChannelBinderConfiguration.class)
 @Testcontainers
-class OrderControllerIntegrationTests {
+class OrderServiceApplicationTests {
 
 	@Container
-	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:13"));
+	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:13.4"));
 
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -51,18 +52,15 @@ class OrderControllerIntegrationTests {
 
 	@DynamicPropertySource
 	static void postgresqlProperties(DynamicPropertyRegistry registry) {
-		registry.add("spring.r2dbc.url", OrderControllerIntegrationTests::r2dbcUrl);
+		registry.add("spring.r2dbc.url", OrderServiceApplicationTests::r2dbcUrl);
 		registry.add("spring.r2dbc.username", postgresql::getUsername);
 		registry.add("spring.r2dbc.password", postgresql::getPassword);
-
 		registry.add("spring.flyway.url", postgresql::getJdbcUrl);
-		registry.add("spring.flyway.user", postgresql::getUsername);
-		registry.add("spring.flyway.password", postgresql::getPassword);
 	}
 
 	private static String r2dbcUrl() {
-		return String.format("r2dbc:postgresql://%s:%s/%s", postgresql.getHost(),
-				postgresql.getFirstMappedPort(), postgresql.getDatabaseName());
+		return String.format("r2dbc:postgresql://%s:%s/%s", postgresql.getContainerIpAddress(),
+				postgresql.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT), postgresql.getDatabaseName());
 	}
 
 	@Test
@@ -78,12 +76,14 @@ class OrderControllerIntegrationTests {
 				.expectBody(Order.class).returnResult().getResponseBody();
 		assertThat(expectedOrder).isNotNull();
 		assertThat(objectMapper.readValue(output.receive().getPayload(), OrderAcceptedMessage.class))
-				.isEqualTo(new OrderAcceptedMessage(expectedOrder.getId()));
+				.isEqualTo(new OrderAcceptedMessage(expectedOrder.id()));
 
 		webTestClient.get().uri("/orders")
 				.exchange()
 				.expectStatus().is2xxSuccessful()
-				.expectBodyList(Order.class).contains(expectedOrder);
+				.expectBodyList(Order.class).value(orders -> {
+					assertThat(orders.stream().filter(order -> order.bookIsbn().equals(bookIsbn)).findAny()).isNotEmpty();
+				});
 	}
 
 	@Test
@@ -100,14 +100,14 @@ class OrderControllerIntegrationTests {
 				.expectBody(Order.class).returnResult().getResponseBody();
 
 		assertThat(createdOrder).isNotNull();
-		assertThat(createdOrder.getBookIsbn()).isEqualTo(orderRequest.isbn());
-		assertThat(createdOrder.getQuantity()).isEqualTo(orderRequest.quantity());
-		assertThat(createdOrder.getBookName()).isEqualTo(book.title() + " - " + book.author());
-		assertThat(createdOrder.getBookPrice()).isEqualTo(book.price());
-		assertThat(createdOrder.getStatus()).isEqualTo(OrderStatus.ACCEPTED);
+		assertThat(createdOrder.bookIsbn()).isEqualTo(orderRequest.isbn());
+		assertThat(createdOrder.quantity()).isEqualTo(orderRequest.quantity());
+		assertThat(createdOrder.bookName()).isEqualTo(book.title() + " - " + book.author());
+		assertThat(createdOrder.bookPrice()).isEqualTo(book.price());
+		assertThat(createdOrder.status()).isEqualTo(OrderStatus.ACCEPTED);
 
 		assertThat(objectMapper.readValue(output.receive().getPayload(), OrderAcceptedMessage.class))
-				.isEqualTo(new OrderAcceptedMessage(createdOrder.getId()));
+				.isEqualTo(new OrderAcceptedMessage(createdOrder.id()));
 	}
 
 	@Test
@@ -123,8 +123,9 @@ class OrderControllerIntegrationTests {
 				.expectBody(Order.class).returnResult().getResponseBody();
 
 		assertThat(createdOrder).isNotNull();
-		assertThat(createdOrder.getBookIsbn()).isEqualTo(orderRequest.isbn());
-		assertThat(createdOrder.getQuantity()).isEqualTo(orderRequest.quantity());
-		assertThat(createdOrder.getStatus()).isEqualTo(OrderStatus.REJECTED);
+		assertThat(createdOrder.bookIsbn()).isEqualTo(orderRequest.isbn());
+		assertThat(createdOrder.quantity()).isEqualTo(orderRequest.quantity());
+		assertThat(createdOrder.status()).isEqualTo(OrderStatus.REJECTED);
 	}
+
 }

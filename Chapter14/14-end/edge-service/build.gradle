@@ -6,14 +6,14 @@ plugins {
 
 group = 'com.polarbookshop'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '16'
+sourceCompatibility = '17'
 
 repositories {
 	mavenCentral()
 }
 
 ext {
-	set('springCloudVersion', "2020.0.3")
+	set('springCloudVersion', "2020.0.4")
 	set('testcontainersVersion', "1.15.3")
 }
 
@@ -51,7 +51,7 @@ springBoot {
 
 bootBuildImage {
 	imageName = "polarbookshop/${project.name}:${project.version}"
-	environment = ["BP_JVM_VERSION": "16.*"]
+	environment = ["BP_JVM_VERSION": "17.*"]
 }
 
 test {

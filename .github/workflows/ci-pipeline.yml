@@ -94,11 +94,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Set up JDK 16
+      - name: Set up JDK
         uses: actions/setup-java@v2
         with:
           distribution: temurin
-          java-version: 16
+          java-version: 17
           cache: gradle
       - name: Compile and test application
         run: |
