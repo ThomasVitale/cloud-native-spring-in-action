@@ -2,13 +2,13 @@ plugins {
 	id 'org.springframework.boot' version '2.5.5'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
-	id 'org.springframework.experimental.aot' version '0.10.2'
-	id 'org.graalvm.buildtools.native' version '0.9.1'
+	id 'org.springframework.experimental.aot' version '0.10.3'
+	id 'org.graalvm.buildtools.native' version '0.9.3'
 }
 
 group = 'com.polarbookshop'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+sourceCompatibility = '16'
 
 repositories {
 	maven { url 'https://repo.spring.io/release' }
@@ -36,5 +36,9 @@ bootBuildImage {
 }
 
 nativeBuild {
-	classpath "$buildDir/resources/aot", "$buildDir/classes/java/aot"
+	classpath processAotResources.outputs, compileAotJava.outputs
+}
+
+nativeTest {
+	classpath processAotTestResources.outputs, compileAotTestJava.outputs
 }
