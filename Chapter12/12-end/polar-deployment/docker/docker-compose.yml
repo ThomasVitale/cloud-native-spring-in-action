@@ -5,7 +5,6 @@ services:
 
   catalog-service:
     depends_on:
-      - polar-keycloak
       - polar-postgres-catalog
     image: "polarbookshop/catalog-service:0.0.1-SNAPSHOT"
     container_name: "catalog-service"
@@ -20,10 +19,9 @@ services:
       - KEYCLOAK_URL=http://host.docker.internal:8080
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres-catalog:5432/polardb_catalog
-  
+
   order-service:
     depends_on:
-      - polar-keycloak
       - polar-postgres-order
       - polar-rabbitmq
     image: "polarbookshop/order-service:0.0.1-SNAPSHOT"
@@ -35,12 +33,25 @@ services:
       # JVM environment variable to enable debug through a socket on port 8002
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8002
       - KEYCLOAK_URL=http://host.docker.internal:8080
-      - POLAR_CATALOG_SERVICE_URL=http://catalog-service:9001/books/
+      - POLAR_CATALOG_SERVICE_URL=http://catalog-service:9001
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - SPRING_R2DBC_URL=r2dbc:postgresql://polar-postgres-order:5432/polardb_order
       - SPRING_FLYWAY_URL=jdbc:postgresql://polar-postgres-order:5432/polardb_order
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
   
+  dispatcher-service:
+    depends_on:
+      - polar-rabbitmq
+    image: "polarbookshop/dispatcher-service:0.0.1-SNAPSHOT"
+    container_name: dispatcher-service
+    ports:
+      - 8003:8003
+    environment:
+      # JVM environment variable to enable debug through a socket on port 8003
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8003
+      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+      - SPRING_RABBITMQ_HOST=polar-rabbitmq
+
   edge-service:
     depends_on:
       - polar-keycloak
@@ -59,19 +70,6 @@ services:
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - SPRING_REDIS_HOST=polar-redis
   
-  dispatcher-service:
-    depends_on:
-      - polar-rabbitmq
-    image: polarbookshop/dispatcher-service:0.0.1-SNAPSHOT
-    container_name: dispatcher-service
-    ports:
-      - 8003:8003
-    environment:
-      # JVM environment variable to enable debug through a socket on port 8003
-      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8003
-      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-      - SPRING_RABBITMQ_HOST=polar-rabbitmq
-  
   config-service:
     image: "polarbookshop/config-service:0.0.1-SNAPSHOT"
     container_name: "config-service"
@@ -83,37 +81,37 @@ services:
       - BPL_JVM_THREAD_COUNT=50
       # JVM environment variable to enable debug through a socket on port 9888
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:9888
-
+  
   # Backing Services
 
   polar-postgres-catalog:
-    image: "postgres:13"
+    image: "postgres:13.4"
     container_name: "polar-postgres-catalog"
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
       - POSTGRES_DB=polardb_catalog
 
   polar-postgres-order:
-    image: "postgres:13"
+    image: "postgres:13.4"
     container_name: "polar-postgres-order"
     ports:
       - 5433:5432
     environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
       - POSTGRES_DB=polardb_order
 
   polar-redis:
-    image: "redis:6"
+    image: "redis:6.2"
     container_name: "polar-redis"
     ports:
       - 6379:6379
   
   polar-rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:3.8-management
     container_name: polar-rabbitmq
     ports:
       - 5672:5672
@@ -123,14 +121,13 @@ services:
       - RABBITMQ_DEFAULT_PASS=password
   
   polar-keycloak:
-    image: jboss/keycloak:14.0.0
+    image: jboss/keycloak:15.0.1
     container_name: "polar-keycloak"
     volumes:
       - ./keycloak:/opt/jboss/keycloak/imports
-    command:
-      - "-b 0.0.0.0 -Dkeycloak.import=/opt/jboss/keycloak/imports/realm-export.json"
     environment:
-      KEYCLOAK_USER: admin
+      KEYCLOAK_USER: user
       KEYCLOAK_PASSWORD: password
+      KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json
     ports:
       - 8080:8080

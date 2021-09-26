@@ -16,7 +16,7 @@ spring:
     import: "optional:configserver:"
   cloud:
     config:
-      uri: "http://localhost:8888"
+      uri: http://localhost:8888
       request-connect-timeout: 1000 # 1s
       request-read-timeout: 5000 # 5s
       fail-fast: false
@@ -28,15 +28,12 @@ spring:
   profiles:
     active: test-data
   datasource:
-    username: admin
-    password: admin
+    username: user
+    password: password
     url: jdbc:postgresql://localhost:5432/polardb_catalog
     hikari:
-      connection-timeout: 5000 #ms
-      maximum-pool-size: 10
-      pool-name: polardb-catalog-pool
-  jpa:
-    hibernate.ddl-auto: validate
+      connection-timeout: 2000 #ms
+      maximum-pool-size: 5
   security:
     oauth2:
       resourceserver:
@@ -47,7 +44,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh
+        include: health,refresh
 
 polar:
   greeting: Welcome to the local book catalog!

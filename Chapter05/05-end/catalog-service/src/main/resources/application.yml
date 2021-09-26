@@ -36,7 +36,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh
+        include: health,refresh
   endpoint:
     health:
       enabled: false

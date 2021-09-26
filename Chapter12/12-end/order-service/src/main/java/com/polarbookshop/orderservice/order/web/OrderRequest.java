@@ -5,7 +5,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public record OrderRequest(
+public record OrderRequest (
 
 		@NotBlank(message = "The book ISBN must be defined.")
 		String isbn,

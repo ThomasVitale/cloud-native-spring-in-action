@@ -1,4 +1,4 @@
-package com.polarbookshop.orderservice.order.web;
+package com.polarbookshop.orderservice;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,6 +10,7 @@ import com.polarbookshop.orderservice.book.BookClient;
 import com.polarbookshop.orderservice.order.domain.Order;
 import com.polarbookshop.orderservice.order.domain.OrderStatus;
 import com.polarbookshop.orderservice.order.event.OrderAcceptedMessage;
+import com.polarbookshop.orderservice.order.web.OrderRequest;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -35,14 +36,14 @@ import static org.mockito.BDDMockito.given;
 @Import(TestChannelBinderConfiguration.class)
 @AutoConfigureWireMock(port = 0)
 @Testcontainers
-class OrderControllerIntegrationTests {
+class OrderServiceApplicationTests {
 
 	private static final String ACCESS_TOKEN_BJORN = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjM5NCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXV0aC9yZWFsbXMvUG9sYXJCb29rc2hvcCIsInN1YiI6ImJqb3JuIiwicm9sZXMiOlsiY3VzdG9tZXIiXSwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE4OTM0NTYwMDB9.L1Gqb8Lp1e0fmc3alxrTcWKS54mMjnySc3WWZXrxo5d4EEk7jwE0B71OgQuX2KJHNF_E413hcTTIaYU1ZTNY3qh32xo0ZhGyr8bOHpVRaVpGMojxzPWzsuUCO1eNAbMH6WQVEAgDX97kguGO87Sy7xlLVm5ZamO8CHQxBYhEqRGwpjGzD9Sn81leaVBnQ-Dv3n0aTjoD2B1MW0nVBifRhhcnRg2Mj8cqf93Hud_4f2ZWkigmLpdUcLStlU8WDqTSMBxscubjUWhW44WbEiOwCbj1mUZgI5ZBh67t3_TLvb4te8C2MHJMv8Vg5iCdBDbq7IYUh9ki4FPMsjniX0f8bg";
 
 	private static final String ACCESS_TOKEN_ISABELLE = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjM5NCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXV0aC9yZWFsbXMvUG9sYXJCb29rc2hvcCIsInN1YiI6ImlzYWJlbGxlIiwicm9sZXMiOlsiY3VzdG9tZXIiLCJlbXBsb3llZSJdLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTg5MzQ1NjAwMH0.OI4v23t4dXgIBwPanrMdzPLbd3c7-gAzbhboi1-H-wlUkJ6cnZPRIuFRqsVgMcEmkFm_PPKbZOb16SZcr4EdRaFUNbl86MJ4HzhCcV-RenLflQWN9-t0jIvPPO44HsVJ3ZsUJfz2W3MwbC8BO3oROD3bMwTSVYG8HXN1fOzCXV3ssBEmDWGf-BfdMoKvjTX-rngFcS7qgRIybJ7wKBRyjn0mXfCrbOUZzdGEFhIzUwHWcWmiHGs-R3WlLnME2HxrboAM4tM4uleCsZA-JNO7MRKlLoJF6AD7U9uPDqlSmqSpBTJRojQrblNOIv72UeAJMthLTuF8meAe0J5TLfMhKw";
 
 	@Container
-	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:13"));
+	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:13.4"));
 
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -58,23 +59,19 @@ class OrderControllerIntegrationTests {
 	private BookClient bookClient;
 
 	@DynamicPropertySource
-	@SuppressWarnings("unused")
 	static void postgresqlProperties(DynamicPropertyRegistry registry) {
-		registry.add("spring.r2dbc.url", OrderControllerIntegrationTests::r2dbcUrl);
+		registry.add("spring.r2dbc.url", OrderServiceApplicationTests::r2dbcUrl);
 		registry.add("spring.r2dbc.username", postgresql::getUsername);
 		registry.add("spring.r2dbc.password", postgresql::getPassword);
-
 		registry.add("spring.flyway.url", postgresql::getJdbcUrl);
-		registry.add("spring.flyway.user", postgresql::getUsername);
-		registry.add("spring.flyway.password", postgresql::getPassword);
 
 		registry.add("spring.security.oauth2.resourceserver.jwt.jwk-set-uri",
 				() -> "http://localhost:${wiremock.server.port}/protocol/openid-connect/certs");
 	}
 
 	private static String r2dbcUrl() {
-		return String.format("r2dbc:postgresql://%s:%s/%s", postgresql.getHost(),
-				postgresql.getFirstMappedPort(), postgresql.getDatabaseName());
+		return String.format("r2dbc:postgresql://%s:%s/%s", postgresql.getContainerIpAddress(),
+				postgresql.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT), postgresql.getDatabaseName());
 	}
 
 	@Test
@@ -92,24 +89,23 @@ class OrderControllerIntegrationTests {
 				.expectBody(Order.class).returnResult().getResponseBody();
 		assertThat(expectedOrder).isNotNull();
 		assertThat(objectMapper.readValue(output.receive().getPayload(), OrderAcceptedMessage.class))
-				.isEqualTo(new OrderAcceptedMessage(expectedOrder.getId()));
+				.isEqualTo(new OrderAcceptedMessage(expectedOrder.id()));
 
 		webTestClient.get().uri("/orders")
 				.headers(headers -> headers.setBearerAuth(ACCESS_TOKEN_BJORN))
 				.exchange()
 				.expectStatus().is2xxSuccessful()
-				.expectBodyList(Order.class)
-				.value(orders -> {
+				.expectBodyList(Order.class).value(orders -> {
 					List<Long> orderIds = orders.stream()
-							.map(Order::getId)
+							.map(Order::id)
 							.collect(Collectors.toList());
-					assertThat(orderIds).contains(expectedOrder.getId());
+					assertThat(orderIds).contains(expectedOrder.id());
 				});
 	}
 
 	@Test
 	void whenGetOrdersForAnotherUserThenNotReturned() throws IOException {
-		String bookIsbn = "1234567893";
+		String bookIsbn = "1234567899";
 		Book book = new Book(bookIsbn, "Title", "Author", 9.90);
 		given(bookClient.getBookByIsbn(bookIsbn)).willReturn(Mono.just(book));
 		OrderRequest orderRequest = new OrderRequest(bookIsbn, 1);
@@ -122,7 +118,7 @@ class OrderControllerIntegrationTests {
 				.expectBody(Order.class).returnResult().getResponseBody();
 		assertThat(orderByBjorn).isNotNull();
 		assertThat(objectMapper.readValue(output.receive().getPayload(), OrderAcceptedMessage.class))
-				.isEqualTo(new OrderAcceptedMessage(orderByBjorn.getId()));
+				.isEqualTo(new OrderAcceptedMessage(orderByBjorn.id()));
 
 		Order orderByIsabelle = webTestClient.post().uri("/orders")
 				.headers(headers -> headers.setBearerAuth(ACCESS_TOKEN_ISABELLE))
@@ -132,7 +128,7 @@ class OrderControllerIntegrationTests {
 				.expectBody(Order.class).returnResult().getResponseBody();
 		assertThat(orderByIsabelle).isNotNull();
 		assertThat(objectMapper.readValue(output.receive().getPayload(), OrderAcceptedMessage.class))
-				.isEqualTo(new OrderAcceptedMessage(orderByIsabelle.getId()));
+				.isEqualTo(new OrderAcceptedMessage(orderByIsabelle.id()));
 
 		webTestClient.get().uri("/orders")
 				.headers(headers -> headers.setBearerAuth(ACCESS_TOKEN_BJORN))
@@ -141,10 +137,10 @@ class OrderControllerIntegrationTests {
 				.expectBodyList(Order.class)
 				.value(orders -> {
 					List<Long> orderIds = orders.stream()
-							.map(Order::getId)
+							.map(Order::id)
 							.collect(Collectors.toList());
-					assertThat(orderIds).contains(orderByBjorn.getId());
-					assertThat(orderIds).doesNotContain(orderByIsabelle.getId());
+					assertThat(orderIds).contains(orderByBjorn.id());
+					assertThat(orderIds).doesNotContain(orderByIsabelle.id());
 				});
 	}
 
@@ -162,17 +158,16 @@ class OrderControllerIntegrationTests {
 				.expectStatus().is2xxSuccessful()
 				.expectBody(Order.class)
 				.value(order -> {
-					assertThat(order.getBookIsbn()).isEqualTo(orderRequest.isbn());
-					assertThat(order.getQuantity()).isEqualTo(orderRequest.quantity());
-					assertThat(order.getBookName()).isEqualTo(book.title() + " - " + book.author());
-					assertThat(order.getBookPrice()).isEqualTo(book.price());
-					assertThat(order.getStatus()).isEqualTo(OrderStatus.ACCEPTED);
+					assertThat(order.bookIsbn()).isEqualTo(orderRequest.isbn());
+					assertThat(order.quantity()).isEqualTo(orderRequest.quantity());
+					assertThat(order.bookName()).isEqualTo(book.title() + " - " + book.author());
+					assertThat(order.bookPrice()).isEqualTo(book.price());
+					assertThat(order.status()).isEqualTo(OrderStatus.ACCEPTED);
 				})
 				.returnResult().getResponseBody();
 
-		assertThat(createdOrder).isNotNull();
 		assertThat(objectMapper.readValue(output.receive().getPayload(), OrderAcceptedMessage.class))
-				.isEqualTo(new OrderAcceptedMessage(createdOrder.getId()));
+				.isEqualTo(new OrderAcceptedMessage(createdOrder.id()));
 	}
 
 	@Test
@@ -188,9 +183,9 @@ class OrderControllerIntegrationTests {
 				.expectStatus().is2xxSuccessful()
 				.expectBody(Order.class)
 				.value(order -> {
-					assertThat(order.getBookIsbn()).isEqualTo(orderRequest.isbn());
-					assertThat(order.getQuantity()).isEqualTo(orderRequest.quantity());
-					assertThat(order.getStatus()).isEqualTo(OrderStatus.REJECTED);
+					assertThat(order.bookIsbn()).isEqualTo(orderRequest.isbn());
+					assertThat(order.quantity()).isEqualTo(orderRequest.quantity());
+					assertThat(order.status()).isEqualTo(OrderStatus.REJECTED);
 				});
 	}
 

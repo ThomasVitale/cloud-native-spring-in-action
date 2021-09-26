@@ -1,5 +1,8 @@
 name: CD Pipeline
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
@@ -9,9 +12,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
+          distribution: temurin
           java-version: 17
+          cache: gradle
       - name: Compile and test application
         run: |
           chmod +x gradlew
@@ -24,17 +29,12 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
       - name: Set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
+          distribution: temurin
           java-version: 17
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_TOKEN }}
-      - name: Package as a container image
+          cache: gradle
+      - name: Containerize and publish image
         run: |
           chmod +x gradlew
-          ./gradlew bootBuildImage
-      - name: Push container image to Docker Hub
-        run: docker push polarbookshop/dispatcher-service:0.0.1-SNAPSHOT
+          ./gradlew bootBuildImage --publishImage -PregistryUrl=${{ secrets.REGISTRY_URL }} -PregistryUsername=${{ secrets.REGISTRY_USERNAME }} -PregistryToken=${{ secrets.REGISTRY_TOKEN }}

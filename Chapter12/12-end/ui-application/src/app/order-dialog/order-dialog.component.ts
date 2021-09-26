@@ -14,13 +14,13 @@ import { Inject } from '@angular/core';
 export class OrderDialogComponent implements OnInit {
 
   book: Book;
-  bookQuantity: number = 1;
+  bookQuantity = 1;
 
   constructor(
     public dialogRef: MatDialogRef<OrderDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Book,
-    private orderService: OrderService, 
-  ) { 
+    private orderService: OrderService,
+  ) {
     this.book = data;
   }
 
@@ -28,10 +28,10 @@ export class OrderDialogComponent implements OnInit {
   }
 
   submitOrder(): void {
-    let orderRequest = {
+    const orderRequest = {
       isbn: this.book.isbn,
       quantity: this.bookQuantity
-    }
+    };
     this.orderService.submitOrder(orderRequest)
       .subscribe(() => this.dialogRef.close());
   }
