@@ -87,9 +87,7 @@ jobs:
           Chapter14/14-end/config-service,
           Chapter14/14-end/order-service,
           Chapter14/14-end/edge-service,
-          Chapter14/14-end/dispatcher-service,
-          Chapter16/16-end/quote-service,
-          Chapter16/16-end/quote-function
+          Chapter14/14-end/dispatcher-service
         ]
     steps:
       - name: Checkout repository
