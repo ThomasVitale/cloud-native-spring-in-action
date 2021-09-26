@@ -9,10 +9,10 @@ spec:
       app: dispatcher-service
   template:
     spec:
-      terminationGracePeriodSeconds: 20
       containers:
         - name: dispatcher-service
           image: polarbookshop/dispatcher-service:0.0.1-SNAPSHOT
+          imagePullPolicy: Always
           lifecycle:
             preStop:
               exec:

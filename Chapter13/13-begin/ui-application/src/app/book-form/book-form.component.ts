@@ -11,8 +11,8 @@ import { Book } from '../types';
 })
 export class BookFormComponent implements OnInit {
 
-  @Input() buttonText: string = 'Submit';
-  @Input() titleText: string = 'Book Information';
+  @Input() buttonText = 'Submit';
+  @Input() titleText = 'Book Information';
   @Input() currentBook: Book | undefined;
   @Output() onSubmit = new EventEmitter<Book>();
 
@@ -21,7 +21,6 @@ export class BookFormComponent implements OnInit {
     isbn: '',
     title: '',
     author: '',
-    publishingYear: undefined,
     price: 0,
     publisher: ''
   };

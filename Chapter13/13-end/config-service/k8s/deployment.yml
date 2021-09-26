@@ -9,10 +9,10 @@ spec:
       app: config-service
   template:
     spec:
-      terminationGracePeriodSeconds: 20
       containers:
         - name: config-service
           image: polarbookshop/config-service:0.0.1-SNAPSHOT
+          imagePullPolicy: Always
           lifecycle:
             preStop:
               exec:
@@ -21,12 +21,7 @@ spec:
             - containerPort: 8888
           env:
             - name: BPL_JVM_THREAD_COUNT
-              value: "25"
-            - name: SPRING_RABBITMQ_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: polar-rabbitmq
-                  key: rabbitmq-password
+              value: "50"
           volumeMounts:
             - name: config-service-volume
               mountPath: /workspace/config

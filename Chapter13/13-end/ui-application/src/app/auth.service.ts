@@ -20,8 +20,8 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    var formData: any = new FormData();
-    formData.append("_csrf", this.httpXsrfTokenExtractor.getToken());
+    const formData: any = new FormData();
+    formData.append('_csrf', this.httpXsrfTokenExtractor.getToken());
     return this.httpClient.post<any>('/logout', formData);
   }
 }

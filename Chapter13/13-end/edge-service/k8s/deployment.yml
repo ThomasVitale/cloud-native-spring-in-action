@@ -9,10 +9,10 @@ spec:
       app: edge-service
   template:
     spec:
-      terminationGracePeriodSeconds: 20
       containers:
         - name: edge-service
           image: polarbookshop/edge-service:0.0.1-SNAPSHOT
+          imagePullPolicy: Always
           lifecycle:
             preStop:
               exec:
@@ -26,16 +26,6 @@ spec:
               value: http://order-service
             - name: KEYCLOAK_URL
               value: http://polar-keycloak
-            - name: SPRING_RABBITMQ_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: polar-rabbitmq
-                  key: rabbitmq-password
-            - name: SPRING_REDIS_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: polar-redis
-                  key: redis-password
           volumeMounts:
             - name: edge-service-volume
               mountPath: /workspace/config

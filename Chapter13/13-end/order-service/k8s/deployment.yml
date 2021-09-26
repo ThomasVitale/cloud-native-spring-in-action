@@ -9,10 +9,10 @@ spec:
       app: order-service
   template:
     spec:
-      terminationGracePeriodSeconds: 20
       containers:
         - name: order-service
           image: polarbookshop/order-service:0.0.1-SNAPSHOT
+          imagePullPolicy: Always
           lifecycle:
             preStop:
               exec:

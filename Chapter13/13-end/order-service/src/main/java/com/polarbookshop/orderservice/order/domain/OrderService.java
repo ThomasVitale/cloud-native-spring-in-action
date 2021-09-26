@@ -29,10 +29,20 @@ public class OrderService {
 
 	public void updateOrderStatus(Long orderId, OrderStatus status) {
 		orderRepository.findById(orderId)
-				.map(order -> {
-					order.setStatus(status);
-					return order;
-				})
+				.map(existingOrder ->
+						new Order(
+								existingOrder.id(),
+								existingOrder.bookIsbn(),
+								existingOrder.bookName(),
+								existingOrder.bookPrice(),
+								existingOrder.quantity(),
+								status,
+								existingOrder.createdDate(),
+								existingOrder.lastModifiedDate(),
+								existingOrder.createdBy(),
+								existingOrder.lastModifiedBy(),
+								existingOrder.version()
+						))
 				.flatMap(orderRepository::save)
 				.subscribe();
 	}
@@ -40,22 +50,20 @@ public class OrderService {
 	@Transactional
 	public Mono<Order> submitOrder(String isbn, int quantity) {
 		return bookClient.getBookByIsbn(isbn)
-				.flatMap(book -> Mono.just(buildAcceptedOrder(book, quantity)))
+				.map(book -> buildAcceptedOrder(book, quantity))
 				.defaultIfEmpty(buildRejectedOrder(isbn, quantity))
 				.flatMap(orderRepository::save)
 				.doOnNext(acceptedOrderConsumer);
 	}
 
-	private Order buildAcceptedOrder(Book book, int quantity) {
-		return new Order(book.isbn(),
-				book.title() + " - " + book.author(),
-				book.price(),
-				quantity,
-				OrderStatus.ACCEPTED);
+	public static Order buildAcceptedOrder(Book book, int quantity) {
+		return new Order(null, book.isbn(), book.title() + " - " + book.author(),
+				book.price(), quantity, OrderStatus.ACCEPTED, null, null, null, null, null);
 	}
 
-	private Order buildRejectedOrder(String isbn, int quantity) {
-		return new Order(isbn, quantity, OrderStatus.REJECTED);
+	public static Order buildRejectedOrder(String bookIsbn, int quantity) {
+		return new Order(null, bookIsbn, null, null, quantity,
+				OrderStatus.REJECTED, null, null, null, null, null);
 	}
 
 }

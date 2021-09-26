@@ -45,5 +45,5 @@ describe('AppComponent', () => {
     const compiled = fixture.nativeElement;
     expect(compiled.querySelector('.content span').textContent).toContain('Polar Bookshop app is running!');
   });
-  
+
 });

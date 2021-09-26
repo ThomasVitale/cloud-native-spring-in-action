@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: polar-rabbitmq
+  labels:
+    db: polar-rabbitmq
+spec:
+  selector:
+    matchLabels:
+      db: polar-rabbitmq
+  template:
+    metadata:
+      labels:
+        db: polar-rabbitmq
+    spec:
+      containers:
+        - name: polar-rabbitmq
+          image: rabbitmq:3.8-management
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              value: user
+            - name: RABBITMQ_DEFAULT_PASS
+              value: password 
+          resources:
+            requests:
+              cpu: 100m
+              memory: 60Mi
+            limits:
+              cpu: 200m
+              memory: 120Mi
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: polar-rabbitmq
+  labels:
+    db: polar-rabbitmq
+spec:
+  type: ClusterIP
+  selector:
+    db: polar-rabbitmq
+  ports:
+  - protocol: TCP
+    port: 5672
+    targetPort: 5672

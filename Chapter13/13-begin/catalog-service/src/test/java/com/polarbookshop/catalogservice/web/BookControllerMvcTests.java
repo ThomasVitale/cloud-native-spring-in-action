@@ -1,12 +1,12 @@
 package com.polarbookshop.catalogservice.web;
 
-import java.time.Year;
+import java.time.Instant;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.polarbookshop.catalogservice.config.SecurityConfig;
 import com.polarbookshop.catalogservice.domain.Book;
 import com.polarbookshop.catalogservice.domain.BookNotFoundException;
 import com.polarbookshop.catalogservice.domain.BookService;
-import com.polarbookshop.catalogservice.config.SecurityConfig;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.BDDMockito.given;
@@ -34,10 +35,13 @@ class BookControllerMvcTests {
     private static final String ROLE_CUSTOMER = "ROLE_customer";
 
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    ObjectMapper objectMapper;
+
+    @Autowired
+    WebTestClient webTestClient;
 
     @MockBean
     BookService bookService;
@@ -48,7 +52,7 @@ class BookControllerMvcTests {
     @Test
     void whenGetBookExistingAndAuthenticatedThenShouldReturn200() throws Exception {
         String isbn = "7373731394";
-        Book expectedBook = new Book(isbn, "Title", "Author", Year.of(1991), 9.90, "Polar");
+        Book expectedBook = new Book(394L, isbn, "Title", "Author", 9.90, "Polarsophia", Instant.now(), Instant.now(), "thorvald", "eline", 21);
         given(bookService.viewBookDetails(isbn)).willReturn(expectedBook);
         mockMvc
                 .perform(get("/books/" + isbn)
@@ -59,7 +63,7 @@ class BookControllerMvcTests {
     @Test
     void whenGetBookExistingAndNotAuthenticatedThenShouldReturn200() throws Exception {
         String isbn = "7373731394";
-        Book expectedBook = new Book(isbn, "Title", "Author", Year.of(1991), 9.90, "Polar");
+        Book expectedBook = new Book(394L, isbn, "Title", "Author", 9.90, "Polarsophia", Instant.now(), Instant.now(), "thorvald", "eline", 21);
         given(bookService.viewBookDetails(isbn)).willReturn(expectedBook);
         mockMvc
                 .perform(get("/books/" + isbn))
@@ -114,7 +118,7 @@ class BookControllerMvcTests {
     @Test
     void whenPostBookWithEmployeeRoleThenShouldReturn201() throws Exception {
         String isbn = "7373731394";
-        Book bookToCreate = new Book(isbn, "Title", "Author", Year.of(1991), 9.90, "Polar");
+        Book bookToCreate = new Book(394L, isbn, "Title", "Author", 9.90, "Polarsophia", Instant.now(), Instant.now(), "thorvald", "eline", 21);
         given(bookService.addBookToCatalog(bookToCreate)).willReturn(bookToCreate);
         mockMvc
                 .perform(post("/books")
@@ -127,7 +131,7 @@ class BookControllerMvcTests {
     @Test
     void whenPostBookWithCustomerRoleThenShouldReturn403() throws Exception {
         String isbn = "7373731394";
-        Book bookToCreate = new Book(isbn, "Title", "Author", Year.of(1991), 9.90, "Polar");
+        Book bookToCreate = new Book(394L, isbn, "Title", "Author", 9.90, "Polarsophia", Instant.now(), Instant.now(), "thorvald", "eline", 21);
         given(bookService.addBookToCatalog(bookToCreate)).willReturn(bookToCreate);
         mockMvc
                 .perform(post("/books")
@@ -140,7 +144,7 @@ class BookControllerMvcTests {
     @Test
     void whenPostBookAndNotAuthenticatedThenShouldReturn403() throws Exception {
         String isbn = "7373731394";
-        Book bookToCreate = new Book(isbn, "Title", "Author", Year.of(1991), 9.90, "Polar");
+        Book bookToCreate = new Book(394L, isbn, "Title", "Author", 9.90, "Polarsophia", Instant.now(), Instant.now(), "thorvald", "eline", 21);
         mockMvc
                 .perform(post("/books")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -151,7 +155,7 @@ class BookControllerMvcTests {
     @Test
     void whenPutBookWithEmployeeRoleThenShouldReturn200() throws Exception {
         String isbn = "7373731394";
-        Book bookToCreate = new Book(isbn, "Title", "Author", Year.of(1991), 9.90, "Polar");
+        Book bookToCreate = new Book(394L, isbn, "Title", "Author", 9.90, "Polarsophia", Instant.now(), Instant.now(), "thorvald", "eline", 21);
         given(bookService.addBookToCatalog(bookToCreate)).willReturn(bookToCreate);
         mockMvc
                 .perform(put("/books/" + isbn)
@@ -164,7 +168,7 @@ class BookControllerMvcTests {
     @Test
     void whenPutBookWithCustomerRoleThenShouldReturn403() throws Exception {
         String isbn = "7373731394";
-        Book bookToCreate = new Book(isbn, "Title", "Author", Year.of(1991), 9.90, "Polar");
+        Book bookToCreate = new Book(394L, isbn, "Title", "Author", 9.90, "Polarsophia", Instant.now(), Instant.now(), "thorvald", "eline", 21);
         given(bookService.addBookToCatalog(bookToCreate)).willReturn(bookToCreate);
         mockMvc
                 .perform(put("/books/" + isbn)
@@ -177,7 +181,7 @@ class BookControllerMvcTests {
     @Test
     void whenPutBookAndNotAuthenticatedThenShouldReturn403() throws Exception {
         String isbn = "7373731394";
-        Book bookToCreate = new Book(isbn, "Title", "Author", Year.of(1991), 9.90, "Polar");
+        Book bookToCreate = new Book(394L, isbn, "Title", "Author", 9.90, "Polarsophia", Instant.now(), Instant.now(), "thorvald", "eline", 21);
         mockMvc
                 .perform(put("/books/" + isbn)
                         .contentType(MediaType.APPLICATION_JSON)

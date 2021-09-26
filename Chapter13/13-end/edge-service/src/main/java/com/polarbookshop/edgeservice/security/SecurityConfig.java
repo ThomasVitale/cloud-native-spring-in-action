@@ -1,7 +1,5 @@
 package com.polarbookshop.edgeservice.security;
 
-import java.util.Objects;
-
 import reactor.core.publisher.Mono;
 
 import org.springframework.context.annotation.Bean;
@@ -52,12 +50,11 @@ public class SecurityConfig {
 	@Bean
 	WebFilter csrfWebFilter() {
 		return (exchange, chain) -> {
-			String key = CsrfToken.class.getName();
-			Mono<CsrfToken> csrfToken = exchange.getAttributes().containsKey(key) ? exchange.getAttribute(key) : Mono.empty();
-			return Objects.requireNonNull(csrfToken)
-					// Subscribe to the CsrfToken publisher. Required because of https://github.com/spring-projects/spring-security/issues/5766
-					.doOnSuccess(token -> {})
-					.then(chain.filter(exchange));
+			exchange.getResponse().beforeCommit(() -> Mono.defer(() -> {
+				Mono<CsrfToken> csrfToken = exchange.getAttribute(CsrfToken.class.getName());
+				return csrfToken != null ? csrfToken.then() : Mono.empty();
+			}));
+			return chain.filter(exchange);
 		};
 	}
 

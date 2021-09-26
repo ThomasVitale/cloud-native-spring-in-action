@@ -7,4 +7,4 @@ spring:
   rabbitmq:
     host: polar-rabbitmq
   redis:
-    host: polar-redis-master
+    host: polar-redis

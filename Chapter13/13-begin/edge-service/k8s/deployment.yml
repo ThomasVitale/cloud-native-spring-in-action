@@ -14,10 +14,10 @@ spec:
       labels:
         app: edge-service
     spec:
-      terminationGracePeriodSeconds: 20
       containers:
         - name: edge-service
           image: polarbookshop/edge-service:0.0.1-SNAPSHOT
+          imagePullPolicy: Always
           lifecycle:
             preStop:
               exec:
@@ -29,7 +29,7 @@ spec:
               value: http://catalog-service
             - name: ORDER_SERVICE_URL
               value: http://order-service
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: http://config-service
             - name: SPRING_REDIS_HOST
-              value: polardb-redis-master
-            - name: SPRING_REDIS_PASSWORD
-              value: admin
+              value: polar-redis
