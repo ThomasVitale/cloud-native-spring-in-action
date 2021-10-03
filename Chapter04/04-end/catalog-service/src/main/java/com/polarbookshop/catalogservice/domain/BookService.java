@@ -42,7 +42,7 @@ public class BookService {
             return addBookToCatalog(book);
         }
         Book bookToUpdate = new Book(
-                isbn,
+                existingBook.get().isbn(),
                 book.title(),
                 book.author(),
                 book.price());

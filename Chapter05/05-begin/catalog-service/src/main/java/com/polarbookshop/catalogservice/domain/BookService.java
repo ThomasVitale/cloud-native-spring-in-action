@@ -1,6 +1,5 @@
 package com.polarbookshop.catalogservice.domain;
 
-import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -14,7 +13,7 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public Collection<Book> viewBookList() {
+    public Iterable<Book> viewBookList() {
         return bookRepository.findAll();
     }
 
@@ -43,7 +42,7 @@ public class BookService {
             return addBookToCatalog(book);
         }
         Book bookToUpdate = new Book(
-                isbn,
+                existingBook.get().isbn(),
                 book.title(),
                 book.author(),
                 book.price());
