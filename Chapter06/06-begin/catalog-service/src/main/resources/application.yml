@@ -14,7 +14,7 @@ spring:
   cloud:
     config:
       uri: http://localhost:8888
-      request-connect-timeout: 1000 # 1s
+      request-connect-timeout: 2000 # 2s
       request-read-timeout: 5000 # 5s
       fail-fast: false
       retry:
@@ -36,10 +36,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,refresh
-  endpoint:
-    health:
-      enabled: false
+        include: refresh
 
 polar:
   greeting: Welcome to the local book catalog!

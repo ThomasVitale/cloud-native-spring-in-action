@@ -1,16 +1,15 @@
 package com.polarbookshop.catalogservice.domain;
 
-import java.time.Instant;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 
-import org.springframework.data.annotation.CreatedDate;
+import com.polarbookshop.catalogservice.persistence.AuditMetadata;
+
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Version;
+import org.springframework.data.relational.core.mapping.Embedded;
 
 public record Book (
 
@@ -33,13 +32,16 @@ public record Book (
 
         String publisher,
 
-        @CreatedDate
-        Instant createdDate,
-
-        @LastModifiedDate
-        Instant lastModifiedDate,
+        @Embedded.Empty
+        AuditMetadata auditMetadata,
 
         @Version
-        Integer version
+        int version
 
-){}
+){
+
+        public static Book build(String isbn, String title, String author, Double price, String publisher) {
+                return new Book(null, isbn, title, author, price, publisher, new AuditMetadata(null, null), 0);
+        }
+
+}
