@@ -43,13 +43,12 @@ public class BookService {
         }
         Book bookToUpdate = new Book(
                 existingBook.get().id(),
-                isbn,
+                existingBook.get().isbn(),
                 book.title(),
                 book.author(),
                 book.price(),
                 book.publisher(),
-                existingBook.get().createdDate(),
-                existingBook.get().lastModifiedDate(),
+                existingBook.get().auditMetadata(),
                 existingBook.get().version());
         return bookRepository.save(bookToUpdate);
     }
