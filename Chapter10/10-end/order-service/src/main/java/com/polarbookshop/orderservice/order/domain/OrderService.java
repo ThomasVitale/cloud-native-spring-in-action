@@ -73,7 +73,8 @@ public class OrderService {
 		}
 		OrderAcceptedMessage orderAcceptedMessage = new OrderAcceptedMessage(order.id());
 		log.info("Sending order accepted event with id: {}", order.id());
-		streamBridge.send("order-accepted", orderAcceptedMessage);
+		var result = streamBridge.send("order-accepted", orderAcceptedMessage);
+		log.info("Result of sending data for order with id {}: {}", order.id(), result);
 	}
 
 }

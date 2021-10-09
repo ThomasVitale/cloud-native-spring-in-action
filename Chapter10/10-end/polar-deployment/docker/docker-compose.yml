@@ -6,7 +6,7 @@ services:
   catalog-service:
     depends_on:
       - polar-postgres-catalog
-    image: "polarbookshop/catalog-service:0.0.1-SNAPSHOT"
+    image: "<your_dockerhub_username>/catalog-service:0.0.1-SNAPSHOT"
     container_name: "catalog-service"
     ports:
       - 9001:9001
