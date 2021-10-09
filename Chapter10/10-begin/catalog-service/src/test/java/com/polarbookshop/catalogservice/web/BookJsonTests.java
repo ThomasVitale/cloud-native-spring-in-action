@@ -3,6 +3,7 @@ package com.polarbookshop.catalogservice.web;
 import java.time.Instant;
 
 import com.polarbookshop.catalogservice.domain.Book;
+import com.polarbookshop.catalogservice.persistence.AuditMetadata;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ class BookJsonTests {
 
     @Test
     void testSerialize() throws Exception {
-        var book = new Book(394L, "1234567890", "Title", "Author", 9.90, "Polarsophia", Instant.now(), Instant.now(), 21);
+        var book = new Book(394L, "1234567890", "Title", "Author", 9.90, "Polarsophia", new AuditMetadata(Instant.now(), Instant.now()), 21);
         var jsonContent = json.write(book);
         assertThat(jsonContent).extractingJsonPathNumberValue("@.id")
                 .isEqualTo(book.id().intValue());
@@ -33,10 +34,10 @@ class BookJsonTests {
                 .isEqualTo(book.price());
         assertThat(jsonContent).extractingJsonPathStringValue("@.publisher")
                 .isEqualTo(book.publisher());
-        assertThat(jsonContent).extractingJsonPathStringValue("@.createdDate")
-                .isEqualTo(book.createdDate().toString());
-        assertThat(jsonContent).extractingJsonPathStringValue("@.lastModifiedDate")
-                .isEqualTo(book.lastModifiedDate().toString());
+        assertThat(jsonContent).extractingJsonPathStringValue("@.auditMetadata.createdDate")
+                .isEqualTo(book.auditMetadata().createdDate().toString());
+        assertThat(jsonContent).extractingJsonPathStringValue("@.auditMetadata.lastModifiedDate")
+                .isEqualTo(book.auditMetadata().lastModifiedDate().toString());
         assertThat(jsonContent).extractingJsonPathNumberValue("@.version")
                 .isEqualTo(book.version());
     }
@@ -52,14 +53,16 @@ class BookJsonTests {
                     "author": "Author",
                     "price": 9.90,
                     "publisher": "Polarsophia",
-                    "createdDate": "2021-09-07T22:50:37.135029Z",
-                    "lastModifiedDate": "2021-09-07T22:50:37.135029Z",
+                    "auditMetadata": {
+                        "createdDate": "2021-09-07T22:50:37.135029Z",
+                        "lastModifiedDate": "2021-09-07T22:50:37.135029Z"
+                    },
                     "version": 21
                 }
                 """;
         assertThat(json.parse(content))
                 .usingRecursiveComparison()
-                .isEqualTo(new Book(394L, "1234567890", "Title", "Author", 9.90, "Polarsophia", instant, instant, 21));
+                .isEqualTo(new Book(394L, "1234567890", "Title", "Author", 9.90, "Polarsophia", new AuditMetadata(instant, instant), 21));
     }
 
 }

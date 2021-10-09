@@ -30,16 +30,17 @@ class OrderControllerWebFluxTests {
 		given(orderService.submitOrder(orderRequest.isbn(), orderRequest.quantity()))
 				.willReturn(Mono.just(expectedOrder));
 
-		Order createdOrder = webClient
+		webClient
 				.post()
 				.uri("/orders/")
 				.bodyValue(orderRequest)
 				.exchange()
 				.expectStatus().is2xxSuccessful()
-				.expectBody(Order.class).returnResult().getResponseBody();
+				.expectBody(Order.class).value(actualOrder -> {
+					assertThat(actualOrder).isNotNull();
+					assertThat(actualOrder.status()).isEqualTo(OrderStatus.REJECTED);
+				});
 
-		assertThat(createdOrder).isNotNull();
-		assertThat(createdOrder.status()).isEqualTo(OrderStatus.REJECTED);
 	}
 
 }

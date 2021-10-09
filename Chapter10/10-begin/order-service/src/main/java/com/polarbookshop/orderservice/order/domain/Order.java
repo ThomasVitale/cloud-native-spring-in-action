@@ -27,5 +27,11 @@ public record Order (
 	Instant lastModifiedDate,
 
 	@Version
-	Integer version
-){}
+	int version
+){
+
+	public static Order build(String bookIsbn, String bookName, Double bookPrice, Integer quantity, OrderStatus status) {
+		return new Order(null, bookIsbn, bookName, bookPrice, quantity, status, null, null, 0);
+	}
+
+}
