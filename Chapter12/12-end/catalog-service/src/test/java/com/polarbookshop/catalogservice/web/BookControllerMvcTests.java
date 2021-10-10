@@ -1,7 +1,5 @@
 package com.polarbookshop.catalogservice.web;
 
-import java.time.Instant;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.polarbookshop.catalogservice.config.SecurityConfig;
 import com.polarbookshop.catalogservice.domain.Book;
@@ -51,8 +49,8 @@ class BookControllerMvcTests {
 
     @Test
     void whenGetBookExistingAndAuthenticatedThenShouldReturn200() throws Exception {
-        String isbn = "7373731394";
-        Book expectedBook = new Book(394L, isbn, "Title", "Author", 9.90, "Polarsophia", Instant.now(), Instant.now(), "thorvald", "eline", 21);
+        var isbn = "7373731394";
+        var expectedBook = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
         given(bookService.viewBookDetails(isbn)).willReturn(expectedBook);
         mockMvc
                 .perform(get("/books/" + isbn)
@@ -62,8 +60,8 @@ class BookControllerMvcTests {
 
     @Test
     void whenGetBookExistingAndNotAuthenticatedThenShouldReturn200() throws Exception {
-        String isbn = "7373731394";
-        Book expectedBook = new Book(394L, isbn, "Title", "Author", 9.90, "Polarsophia", Instant.now(), Instant.now(), "thorvald", "eline", 21);
+        var isbn = "7373731394";
+        var expectedBook = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
         given(bookService.viewBookDetails(isbn)).willReturn(expectedBook);
         mockMvc
                 .perform(get("/books/" + isbn))
@@ -72,7 +70,7 @@ class BookControllerMvcTests {
 
     @Test
     void whenGetBookNotExistingAndAuthenticatedThenShouldReturn404() throws Exception {
-        String isbn = "7373731394";
+        var isbn = "7373731394";
         given(bookService.viewBookDetails(isbn)).willThrow(BookNotFoundException.class);
         mockMvc
                 .perform(get("/books/" + isbn)
@@ -82,7 +80,7 @@ class BookControllerMvcTests {
 
     @Test
     void whenGetBookNotExistingAndNotAuthenticatedThenShouldReturn404() throws Exception {
-        String isbn = "7373731394";
+        var isbn = "7373731394";
         given(bookService.viewBookDetails(isbn)).willThrow(BookNotFoundException.class);
         mockMvc
                 .perform(get("/books/" + isbn))
@@ -91,7 +89,7 @@ class BookControllerMvcTests {
 
     @Test
     void whenDeleteBookWithEmployeeRoleThenShouldReturn204() throws Exception {
-        String isbn = "7373731394";
+        var isbn = "7373731394";
         mockMvc
                 .perform(delete("/books/" + isbn)
                         .with(jwt().authorities(new SimpleGrantedAuthority(ROLE_EMPLOYEE))))
@@ -100,7 +98,7 @@ class BookControllerMvcTests {
 
     @Test
     void whenDeleteBookWithCustomerRoleThenShouldReturn403() throws Exception {
-        String isbn = "7373731394";
+        var isbn = "7373731394";
         mockMvc
                 .perform(delete("/books/" + isbn)
                         .with(jwt().authorities(new SimpleGrantedAuthority(ROLE_CUSTOMER))))
@@ -109,7 +107,7 @@ class BookControllerMvcTests {
 
     @Test
     void whenDeleteBookNotAuthenticatedThenShouldReturn403() throws Exception {
-        String isbn = "7373731394";
+        var isbn = "7373731394";
         mockMvc
                 .perform(delete("/books/" + isbn))
                 .andExpect(status().isForbidden());
@@ -117,8 +115,8 @@ class BookControllerMvcTests {
 
     @Test
     void whenPostBookWithEmployeeRoleThenShouldReturn201() throws Exception {
-        String isbn = "7373731394";
-        Book bookToCreate = new Book(394L, isbn, "Title", "Author", 9.90, "Polarsophia", Instant.now(), Instant.now(), "thorvald", "eline", 21);
+        var isbn = "7373731394";
+        var bookToCreate = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
         given(bookService.addBookToCatalog(bookToCreate)).willReturn(bookToCreate);
         mockMvc
                 .perform(post("/books")
@@ -130,8 +128,8 @@ class BookControllerMvcTests {
 
     @Test
     void whenPostBookWithCustomerRoleThenShouldReturn403() throws Exception {
-        String isbn = "7373731394";
-        Book bookToCreate = new Book(394L, isbn, "Title", "Author", 9.90, "Polarsophia", Instant.now(), Instant.now(), "thorvald", "eline", 21);
+        var isbn = "7373731394";
+        var bookToCreate = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
         given(bookService.addBookToCatalog(bookToCreate)).willReturn(bookToCreate);
         mockMvc
                 .perform(post("/books")
@@ -143,8 +141,8 @@ class BookControllerMvcTests {
 
     @Test
     void whenPostBookAndNotAuthenticatedThenShouldReturn403() throws Exception {
-        String isbn = "7373731394";
-        Book bookToCreate = new Book(394L, isbn, "Title", "Author", 9.90, "Polarsophia", Instant.now(), Instant.now(), "thorvald", "eline", 21);
+        var isbn = "7373731394";
+        var bookToCreate = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
         mockMvc
                 .perform(post("/books")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -154,8 +152,8 @@ class BookControllerMvcTests {
 
     @Test
     void whenPutBookWithEmployeeRoleThenShouldReturn200() throws Exception {
-        String isbn = "7373731394";
-        Book bookToCreate = new Book(394L, isbn, "Title", "Author", 9.90, "Polarsophia", Instant.now(), Instant.now(), "thorvald", "eline", 21);
+        var isbn = "7373731394";
+        var bookToCreate = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
         given(bookService.addBookToCatalog(bookToCreate)).willReturn(bookToCreate);
         mockMvc
                 .perform(put("/books/" + isbn)
@@ -167,8 +165,8 @@ class BookControllerMvcTests {
 
     @Test
     void whenPutBookWithCustomerRoleThenShouldReturn403() throws Exception {
-        String isbn = "7373731394";
-        Book bookToCreate = new Book(394L, isbn, "Title", "Author", 9.90, "Polarsophia", Instant.now(), Instant.now(), "thorvald", "eline", 21);
+        var isbn = "7373731394";
+        var bookToCreate = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
         given(bookService.addBookToCatalog(bookToCreate)).willReturn(bookToCreate);
         mockMvc
                 .perform(put("/books/" + isbn)
@@ -180,8 +178,8 @@ class BookControllerMvcTests {
 
     @Test
     void whenPutBookAndNotAuthenticatedThenShouldReturn403() throws Exception {
-        String isbn = "7373731394";
-        Book bookToCreate = new Book(394L, isbn, "Title", "Author", 9.90, "Polarsophia", Instant.now(), Instant.now(), "thorvald", "eline", 21);
+        var isbn = "7373731394";
+        var bookToCreate = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
         mockMvc
                 .perform(put("/books/" + isbn)
                         .contentType(MediaType.APPLICATION_JSON)

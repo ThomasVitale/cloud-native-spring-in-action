@@ -19,7 +19,8 @@ class BookJsonTests {
 
     @Test
     void testSerialize() throws Exception {
-        var book = new Book(394L, "1234567890", "Title", "Author", 9.90, "Polarsophia", Instant.now(), Instant.now(), "jenny", "eline", 21);
+        var now = Instant.now();
+        var book = new Book(394L, "1234567890", "Title", "Author", 9.90, "Polarsophia", now, now, "jenny", "eline", 21);
         var jsonContent = json.write(book);
         assertThat(jsonContent).extractingJsonPathNumberValue("@.id")
                 .isEqualTo(book.id().intValue());

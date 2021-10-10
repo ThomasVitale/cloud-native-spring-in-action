@@ -26,7 +26,7 @@ spring:
   cloud:
     config:
       uri: http://localhost:8888
-      request-connect-timeout: 1000 # 1s
+      request-connect-timeout: 2000 # 2s
       request-read-timeout: 5000 # 5s
       fail-fast: false
       retry:
@@ -35,8 +35,9 @@ spring:
         max-interval: 2000 # 2s
         multiplier: 1.1
     function:
-      definition: acceptOrder;dispatchOrder
+      definition: dispatchOrder
     stream:
+      source: acceptOrder
       bindings:
         dispatchOrder-in-0:
           destination: order-dispatched
@@ -45,7 +46,7 @@ spring:
           destination: order-accepted
       rabbit:
         bindings:
-          order-accepted:
+          acceptOrder-out-0:
             producer:
               transacted: true
   rabbitmq:
