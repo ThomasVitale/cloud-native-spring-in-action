@@ -23,28 +23,6 @@ spec:
               value: password 
             - name: RABBITMQ_VM_MEMORY_HIGH_WATERMARK
               value: "1.0"
-          livenessProbe:
-            exec:
-              command:
-                - /bin/bash
-                - -ec
-                - rabbitmq-diagnostics -q check_running
-            initialDelaySeconds: 120
-            periodSeconds: 30
-            timeoutSeconds: 20
-            successThreshold: 1
-            failureThreshold: 6
-          readinessProbe:
-            exec:
-              command:
-                - /bin/bash
-                - -ec
-                - rabbitmq-diagnostics -q check_running
-            initialDelaySeconds: 120
-            periodSeconds: 30
-            timeoutSeconds: 20
-            successThreshold: 1
-            failureThreshold: 3
           resources:
             requests:
               cpu: 100m

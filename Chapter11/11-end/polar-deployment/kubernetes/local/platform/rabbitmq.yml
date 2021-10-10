@@ -21,13 +21,15 @@ spec:
               value: user
             - name: RABBITMQ_DEFAULT_PASS
               value: password 
+            - name: RABBITMQ_VM_MEMORY_HIGH_WATERMARK
+              value: "1.0"
           resources:
             requests:
               cpu: 100m
-              memory: 60Mi
+              memory: 100Mi
             limits:
               cpu: 200m
-              memory: 120Mi
+              memory: 150Mi
 
 ---
 
@@ -42,6 +44,11 @@ spec:
   selector:
     db: polar-rabbitmq
   ports:
-  - protocol: TCP
+  - name: amqp
+    protocol: TCP
     port: 5672
     targetPort: 5672
+  - name: management
+    protocol: TCP
+    port: 15672
+    targetPort: 15672

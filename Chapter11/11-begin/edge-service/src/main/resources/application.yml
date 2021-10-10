@@ -14,7 +14,7 @@ spring:
   cloud:
     config:
       uri: http://localhost:8888
-      request-connect-timeout: 1000 # 1s
+      request-connect-timeout: 2000 # 2s
       request-read-timeout: 5000 # 5s
       fail-fast: false
       retry:
@@ -24,7 +24,7 @@ spring:
         multiplier: 1.1
     gateway:
       httpclient:
-        connect-timeout: 2000 # 2s
+        connect-timeout: 5000 # 5s
         response-timeout: 5s
         pool:
           type: elastic
@@ -88,7 +88,7 @@ resilience4j:
   timelimiter:
     configs:
       default:
-        timeoutDuration: 3s
+        timeoutDuration: 5s
 
 #logging:
 #  level:
