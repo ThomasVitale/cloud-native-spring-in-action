@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.BDDMockito.given;
@@ -37,9 +36,6 @@ class BookControllerMvcTests {
 
     @Autowired
     ObjectMapper objectMapper;
-
-    @Autowired
-    WebTestClient webTestClient;
 
     @MockBean
     BookService bookService;

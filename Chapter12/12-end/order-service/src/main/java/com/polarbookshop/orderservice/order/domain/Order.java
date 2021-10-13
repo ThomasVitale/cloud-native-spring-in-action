@@ -39,7 +39,7 @@ public record Order (
 ){
 
 	public static Order build(String bookIsbn, String bookName, Double bookPrice, Integer quantity, OrderStatus status) {
-		return new Order(null, bookIsbn, bookName, bookPrice, quantity, status, null, null, null, null,0);
+		return new Order(null, bookIsbn, bookName, bookPrice, quantity, status, null, null, null, null, 0);
 	}
 
 }

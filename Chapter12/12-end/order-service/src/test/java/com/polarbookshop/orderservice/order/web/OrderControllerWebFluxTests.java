@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
@@ -24,7 +25,7 @@ import static org.springframework.security.test.web.reactive.server.SecurityMock
 class OrderControllerWebFluxTests {
 
 	@Autowired
-	private WebTestClient webClient;
+	WebTestClient webClient;
 
 	@MockBean
 	OrderService orderService;
@@ -39,7 +40,9 @@ class OrderControllerWebFluxTests {
 		given(orderService.submitOrder(orderRequest.isbn(), orderRequest.quantity()))
 				.willReturn(Mono.just(expectedOrder));
 
-		webClient.mutateWith(mockJwt()).mutateWith(csrf())
+		webClient
+				.mutateWith(mockJwt().authorities(new SimpleGrantedAuthority("ROLE_customer")))
+				.mutateWith(csrf())
 				.post()
 				.uri("/orders/")
 				.bodyValue(orderRequest)

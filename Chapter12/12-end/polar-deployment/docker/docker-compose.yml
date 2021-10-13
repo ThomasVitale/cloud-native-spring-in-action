@@ -135,6 +135,6 @@ services:
     environment:
       KEYCLOAK_USER: user
       KEYCLOAK_PASSWORD: password
-      KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json
+      KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/full-realm-export.json
     ports:
       - 8080:8080

@@ -23,7 +23,8 @@ import org.springframework.test.context.DynamicPropertySource;
 class OrderRepositoryR2dbcTests {
 
     @Container
-    static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:13.4"));
+    static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:13.4"))
+            .withReuse(true);
 
     @Autowired
     private OrderRepository orderRepository;
@@ -57,7 +58,7 @@ class OrderRepositoryR2dbcTests {
     }
 
     @Test
-    void createOrderNotAuthenticated() {
+    void whenCreateOrderNotAuthenticatedThenNoAuditMetadata() {
         var rejectedOrder = OrderService.buildRejectedOrder( "1234567890", 3);
         StepVerifier.create(orderRepository.save(rejectedOrder))
                 .expectNextMatches(order -> Objects.isNull(order.createdBy()) &&
@@ -67,7 +68,7 @@ class OrderRepositoryR2dbcTests {
 
     @Test
     @WithMockUser("melinda")
-    void createOrderWhenAuthenticated() {
+    void whenCreateOrderAuthenticatedThenAuditMetadata() {
         var rejectedOrder = OrderService.buildRejectedOrder( "1234567890", 3);
         StepVerifier.create(orderRepository.save(rejectedOrder))
                 .expectNextMatches(order -> order.createdBy().equals("melinda") &&
