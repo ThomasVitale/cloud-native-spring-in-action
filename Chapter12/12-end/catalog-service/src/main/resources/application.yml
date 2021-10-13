@@ -39,6 +39,7 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${KEYCLOAK_URL:http://localhost:8080}/auth/realms/PolarBookshop
+          # jwk-set-uri: ${KEYCLOAK_URL:http://localhost:8080}/auth/realms/PolarBookshop/protocol/openid-connect/certs
 
 management:
   endpoints:

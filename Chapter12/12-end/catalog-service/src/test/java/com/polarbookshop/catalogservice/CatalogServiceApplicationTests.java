@@ -27,15 +27,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Testcontainers
 class CatalogServiceApplicationTests {
 
-    private static KeycloakToken customerTokens;
-    private static KeycloakToken employeeTokens;
+    // Customer
+    private static KeycloakToken bjornTokens;
+    // Customer and employee
+    private static KeycloakToken isabelleTokens;
+
+    @Autowired
+    private WebTestClient webTestClient;
 
     @Container
     private static final KeycloakContainer keycloakContainer = new KeycloakContainer("jboss/keycloak:15.0.1")
             .withRealmImportFile("keycloak_config.json");
-
-    @Autowired
-    private WebTestClient webTestClient;
 
     @DynamicPropertySource
     static void dynamicProperties(DynamicPropertyRegistry registry) {
@@ -50,8 +52,8 @@ class CatalogServiceApplicationTests {
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .build();
 
-        employeeTokens = authenticateWith("isabelle", "password", webClient);
-        customerTokens = authenticateWith("bjorn", "password", webClient);
+        isabelleTokens = authenticateWith("isabelle", "password", webClient);
+        bjornTokens = authenticateWith("bjorn", "password", webClient);
     }
 
     @Test
@@ -61,7 +63,7 @@ class CatalogServiceApplicationTests {
         Book expectedBook = webTestClient
                 .post()
                 .uri("/books")
-                .headers(headers -> headers.setBearerAuth(employeeTokens.accessToken()))
+                .headers(headers -> headers.setBearerAuth(isabelleTokens.accessToken()))
                 .bodyValue(bookToCreate)
                 .exchange()
                 .expectStatus().isCreated()
@@ -86,7 +88,7 @@ class CatalogServiceApplicationTests {
         webTestClient
                 .post()
                 .uri("/books")
-                .headers(headers -> headers.setBearerAuth(employeeTokens.accessToken()))
+                .headers(headers -> headers.setBearerAuth(isabelleTokens.accessToken()))
                 .bodyValue(expectedBook)
                 .exchange()
                 .expectStatus().isCreated()
@@ -115,7 +117,7 @@ class CatalogServiceApplicationTests {
         webTestClient
                 .post()
                 .uri("/books")
-                .headers(headers -> headers.setBearerAuth(customerTokens.accessToken()))
+                .headers(headers -> headers.setBearerAuth(bjornTokens.accessToken()))
                 .bodyValue(expectedBook)
                 .exchange()
                 .expectStatus().isForbidden();
@@ -128,7 +130,7 @@ class CatalogServiceApplicationTests {
         Book createdBook = webTestClient
                 .post()
                 .uri("/books")
-                .headers(headers -> headers.setBearerAuth(employeeTokens.accessToken()))
+                .headers(headers -> headers.setBearerAuth(isabelleTokens.accessToken()))
                 .bodyValue(bookToCreate)
                 .exchange()
                 .expectStatus().isCreated()
@@ -141,7 +143,7 @@ class CatalogServiceApplicationTests {
         webTestClient
                 .put()
                 .uri("/books/" + bookIsbn)
-                .headers(headers -> headers.setBearerAuth(employeeTokens.accessToken()))
+                .headers(headers -> headers.setBearerAuth(isabelleTokens.accessToken()))
                 .bodyValue(bookToUpdate)
                 .exchange()
                 .expectStatus().isOk()
@@ -158,7 +160,7 @@ class CatalogServiceApplicationTests {
         webTestClient
                 .post()
                 .uri("/books")
-                .headers(headers -> headers.setBearerAuth(employeeTokens.accessToken()))
+                .headers(headers -> headers.setBearerAuth(isabelleTokens.accessToken()))
                 .bodyValue(bookToCreate)
                 .exchange()
                 .expectStatus().isCreated();
@@ -166,7 +168,7 @@ class CatalogServiceApplicationTests {
         webTestClient
                 .delete()
                 .uri("/books/" + bookIsbn)
-                .headers(headers -> headers.setBearerAuth(employeeTokens.accessToken()))
+                .headers(headers -> headers.setBearerAuth(isabelleTokens.accessToken()))
                 .exchange()
                 .expectStatus().isNoContent();
 
