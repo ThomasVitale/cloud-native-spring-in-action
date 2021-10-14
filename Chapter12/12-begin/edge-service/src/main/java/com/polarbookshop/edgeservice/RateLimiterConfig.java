@@ -10,8 +10,10 @@ import org.springframework.context.annotation.Configuration;
 public class RateLimiterConfig {
 
 	@Bean
-	public KeyResolver keyResolver() {
-		return exchange -> Mono.just("ANONYMOUS");
+	KeyResolver keyResolver() {
+		return exchange -> exchange.getPrincipal()
+				.flatMap(p -> Mono.just(p.getName()))
+				.defaultIfEmpty("ANONYMOUS");
 	}
 	
 }

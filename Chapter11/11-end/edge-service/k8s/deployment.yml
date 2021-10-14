@@ -27,6 +27,8 @@ spec:
           env:
             - name: CATALOG_SERVICE_URL
               value: http://catalog-service
+            - name: KEYCLOAK_URL
+              value: http://polar-keycloak
             - name: ORDER_SERVICE_URL
               value: http://order-service
             - name: SPRING_CLOUD_CONFIG_URI

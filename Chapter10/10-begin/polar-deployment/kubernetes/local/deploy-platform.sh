@@ -6,6 +6,6 @@ echo "📦 Deploying platform services..."
 
 kubectl apply -f platform
 
-echo "\n-----------------------------------------------------\n"
+echo "\n"
 
-echo "📦 Deployment completed"
+echo "⛵ Deployment completed"
