@@ -19,7 +19,9 @@ spring:
       enabled: false
     config:
       uri: http://localhost:8888
-      request-connect-timeout: 1000 # 1s
+      username: user
+      password: password
+      request-connect-timeout: 2000 # 2s
       request-read-timeout: 5000 # 5s
       fail-fast: false
       retry:
@@ -47,12 +49,13 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${KEYCLOAK_URL:http://localhost:8080}/auth/realms/PolarBookshop
+          # jwk-set-uri: ${KEYCLOAK_URL:http://localhost:8080}/auth/realms/PolarBookshop/protocol/openid-connect/certs
 
 management:
   endpoints:
     web:
       exposure:
-        include: health,refresh
+        include: refresh
 
 polar:
   greeting: Welcome to the local book catalog!

@@ -21,11 +21,11 @@ class BookServiceTest {
     @Test
     void whenBookToCreateAlreadyExistsThenThrows() {
         var bookIsbn = "1234561232";
-        var bookToCreate = new Book(null, bookIsbn, "Title", "Author", 9.90, "Polarsophia", null, null, null, null, null);
+        var bookToCreate = Book.build(bookIsbn, "Title", "Author", 9.90, "Polarsophia");
         when(bookRepository.existsByIsbn(bookIsbn)).thenReturn(true);
         assertThatThrownBy(() -> bookService.addBookToCatalog(bookToCreate))
-                .isInstanceOf(BookAlreadyExistsException.class)
-                .hasMessage("A book with ISBN " + bookIsbn + " already exists.");
+           .isInstanceOf(BookAlreadyExistsException.class)
+           .hasMessage("A book with ISBN " + bookIsbn + " already exists.");
     }
 
     @Test
@@ -33,8 +33,8 @@ class BookServiceTest {
         var bookIsbn = "1234561232";
         when(bookRepository.existsByIsbn(bookIsbn)).thenReturn(false);
         assertThatThrownBy(() -> bookService.removeBookFromCatalog(bookIsbn))
-                .isInstanceOf(BookNotFoundException.class)
-                .hasMessage("The book with ISBN " + bookIsbn + " was not found.");
+           .isInstanceOf(BookNotFoundException.class)
+           .hasMessage("The book with ISBN " + bookIsbn + " was not found.");
     }
 
 }

@@ -27,6 +27,8 @@ spec:
           env:
             - name: BPL_JVM_THREAD_COUNT
               value: "50"
+            - name: KEYCLOAK_URL
+              value: http://polar-keycloak
             - name: SPRING_CLOUD_CONFIG_URI
               value: http://config-service
             - name: SPRING_DATASOURCE_URL

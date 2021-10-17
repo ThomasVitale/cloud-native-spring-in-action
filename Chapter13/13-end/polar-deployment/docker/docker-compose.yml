@@ -5,6 +5,7 @@ services:
 
   catalog-service:
     depends_on:
+      - polar-keycloak
       - polar-postgres-catalog
     image: "polarbookshop/catalog-service:0.0.1-SNAPSHOT"
     container_name: "catalog-service"
@@ -14,15 +15,17 @@ services:
     environment:
       # Buildpacks environment variable to configure the number of threads in memory calculation
       - BPL_JVM_THREAD_COUNT=50
-      # JVM environment variable to enable debug through a socket on port 8001
-      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8001
+      # Buildpacks environment variable to enable debug through a socket on port 8001
+      - BPL_DEBUG_ENABLED=true
+      - BPL_DEBUG_PORT=8001
       - KEYCLOAK_URL=http://host.docker.internal:8080
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres-catalog:5432/polardb_catalog
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
-
+  
   order-service:
     depends_on:
+      - polar-keycloak
       - polar-postgres-order
       - polar-rabbitmq
     image: "polarbookshop/order-service:0.0.1-SNAPSHOT"
@@ -31,8 +34,9 @@ services:
       - 9002:9002
       - 8002:8002
     environment:
-      # JVM environment variable to enable debug through a socket on port 8002
-      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8002
+      # Buildpacks environment variable to enable debug through a socket on port 8002
+      - BPL_DEBUG_ENABLED=true
+      - BPL_DEBUG_PORT=8002
       - KEYCLOAK_URL=http://host.docker.internal:8080
       - POLAR_CATALOG_SERVICE_URL=http://catalog-service:9001
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
@@ -46,13 +50,15 @@ services:
     image: "polarbookshop/dispatcher-service:0.0.1-SNAPSHOT"
     container_name: dispatcher-service
     ports:
+      - 9003:9003
       - 8003:8003
     environment:
-      # JVM environment variable to enable debug through a socket on port 8003
-      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8003
+      # Buildpacks environment variable to enable debug through a socket on port 8002
+      - BPL_DEBUG_ENABLED=true
+      - BPL_DEBUG_PORT=8003
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
-
+  
   edge-service:
     depends_on:
       - polar-keycloak
@@ -63,12 +69,14 @@ services:
       - 9000:9000
       - 8000:8000
     environment:
-      # JVM environment variable to enable debug through a socket on port 8000
-      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000
+      # Buildpacks environment variable to enable debug through a socket on port 8000
+      - BPL_DEBUG_ENABLED=true
+      - BPL_DEBUG_PORT=8000
       - CATALOG_SERVICE_URL=http://catalog-service:9001
       - KEYCLOAK_URL=http://host.docker.internal:8080
       - ORDER_SERVICE_URL=http://order-service:9002
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+      - SPRING_RABBITMQ_HOST=polar-rabbitmq
       - SPRING_REDIS_HOST=polar-redis
   
   config-service:
@@ -80,8 +88,10 @@ services:
     environment:
       # Buildpacks environment variable to configure the number of threads in memory calculation
       - BPL_JVM_THREAD_COUNT=50
-      # JVM environment variable to enable debug through a socket on port 9888
-      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:9888
+      # Buildpacks environment variable to enable debug through a socket on port 9888
+      - BPL_DEBUG_ENABLED=true
+      - BPL_DEBUG_PORT=9888
+      - SPRING_RABBITMQ_HOST=polar-rabbitmq
   
   # Backing Services
 
@@ -129,6 +139,6 @@ services:
     environment:
       KEYCLOAK_USER: user
       KEYCLOAK_PASSWORD: password
-      KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json
+      KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/full-realm-export.json
     ports:
       - 8080:8080

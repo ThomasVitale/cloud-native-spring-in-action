@@ -43,7 +43,7 @@ public class BookService {
         }
         Book bookToUpdate = new Book(
                 existingBook.get().id(),
-                isbn,
+                existingBook.get().isbn(),
                 book.title(),
                 book.author(),
                 book.price(),

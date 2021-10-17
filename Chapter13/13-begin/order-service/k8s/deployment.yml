@@ -25,6 +25,8 @@ spec:
           ports:
             - containerPort: 9002
           env:
+            - name: KEYCLOAK_URL
+              value: http://polar-keycloak
             - name: POLAR_CATALOG_SERVICE_URL
               value: http://catalog-service
             - name: SPRING_CLOUD_CONFIG_URI

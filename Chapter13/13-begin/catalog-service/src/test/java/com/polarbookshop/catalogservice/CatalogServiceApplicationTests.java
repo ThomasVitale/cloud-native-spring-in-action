@@ -1,47 +1,69 @@
 package com.polarbookshop.catalogservice;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.polarbookshop.catalogservice.domain.Book;
+import dasniko.testcontainers.keycloak.KeycloakContainer;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("integration")
-@AutoConfigureWireMock(port = 0)
+@Testcontainers
 class CatalogServiceApplicationTests {
 
-    // <header>.<payload>.<signature>
-    private static final String ACCESS_TOKEN_CUSTOMER = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjM5NCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXV0aC9yZWFsbXMvUG9sYXJCb29rc2hvcCIsInN1YiI6ImJqb3JuIiwicm9sZXMiOlsiY3VzdG9tZXIiXSwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE4OTM0NTYwMDB9.L1Gqb8Lp1e0fmc3alxrTcWKS54mMjnySc3WWZXrxo5d4EEk7jwE0B71OgQuX2KJHNF_E413hcTTIaYU1ZTNY3qh32xo0ZhGyr8bOHpVRaVpGMojxzPWzsuUCO1eNAbMH6WQVEAgDX97kguGO87Sy7xlLVm5ZamO8CHQxBYhEqRGwpjGzD9Sn81leaVBnQ-Dv3n0aTjoD2B1MW0nVBifRhhcnRg2Mj8cqf93Hud_4f2ZWkigmLpdUcLStlU8WDqTSMBxscubjUWhW44WbEiOwCbj1mUZgI5ZBh67t3_TLvb4te8C2MHJMv8Vg5iCdBDbq7IYUh9ki4FPMsjniX0f8bg";
-
-    // <header>.<payload>.<signature>
-    private static final String ACCESS_TOKEN_EMPLOYEE = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjM5NCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXV0aC9yZWFsbXMvUG9sYXJCb29rc2hvcCIsInN1YiI6ImlzYWJlbGxlIiwicm9sZXMiOlsiY3VzdG9tZXIiLCJlbXBsb3llZSJdLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTg5MzQ1NjAwMH0.OI4v23t4dXgIBwPanrMdzPLbd3c7-gAzbhboi1-H-wlUkJ6cnZPRIuFRqsVgMcEmkFm_PPKbZOb16SZcr4EdRaFUNbl86MJ4HzhCcV-RenLflQWN9-t0jIvPPO44HsVJ3ZsUJfz2W3MwbC8BO3oROD3bMwTSVYG8HXN1fOzCXV3ssBEmDWGf-BfdMoKvjTX-rngFcS7qgRIybJ7wKBRyjn0mXfCrbOUZzdGEFhIzUwHWcWmiHGs-R3WlLnME2HxrboAM4tM4uleCsZA-JNO7MRKlLoJF6AD7U9uPDqlSmqSpBTJRojQrblNOIv72UeAJMthLTuF8meAe0J5TLfMhKw";
+    // Customer
+    private static KeycloakToken bjornTokens;
+    // Customer and employee
+    private static KeycloakToken isabelleTokens;
 
     @Autowired
     private WebTestClient webTestClient;
 
+    @Container
+    private static final KeycloakContainer keycloakContainer = new KeycloakContainer("jboss/keycloak:15.0.1")
+            .withRealmImportFile("keycloak_config.json");
+
     @DynamicPropertySource
-    @SuppressWarnings("unused")
     static void dynamicProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.security.oauth2.resourceserver.jwt.jwk-set-uri",
-                () -> "http://localhost:${wiremock.server.port}/protocol/openid-connect/certs");
+        registry.add("spring.security.oauth2.resourceserver.jwt.issuer-uri",
+                () -> keycloakContainer.getAuthServerUrl() + "/realms/PolarBookshop");
+    }
+
+    @BeforeAll
+    static void generateAccessTokens() {
+        WebClient webClient = WebClient.builder()
+                .baseUrl(keycloakContainer.getAuthServerUrl() + "/realms/PolarBookshop/protocol/openid-connect/token")
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .build();
+
+        isabelleTokens = authenticateWith("isabelle", "password", webClient);
+        bjornTokens = authenticateWith("bjorn", "password", webClient);
     }
 
     @Test
     void whenGetRequestWithIdThenBookReturned() {
         var bookIsbn = "1231231230";
-        var bookToCreate = new Book(null, bookIsbn, "Title", "Author", 9.90, "Polarsophia", null, null, null, null, null);
+        var bookToCreate = Book.build(bookIsbn, "Title", "Author", 9.90, "Polarsophia");
         Book expectedBook = webTestClient
                 .post()
                 .uri("/books")
-                .headers(headers -> headers.setBearerAuth(ACCESS_TOKEN_EMPLOYEE))
+                .headers(headers -> headers.setBearerAuth(isabelleTokens.accessToken()))
                 .bodyValue(bookToCreate)
                 .exchange()
                 .expectStatus().isCreated()
@@ -61,12 +83,12 @@ class CatalogServiceApplicationTests {
 
     @Test
     void whenPostRequestThenBookCreated() {
-        var expectedBook = new Book(null, "1231231231", "Title", "Author", 9.90, "Polarsophia", null, null, null, null, null);
+        var expectedBook = Book.build("1231231231", "Title", "Author", 9.90, "Polarsophia");
 
         webTestClient
                 .post()
                 .uri("/books")
-                .headers(headers -> headers.setBearerAuth(ACCESS_TOKEN_EMPLOYEE))
+                .headers(headers -> headers.setBearerAuth(isabelleTokens.accessToken()))
                 .bodyValue(expectedBook)
                 .exchange()
                 .expectStatus().isCreated()
@@ -78,7 +100,7 @@ class CatalogServiceApplicationTests {
 
     @Test
     void whenPostRequestUnauthenticatedThen401() {
-        var expectedBook = new Book(null, "1231231231", "Title", "Author", 9.90, "Polarsophia", null, null, null, null, null);
+        var expectedBook = Book.build("1231231231", "Title", "Author", 9.90, "Polarsophia");
 
         webTestClient
                 .post()
@@ -90,12 +112,12 @@ class CatalogServiceApplicationTests {
 
     @Test
     void whenPostRequestUnauthorizedThen403() {
-        var expectedBook = new Book(null, "1231231231", "Title", "Author", 9.90, "Polarsophia", null, null, null, null, null);
+        var expectedBook = Book.build("1231231231", "Title", "Author", 9.90, "Polarsophia");
 
         webTestClient
                 .post()
                 .uri("/books")
-                .headers(headers -> headers.setBearerAuth(ACCESS_TOKEN_CUSTOMER))
+                .headers(headers -> headers.setBearerAuth(bjornTokens.accessToken()))
                 .bodyValue(expectedBook)
                 .exchange()
                 .expectStatus().isForbidden();
@@ -104,11 +126,11 @@ class CatalogServiceApplicationTests {
     @Test
     void whenPutRequestThenBookUpdated() {
         var bookIsbn = "1231231232";
-        var bookToCreate = new Book(null, bookIsbn, "Title", "Author", 9.90, "Polarsophia", null, null, null, null, null);
+        var bookToCreate = Book.build(bookIsbn, "Title", "Author", 9.90, "Polarsophia");
         Book createdBook = webTestClient
                 .post()
                 .uri("/books")
-                .headers(headers -> headers.setBearerAuth(ACCESS_TOKEN_EMPLOYEE))
+                .headers(headers -> headers.setBearerAuth(isabelleTokens.accessToken()))
                 .bodyValue(bookToCreate)
                 .exchange()
                 .expectStatus().isCreated()
@@ -121,7 +143,7 @@ class CatalogServiceApplicationTests {
         webTestClient
                 .put()
                 .uri("/books/" + bookIsbn)
-                .headers(headers -> headers.setBearerAuth(ACCESS_TOKEN_EMPLOYEE))
+                .headers(headers -> headers.setBearerAuth(isabelleTokens.accessToken()))
                 .bodyValue(bookToUpdate)
                 .exchange()
                 .expectStatus().isOk()
@@ -134,11 +156,11 @@ class CatalogServiceApplicationTests {
     @Test
     void whenDeleteRequestThenBookDeleted() {
         var bookIsbn = "1231231233";
-        var bookToCreate = new Book(null, bookIsbn, "Title", "Author", 9.90, "Polarsophia", null, null, null, null, null);
+        var bookToCreate = Book.build(bookIsbn, "Title", "Author", 9.90, "Polarsophia");
         webTestClient
                 .post()
                 .uri("/books")
-                .headers(headers -> headers.setBearerAuth(ACCESS_TOKEN_EMPLOYEE))
+                .headers(headers -> headers.setBearerAuth(isabelleTokens.accessToken()))
                 .bodyValue(bookToCreate)
                 .exchange()
                 .expectStatus().isCreated();
@@ -146,7 +168,7 @@ class CatalogServiceApplicationTests {
         webTestClient
                 .delete()
                 .uri("/books/" + bookIsbn)
-                .headers(headers -> headers.setBearerAuth(ACCESS_TOKEN_EMPLOYEE))
+                .headers(headers -> headers.setBearerAuth(isabelleTokens.accessToken()))
                 .exchange()
                 .expectStatus().isNoContent();
 
@@ -158,6 +180,28 @@ class CatalogServiceApplicationTests {
                 .expectBody(String.class).value(errorMessage ->
                         assertThat(errorMessage).isEqualTo("The book with ISBN " + bookIsbn + " was not found.")
                 );
+    }
+
+    private static KeycloakToken authenticateWith(String username, String password, WebClient webClient) {
+        return webClient
+                .post()
+                .body(BodyInserters.fromFormData("grant_type", "password")
+                        .with("client_id", "polar-test")
+                        .with("username", username)
+                        .with("password", password)
+                )
+                .retrieve()
+                .bodyToMono(KeycloakToken.class)
+                .block();
+    }
+
+    private record KeycloakToken(String accessToken) {
+
+        @JsonCreator
+        private KeycloakToken(@JsonProperty("access_token") final String accessToken) {
+            this.accessToken = accessToken;
+        }
+
     }
 
 }

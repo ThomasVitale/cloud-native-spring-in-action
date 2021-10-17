@@ -13,28 +13,33 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table("orders")
 public record Order (
 
-		@Id
-		Long id,
+	 @Id
+	 Long id,
 
-		String bookIsbn,
-		String bookName,
-		Double bookPrice,
-		Integer quantity,
-		OrderStatus status,
+	 String bookIsbn,
+	 String bookName,
+	 Double bookPrice,
+	 Integer quantity,
+	 OrderStatus status,
 
-		@CreatedDate
-		Instant createdDate,
+	 @CreatedDate
+	 Instant createdDate,
 
-		@LastModifiedDate
-		Instant lastModifiedDate,
+	 @LastModifiedDate
+	 Instant lastModifiedDate,
 
-		@CreatedBy
-		String createdBy,
+	 @CreatedBy
+	 String createdBy,
 
-		@LastModifiedBy
-		String lastModifiedBy,
+	 @LastModifiedBy
+	 String lastModifiedBy,
 
-		@Version
-		Integer version
+	 @Version
+	 int version
+){
 
-){}
+	public static Order build(String bookIsbn, String bookName, Double bookPrice, Integer quantity, OrderStatus status) {
+		return new Order(null, bookIsbn, bookName, bookPrice, quantity, status, null, null, null, null, 0);
+	}
+
+}
