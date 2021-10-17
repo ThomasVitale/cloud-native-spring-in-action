@@ -3,6 +3,7 @@ package com.polarbookshop.edgeservice.security;
 import reactor.core.publisher.Mono;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
@@ -24,6 +25,7 @@ public class SecurityConfig {
 		return http
 				.authorizeExchange(exchange -> exchange
 						.pathMatchers("/", "/*.css", "/*.js", "/favicon.ico").permitAll()
+					 	.pathMatchers(HttpMethod.GET, "/books/**").permitAll()
 						.anyExchange().authenticated()
 				)
 				.exceptionHandling(exceptionHandling -> exceptionHandling
