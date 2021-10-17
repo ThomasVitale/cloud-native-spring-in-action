@@ -7,7 +7,7 @@ services:
     depends_on:
       - polar-keycloak
       - polar-postgres-catalog
-    image: "polarbookshop/catalog-service:0.0.1-SNAPSHOT"
+    image: "<your_dockerhub_username>/catalog-service:0.0.1-SNAPSHOT"
     container_name: "catalog-service"
     ports:
       - 9001:9001
@@ -28,7 +28,7 @@ services:
       - polar-keycloak
       - polar-postgres-order
       - polar-rabbitmq
-    image: "polarbookshop/order-service:0.0.1-SNAPSHOT"
+    image: "<your_dockerhub_username>/order-service:0.0.1-SNAPSHOT"
     container_name: "order-service"
     ports:
       - 9002:9002
@@ -47,7 +47,7 @@ services:
   dispatcher-service:
     depends_on:
       - polar-rabbitmq
-    image: "polarbookshop/dispatcher-service:0.0.1-SNAPSHOT"
+    image: "<your_dockerhub_username>/dispatcher-service:0.0.1-SNAPSHOT"
     container_name: dispatcher-service
     ports:
       - 9003:9003
@@ -63,7 +63,7 @@ services:
     depends_on:
       - polar-keycloak
       - polar-redis
-    image: "polarbookshop/edge-service:0.0.1-SNAPSHOT"
+    image: "<your_dockerhub_username>/edge-service:0.0.1-SNAPSHOT"
     container_name: "edge-service"
     ports:
       - 9000:9000
@@ -80,7 +80,7 @@ services:
       - SPRING_REDIS_HOST=polar-redis
   
   config-service:
-    image: "polarbookshop/config-service:0.0.1-SNAPSHOT"
+    image: "<your_dockerhub_username>/config-service:0.0.1-SNAPSHOT"
     container_name: "config-service"
     ports:
       - 8888:8888
@@ -91,6 +91,7 @@ services:
       # Buildpacks environment variable to enable debug through a socket on port 9888
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=9888
+      - ENCRYPT_KEY=sharedkey
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
   
   # Backing Services

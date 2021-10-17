@@ -74,7 +74,7 @@ items:
           serviceAccount: spring-cloud-kubernetes-configuration-watcher
           containers:
           - name: spring-cloud-kubernetes-configuration-watcher
-            image: springcloud/spring-cloud-kubernetes-configuration-watcher:2.1.0-M1
+            image: springcloud/spring-cloud-kubernetes-configuration-watcher:2.1.0-M2
             imagePullPolicy: IfNotPresent
             readinessProbe:
               httpGet:
