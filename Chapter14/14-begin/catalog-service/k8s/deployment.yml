@@ -9,10 +9,10 @@ spec:
       app: catalog-service
   template:
     spec:
-      terminationGracePeriodSeconds: 20
       containers:
         - name: catalog-service
           image: polarbookshop/catalog-service:0.0.1-SNAPSHOT
+          imagePullPolicy: Always
           lifecycle:
             preStop:
               exec:
@@ -24,11 +24,6 @@ spec:
               value: "25"
             - name: KEYCLOAK_URL
               value: http://polar-keycloak
-            - name: SPRING_RABBITMQ_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: polar-rabbitmq
-                  key: rabbitmq-password
           volumeMounts:
             - name: catalog-service-volume
               mountPath: /workspace/config

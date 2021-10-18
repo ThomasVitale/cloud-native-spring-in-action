@@ -7,7 +7,7 @@ const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json'
   })
-}
+};
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class BookService {
   }
 
   getBookByIsbn(isbn: string): Observable<Book> {
-    return this.httpClient.get<Book>(`/books/${isbn}`)
+    return this.httpClient.get<Book>(`/books/${isbn}`);
   }
 
   addBook(book: Book): Observable<Book> {

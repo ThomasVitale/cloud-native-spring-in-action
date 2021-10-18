@@ -1,7 +1,8 @@
 server:
   port: 8888
+  shutdown: graceful
   tomcat:
-    connection-timeout: 5s
+    connection-timeout: 2s
     threads:
       max: 50
       min-spare: 5
@@ -9,6 +10,8 @@ server:
 spring:
   application:
     name: config-service
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
   cloud:
     bus:
       enabled: false
@@ -25,7 +28,7 @@ spring:
     port: 5672
     username: user
     password: password
-    connection-timeout: 15s
+    connection-timeout: 5s
   security:
     user:
       name: user

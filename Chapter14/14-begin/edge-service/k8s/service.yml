@@ -7,6 +7,6 @@ spec:
   selector:
     app: edge-service
   ports:
-  - protocol: TCP
-    port: 9000
-    targetPort: 9000
+    - protocol: TCP
+      port: 80
+      targetPort: 9000

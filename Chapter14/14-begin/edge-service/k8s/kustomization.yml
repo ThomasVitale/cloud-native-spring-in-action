@@ -6,6 +6,7 @@ commonLabels:
 
 resources:
   - deployment.yml
+  - ingress.yml
   - service.yml
 
 configMapGenerator:

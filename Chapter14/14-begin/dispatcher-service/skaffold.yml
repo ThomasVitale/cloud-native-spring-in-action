@@ -1,10 +1,10 @@
-apiVersion: skaffold/v2beta19
+apiVersion: skaffold/v2beta23
 kind: Config
 metadata:
-  name: dispatcher-service
+  name: order-service
 build:
   artifacts:
-    - image: polarbookshop/dispatcher-service
+    - image: polarbookshop/order-service
       buildpacks:
         builder: gcr.io/paketo-buildpacks/builder:base
         env:

@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.5.5'
+    id 'org.springframework.boot' version '2.6.0-M3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
 }
@@ -8,12 +8,15 @@ group = 'com.polarbookshop'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
+description = 'Provides functionality for centralizing the application configuration.'
+
 repositories {
     mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
 }
 
 ext {
-    set('springCloudVersion', "2020.0.4")
+    set('springCloudVersion', "2021.0.0-M1")
 }
 
 dependencies {
@@ -33,6 +36,14 @@ dependencyManagement {
 bootBuildImage {
     imageName = "polarbookshop/${project.name}:${project.version}"
     environment = ["BP_JVM_VERSION": "17.*"]
+
+    docker {
+        publishRegistry {
+            username = project.findProperty("registryUsername")
+            password = project.findProperty("registryToken")
+            url = project.findProperty("registryUrl")
+        }
+    }
 }
 
 test {

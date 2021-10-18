@@ -18,10 +18,10 @@ spring:
     bus:
       enabled: false
     config:
-      uri: "http://localhost:8888"
+      uri: http://localhost:8888
       username: user
       password: password
-      request-connect-timeout: 1000 # 1s
+      request-connect-timeout: 2000 # 2s
       request-read-timeout: 5000 # 5s
       fail-fast: false
       retry:
@@ -36,28 +36,26 @@ spring:
     password: password
     url: jdbc:postgresql://localhost:5432/polardb_catalog
     hikari:
-      connection-timeout: 5000 #ms
-      maximum-pool-size: 10
-      pool-name: polardb-catalog-pool
-  jpa:
-    hibernate.ddl-auto: validate
+      connection-timeout: 2000 #ms
+      maximum-pool-size: 5
   rabbitmq:
     host: localhost
     port: 5672
     username: user
     password: password
-    connection-timeout: 15s
+    connection-timeout: 5s
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: ${KEYCLOAK_URL:http://localhost:8080}/auth/realms/PolarBookshop
+          # jwk-set-uri: ${KEYCLOAK_URL:http://localhost:8080}/auth/realms/PolarBookshop/protocol/openid-connect/certs
 
 management:
   endpoints:
     web:
       exposure:
-        include: health,refresh
+        include: refresh
 
 polar:
   greeting: Welcome to the local book catalog!

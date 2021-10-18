@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.5.1'
+	id 'org.springframework.boot' version '2.6.0-M3'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
@@ -8,22 +8,24 @@ group = 'com.polarbookshop'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
+description = 'Provides API gateway and cross-cutting concerns.'
+
 repositories {
 	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
 }
 
 ext {
-	set('springCloudVersion', "2020.0.4")
-	set('testcontainersVersion', "1.15.3")
+	set('springCloudVersion', "2021.0.0-M1")
+	set('testcontainersVersion', "1.16.0")
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
-	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j'
+	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
 	implementation 'org.springframework.session:spring-session-data-redis'
 
@@ -43,6 +45,14 @@ dependencyManagement {
 bootBuildImage {
 	imageName = "polarbookshop/${project.name}:${project.version}"
 	environment = ["BP_JVM_VERSION": "17.*"]
+
+	docker {
+		publishRegistry {
+			username = project.findProperty("registryUsername")
+			password = project.findProperty("registryToken")
+			url = project.findProperty("registryUrl")
+		}
+	}
 }
 
 test {
@@ -50,7 +60,13 @@ test {
 }
 
 processResources {
+	dependsOn 'compileFrontend'
 	from ('../ui-application/dist/ui-application') {
 		into 'static'
 	}
+}
+
+task compileFrontend(type: GradleBuild) {
+	dir = '../ui-application'
+	tasks = ['buildAngular']
 }

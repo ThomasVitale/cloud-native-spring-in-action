@@ -7,6 +7,6 @@ spec:
   selector:
     app: dispatcher-service
   ports:
-  - protocol: TCP
-    port: 9003
-    targetPort: 9003
+    - protocol: TCP
+      port: 80
+      targetPort: 9003
