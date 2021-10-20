@@ -77,17 +77,7 @@ jobs:
           Chapter13/13-end/config-service,
           Chapter13/13-end/order-service,
           Chapter13/13-end/edge-service,
-          Chapter13/13-end/dispatcher-service,
-          Chapter14/14-begin/catalog-service,
-          Chapter14/14-begin/config-service,
-          Chapter14/14-begin/order-service,
-          Chapter14/14-begin/edge-service,
-          Chapter14/14-begin/dispatcher-service,
-          Chapter14/14-end/catalog-service,
-          Chapter14/14-end/config-service,
-          Chapter14/14-end/order-service,
-          Chapter14/14-end/edge-service,
-          Chapter14/14-end/dispatcher-service
+          Chapter13/13-end/dispatcher-service
         ]
     steps:
       - name: Checkout repository
@@ -97,30 +87,6 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-          cache: gradle
-      - name: Compile and test application
-        run: |
-          cd ${{ matrix.project }}
-          chmod +x gradlew
-          ./gradlew clean build
-  build_16:
-    name: Build ${{ matrix.project }}
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-        project: [
-          Chapter16/16-end/quote-service,
-          Chapter16/16-end/quote-function
-        ]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          distribution: temurin
-          java-version: 16
           cache: gradle
       - name: Compile and test application
         run: |
