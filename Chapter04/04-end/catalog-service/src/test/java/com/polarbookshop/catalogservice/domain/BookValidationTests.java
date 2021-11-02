@@ -1,16 +1,16 @@
 package com.polarbookshop.catalogservice.domain;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.time.Year;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,14 +26,14 @@ class BookValidationTests {
 
     @Test
     void whenAllFieldsCorrectThenValidationSucceeds() {
-        Book book = new Book("1234567890", "Title", "Author", Year.of(2000), 9.90);
+        var book = new Book("1234567890", "Title", "Author", 9.90);
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertThat(violations).isEmpty();
     }
 
     @Test
     void whenIsbnNotDefinedThenValidationFails() {
-        Book book = new Book("", "Title", "Author", Year.of(2000), 9.90);
+        var book = new Book("", "Title", "Author", 9.90);
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertThat(violations).hasSize(2);
         List<String> constraintViolationMessages = violations.stream()
@@ -45,7 +45,7 @@ class BookValidationTests {
 
     @Test
     void whenIsbnDefinedButIncorrectThenValidationFails() {
-        Book book = new Book("a234567890", "Title", "Author", Year.of(2000), 9.90);
+        var book = new Book("a234567890", "Title", "Author", 9.90);
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage())
@@ -54,7 +54,7 @@ class BookValidationTests {
 
     @Test
     void whenTitleIsNotDefinedThenValidationFails() {
-        Book book = new Book("1234567890", "", "Author", Year.of(2000), 9.90);
+        var book = new Book("1234567890", "", "Author", 9.90);
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage())
@@ -63,7 +63,7 @@ class BookValidationTests {
 
     @Test
     void whenAuthorIsNotDefinedThenValidationFails() {
-        Book book = new Book("1234567890", "Title", "", Year.of(2000), 9.90);
+        var book = new Book("1234567890", "Title", "", 9.90);
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage())
@@ -71,24 +71,8 @@ class BookValidationTests {
     }
 
     @Test
-    void whenPublishDateIsNotDefinedThenValidationSucceeds() {
-        Book book = new Book("1234567890", "Title", "Author", null, 9.90);
-        Set<ConstraintViolation<Book>> violations = validator.validate(book);
-        assertThat(violations).isEmpty();
-    }
-
-    @Test
-    void whenPublishDateIsInTheFutureThenValidationFails() {
-        Book book = new Book("1234567890", "Title", "Author", Year.of(2050), 9.90);
-        Set<ConstraintViolation<Book>> violations = validator.validate(book);
-        assertThat(violations).hasSize(1);
-        assertThat(violations.iterator().next().getMessage())
-                .isEqualTo("The book cannot have been published in the future.");
-    }
-
-    @Test
     void whenPriceIsNotDefinedThenValidationFails() {
-        Book book = new Book("1234567890", "Title", "Author", Year.of(2000), null);
+        var book = new Book("1234567890", "Title", "Author", null);
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage())
@@ -97,7 +81,7 @@ class BookValidationTests {
 
     @Test
     void whenPriceDefinedButZeroThenValidationFails() {
-        Book book = new Book("1234567890", "Title", "Author", Year.of(2000), 0.0);
+        var book = new Book("1234567890", "Title", "Author", 0.0);
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage())
@@ -106,10 +90,11 @@ class BookValidationTests {
 
     @Test
     void whenPriceDefinedButNegativeThenValidationFails() {
-        Book book = new Book("1234567890", "Title", "Author", Year.of(2000), -9.90);
+        var book = new Book("1234567890", "Title", "Author", -9.90);
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage())
                 .isEqualTo("The book price must be greater than zero.");
     }
+
 }

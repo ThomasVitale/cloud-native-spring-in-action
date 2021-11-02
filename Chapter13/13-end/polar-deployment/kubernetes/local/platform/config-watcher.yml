@@ -1,0 +1,102 @@
+apiVersion: v1
+kind: List
+items:
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        app: spring-cloud-kubernetes-configuration-watcher
+      name: spring-cloud-kubernetes-configuration-watcher
+    spec:
+      ports:
+        - name: http
+          port: 9999
+          targetPort: 8888
+      selector:
+        app: spring-cloud-kubernetes-configuration-watcher
+      type: ClusterIP
+  - apiVersion: v1
+    kind: ServiceAccount
+    metadata:
+      labels:
+        app: spring-cloud-kubernetes-configuration-watcher
+      name: spring-cloud-kubernetes-configuration-watcher
+  - apiVersion: rbac.authorization.k8s.io/v1
+    kind: RoleBinding
+    metadata:
+      labels:
+        app: spring-cloud-kubernetes-configuration-watcher
+      name: spring-cloud-kubernetes-configuration-watcher:view
+    roleRef:
+      kind: Role
+      apiGroup: rbac.authorization.k8s.io
+      name: namespace-reader
+    subjects:
+      - kind: ServiceAccount
+        name: spring-cloud-kubernetes-configuration-watcher
+  - apiVersion: rbac.authorization.k8s.io/v1
+    kind: Role
+    metadata:
+      namespace: default
+      name: namespace-reader
+    rules:
+      - apiGroups: ["", "extensions", "apps"]
+        resources: ["configmaps", "pods", "services", "endpoints", "secrets"]
+        verbs: ["get", "list", "watch"]
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: spring-cloud-kubernetes-configuration-watcher
+    data:
+      application.yml: |
+        spring:
+          profiles:
+            active: bus-amqp
+          rabbitmq:
+            host: polar-rabbitmq
+            port: 5672
+            username: user
+            password: password
+            connection-timeout: 5s
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: spring-cloud-kubernetes-configuration-watcher-deployment
+    spec:
+      selector:
+        matchLabels:
+          app: spring-cloud-kubernetes-configuration-watcher
+      template:
+        metadata:
+          labels:
+            app: spring-cloud-kubernetes-configuration-watcher
+        spec:
+          serviceAccount: spring-cloud-kubernetes-configuration-watcher
+          containers:
+          - name: spring-cloud-kubernetes-configuration-watcher
+            image: springcloud/spring-cloud-kubernetes-configuration-watcher:2.1.0-M2
+            imagePullPolicy: IfNotPresent
+            readinessProbe:
+              httpGet:
+                port: 8888
+                path: /actuator/health/readiness
+              initialDelaySeconds: 10
+              periodSeconds: 5
+            livenessProbe:
+              httpGet:
+                port: 8888
+                path: /actuator/health/liveness
+              initialDelaySeconds: 5
+              periodSeconds: 15
+            ports:
+              - containerPort: 8888
+            env:
+              - name: BPL_JVM_THREAD_COUNT
+                value: "25"
+            volumeMounts:
+              - name: configuration-watcher-volume
+                mountPath: /workspace/config
+          volumes:
+            - name: configuration-watcher-volume
+              configMap:
+                name: spring-cloud-kubernetes-configuration-watcher

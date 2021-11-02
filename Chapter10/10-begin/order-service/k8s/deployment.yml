@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: order-app
+  name: order-service
   labels:
-    app: order-app
+    app: order-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: order-app
+      app: order-service
   template:
     metadata:
       labels:
-        app: order-app
+        app: order-service
     spec:
-      terminationGracePeriodSeconds: 20
       containers:
-        - name: catalog-app
+        - name: order-service
           image: polarbookshop/order-service:0.0.1-SNAPSHOT
+          imagePullPolicy: Always
           lifecycle:
             preStop:
               exec:
@@ -25,11 +25,11 @@ spec:
           ports:
             - containerPort: 9002
           env:
-            - name: SPRING_DATASOURCE_URL
-              value: r2dbc:postgresql://polardb-order-postgresql:5432/polardb_order
-          resources:
-            requests:
-              memory: "512Mi"
-              cpu: "0.5"
-            limits:
-              memory: "512Mi"
+            - name: POLAR_CATALOG_SERVICE_URL
+              value: http://catalog-service
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: http://config-service
+            - name: SPRING_R2DBC_URL
+              value: r2dbc:postgresql://polar-postgres-order/polardb_order
+            - name: SPRING_FLYWAY_URL
+              value: jdbc:postgresql://polar-postgres-order/polardb_order

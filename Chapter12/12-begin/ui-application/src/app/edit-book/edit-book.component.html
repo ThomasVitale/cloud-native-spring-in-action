@@ -1,0 +1,12 @@
+<div class="grid-container" *ngIf="book">
+    <app-book-form 
+        buttonText="Update Book"
+        titleText="Edit Book"
+        [currentBook]="book"
+        (onSubmit)="onSubmit($event)">
+    </app-book-form>
+</div>
+
+<div class="grid-container" *ngIf="!book">
+    <mat-spinner></mat-spinner>
+</div>

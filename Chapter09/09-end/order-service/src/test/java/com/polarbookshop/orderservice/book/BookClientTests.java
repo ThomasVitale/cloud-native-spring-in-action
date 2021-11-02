@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
 class BookClientTests {
@@ -22,9 +24,10 @@ class BookClientTests {
 		this.mockWebServer = new MockWebServer();
 		this.mockWebServer.start();
 
-		BookClientProperties bookClientProperties = new BookClientProperties();
-		bookClientProperties.setCatalogServiceUrl(mockWebServer.url("/").uri());
-		this.bookClient = new BookClient(bookClientProperties, WebClient.builder());
+		var webClient = WebClient.builder()
+				.baseUrl(mockWebServer.url("/").uri().toString())
+				.build();
+		this.bookClient = new BookClient(webClient);
 	}
 
 	@AfterEach
@@ -34,27 +37,35 @@ class BookClientTests {
 
 	@Test
 	void whenBookExistsThenReturnBook() {
-		String bookIsbn = "1234567890";
+		var bookIsbn = "1234567890";
 
-		MockResponse mockResponse = new MockResponse()
-				.addHeader("Content-Type", "application/json; charset=utf-8")
-				.setBody("{\"isbn\":\"" + bookIsbn + "\",\"title\":\"Book Title\", \"author\":\"Book Author\", \"publishingYear\":\"1973\", \"price\":\"9.90\"}");
+		var mockResponse = new MockResponse()
+				.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+				.setBody("""
+							{
+								"isbn": %s,
+								"title": "Title",
+								"author": "Author",
+								"price": 9.90,
+								"publisher": "Polarsophia"
+							}
+						""".formatted(bookIsbn));
 
 		mockWebServer.enqueue(mockResponse);
 
 		Mono<Book> book = bookClient.getBookByIsbn(bookIsbn);
 
 		StepVerifier.create(book)
-				.expectNextMatches(b -> b.getIsbn().equals(bookIsbn))
+				.expectNextMatches(b -> b.isbn().equals(bookIsbn))
 				.verifyComplete();
 	}
 
 	@Test
 	void whenBookNotExistsThenReturnEmpty() {
-		String bookIsbn = "1234567891";
+		var bookIsbn = "1234567891";
 
-		MockResponse mockResponse = new MockResponse()
-				.addHeader("Content-Type", "application/json; charset=utf-8")
+		var mockResponse = new MockResponse()
+				.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.setResponseCode(404);
 
 		mockWebServer.enqueue(mockResponse);
@@ -63,4 +74,5 @@ class BookClientTests {
 				.expectNextCount(0)
 				.verifyComplete();
 	}
+
 }

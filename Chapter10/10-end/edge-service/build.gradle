@@ -1,20 +1,23 @@
 plugins {
-	id 'org.springframework.boot' version '2.5.2'
+	id 'org.springframework.boot' version '2.6.0-RC1'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
 
 group = 'com.polarbookshop'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '16'
+sourceCompatibility = '17'
+
+description = 'Provides API gateway and cross-cutting concerns.'
 
 repositories {
 	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
 }
 
 ext {
-	set('springCloudVersion', "2020.0.3")
-	set('testcontainersVersion', "1.15.3")
+	set('springCloudVersion', "2021.0.0-M3")
+	set('testcontainersVersion', "1.16.0")
 }
 
 dependencies {
@@ -38,7 +41,15 @@ dependencyManagement {
 
 bootBuildImage {
 	imageName = "polarbookshop/${project.name}:${project.version}"
-	environment = ["BP_JVM_VERSION": "16.*"]
+	environment = ["BP_JVM_VERSION": "17.*"]
+
+	docker {
+		publishRegistry {
+			username = project.findProperty("registryUsername")
+			password = project.findProperty("registryToken")
+			url = project.findProperty("registryUrl")
+		}
+	}
 }
 
 test {

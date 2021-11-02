@@ -1,28 +1,37 @@
 package com.polarbookshop.orderservice.order.domain;
 
-import com.polarbookshop.orderservice.order.persistence.PersistableEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import java.time.Instant;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table("orders")
-@Data @AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class Order extends PersistableEntity {
+public record Order (
 
-	private String bookIsbn;
-	private String bookName;
-	private Double bookPrice;
-	private Integer quantity;
-	private OrderStatus status;
+		@Id
+		Long id,
 
-	public Order(String bookIsbn, int quantity, OrderStatus status) {
-		this.bookIsbn = bookIsbn;
-		this.quantity = quantity;
-		this.status = status;
+		String bookIsbn,
+		String bookName,
+		Double bookPrice,
+		Integer quantity,
+		OrderStatus status,
+
+		@CreatedDate
+		Instant createdDate,
+
+		@LastModifiedDate
+		Instant lastModifiedDate,
+
+		@Version
+		int version
+){
+
+	public static Order build(String bookIsbn, String bookName, Double bookPrice, Integer quantity, OrderStatus status) {
+		return new Order(null, bookIsbn, bookName, bookPrice, quantity, status, null, null, 0);
 	}
+
 }

@@ -10,9 +10,10 @@ There is a folder for each chapter, for which both an _initial_ and _final_ vers
 
 Chapter after chapter, you'll build, containerize, and deploy cloud native applications. Along the journey, you will need the following software installed.
 
-* Java 11+ or later
-    * [AdoptOpenJDK](https://adoptopenjdk.net)
-    * [SDKMAN](https://sdkman.io)
+* Java 17
+    * OpenJDK: [Eclipse Temurin](https://adoptium.net)
+    * GraalVM: [GraalVM](https://www.graalvm.org)
+    * JDK Management: [SDKMAN](https://sdkman.io)
 * Docker 20.10+
     * [Docker for Linux](https://docs.docker.com/engine/install/ubuntu/)
     * [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop)
@@ -38,22 +39,22 @@ Gradle | Maven
 
 ## 1. Introduction to Cloud Native
 
-## 2. Cloud Native Foundations: Patterns and Technologies
+## 2. Cloud native patterns and technologies
 
 * [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter02/02-begin)
 * [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter02/02-end)
 
-## 3. Getting Started with Cloud Native Development
+## 3. Getting started with cloud native development
 
 * [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter03/03-begin)
 * [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter03/03-end)
 
-## 4. Externalized Configuration Management
+## 4. Externalized configuration management
 
 * [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter04/04-begin)
 * [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter04/04-end)
 
-## 5. Persisting and Managing Data in the Cloud
+## 5. Persisting and managing data in the cloud
 
 * [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter05/05-begin)
 * [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter05/05-end)
@@ -63,30 +64,40 @@ Gradle | Maven
 * [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter06/06-begin)
 * [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter06/06-end)
 
-## 7. Kubernetes Fundamentals for Spring Boot
+## 7. Kubernetes fundamentals for Spring Boot
 
 * [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter07/07-begin)
 * [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter07/07-end)
 
-## 8. Reactive Spring: Resilience and Scalability
+## 8. Reactive Spring: Resilience and scalability
 
 * [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter08/08-begin)
 * [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter08/08-end)
 
-## 9. API Gateway and Circuit Breakers
+## 9. API gateway and circuit breakers
 
 * [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter09/09-begin)
 * [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter09/09-end)
 
-## 10. Event-driven Applications and Functions
+## 10. Event-driven applications and functions
 
 * [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter10/10-begin)
 * [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter10/10-end)
 
-## 11. Security: Authentication, OIDC, and SPA
+## 11. Security: Authentication and SPA
 
 * [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter11/11-begin)
 * [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter11/11-end)
+
+## 12. Security: Authorization and Auditing
+
+* [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter12/12-begin)
+* [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter12/12-end)
+
+## 13. Configuration and secrets management
+
+* [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter13/13-begin)
+* [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter13/13-end)
 
 ## Book forum
 

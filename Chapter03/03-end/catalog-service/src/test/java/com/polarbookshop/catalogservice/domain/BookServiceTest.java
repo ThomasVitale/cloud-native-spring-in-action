@@ -1,7 +1,5 @@
 package com.polarbookshop.catalogservice.domain;
 
-import java.time.Year;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,8 +20,8 @@ class BookServiceTest {
 
     @Test
     void whenBookToCreateAlreadyExistsThenThrows() {
-        String bookIsbn = "1234561232";
-        Book bookToCreate = new Book(bookIsbn, "Title", "Author", Year.of(2000), 9.90);
+        var bookIsbn = "1234561232";
+        var bookToCreate = new Book(bookIsbn, "Title", "Author", 9.90);
         when(bookRepository.existsByIsbn(bookIsbn)).thenReturn(true);
         assertThatThrownBy(() -> bookService.addBookToCatalog(bookToCreate))
                 .isInstanceOf(BookAlreadyExistsException.class)
@@ -32,10 +30,11 @@ class BookServiceTest {
 
     @Test
     void whenBookToDeleteDoesNotExistThenThrows() {
-        String bookIsbn = "1234561232";
+        var bookIsbn = "1234561232";
         when(bookRepository.existsByIsbn(bookIsbn)).thenReturn(false);
         assertThatThrownBy(() -> bookService.removeBookFromCatalog(bookIsbn))
                 .isInstanceOf(BookNotFoundException.class)
                 .hasMessage("The book with ISBN " + bookIsbn + " was not found.");
     }
+
 }

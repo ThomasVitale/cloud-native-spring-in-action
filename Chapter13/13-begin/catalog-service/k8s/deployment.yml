@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog-service
+  labels:
+    app: catalog-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: catalog-service
+  template:
+    metadata:
+      labels:
+        app: catalog-service
+    spec:
+      containers:
+        - name: catalog-service
+          image: polarbookshop/catalog-service:0.0.1-SNAPSHOT
+          imagePullPolicy: Always
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 5" ]
+          ports:
+            - containerPort: 9001
+          env:
+            - name: BPL_JVM_THREAD_COUNT
+              value: "50"
+            - name: KEYCLOAK_URL
+              value: http://polar-keycloak
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: http://config-service
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://polar-postgres-catalog/polardb_catalog

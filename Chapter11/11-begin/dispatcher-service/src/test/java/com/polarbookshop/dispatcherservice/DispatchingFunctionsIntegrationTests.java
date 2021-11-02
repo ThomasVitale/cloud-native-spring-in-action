@@ -49,4 +49,5 @@ class DispatchingFunctionsIntegrationTests {
 						dispatchedOrder.equals(new OrderDispatchedMessage(orderId)))
 				.verifyComplete();
 	}
+
 }

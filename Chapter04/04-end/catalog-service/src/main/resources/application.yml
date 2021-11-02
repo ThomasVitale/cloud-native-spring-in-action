@@ -1,18 +1,20 @@
 server:
   port: 9001
   tomcat:
-    connection-timeout: 5s
+    connection-timeout: 2s
     threads:
-      max: 100
-      min-spare: 10
+      max: 50
+      min-spare: 5
 
 spring:
   application:
     name: catalog-service
-  config.import: "optional:configserver:http://localhost:8888"
+  config:
+    import: "optional:configserver:"
   cloud:
     config:
-      request-connect-timeout: 1000 # 1s
+      uri: http://localhost:8888
+      request-connect-timeout: 2000 # 2s
       request-read-timeout: 5000 # 5s
       fail-fast: false
       retry:
@@ -20,9 +22,14 @@ spring:
         initial-interval: 1000 # 1s
         max-interval: 2000 # 2s
         multiplier: 1.1
-  profiles.active: test-data
+  profiles:
+    active: test-data
 
-management.endpoints.web.exposure.include: refresh
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
 
 polar:
   greeting: Welcome to the local book catalog!

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+  labels:
+    app: order-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-service
+  template:
+    metadata:
+      labels:
+        app: order-service
+    spec:
+      containers:
+        - name: order-service
+          image: polarbookshop/order-service:0.0.1-SNAPSHOT
+          imagePullPolicy: Always
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 5" ]
+          ports:
+            - containerPort: 9002
+          env:
+            - name: KEYCLOAK_URL
+              value: http://polar-keycloak
+            - name: POLAR_CATALOG_SERVICE_URL
+              value: http://catalog-service
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: http://config-service
+            - name: SPRING_RABBITMQ_HOST
+              value: polar-rabbitmq
+            - name: SPRING_R2DBC_URL
+              value: r2dbc:postgresql://polar-postgres-order/polardb_order
+            - name: SPRING_FLYWAY_URL
+              value: jdbc:postgresql://polar-postgres-order/polardb_order

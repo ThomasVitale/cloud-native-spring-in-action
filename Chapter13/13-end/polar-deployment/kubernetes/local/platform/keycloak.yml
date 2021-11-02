@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: polar-keycloak
+  labels:
+    app: polar-keycloak
+spec:
+  selector:
+    matchLabels:
+      app: polar-keycloak
+  template:
+    metadata:
+      labels:
+        app: polar-keycloak
+    spec:
+      containers:
+        - name: polar-keycloak
+          image: jboss/keycloak:15.0.1
+          env:
+            - name: KEYCLOAK_USER
+              value: user
+            - name: KEYCLOAK_PASSWORD
+              value: password 
+            - name: KEYCLOAK_IMPORT
+              value: /opt/jboss/keycloak/imports/realm-config.json
+          resources:
+            requests:
+              cpu: 100m
+              memory: 200Mi
+            limits:
+              cpu: 500m
+              memory: 400Mi
+          volumeMounts:
+            - name: polar-keycloak-config-volume
+              mountPath: /opt/jboss/keycloak/imports/
+      volumes:
+      - name: polar-keycloak-config-volume
+        configMap:
+          name: polar-keycloak
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: polar-keycloak
+  labels:
+    app: polar-keycloak
+spec:
+  type: ClusterIP
+  selector:
+    app: polar-keycloak
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080

@@ -1,4 +1,4 @@
-apiVersion: skaffold/v2beta17
+apiVersion: skaffold/v2beta24
 kind: Config
 metadata:
   name: catalog-service
@@ -8,17 +8,8 @@ build:
       buildpacks:
         builder: gcr.io/paketo-buildpacks/builder:base
         env:
-          - BP_JVM_VERSION=16.*
+          - BP_JVM_VERSION=17.*
 deploy:
-  helm:
-    releases:
-      - name: polar-postgres-catalog
-        remoteChart: bitnami/postgresql
-        setValues:
-          postgresqlUsername: admin
-          postgresqlPassword: admin
-          postgresqlDatabase: polardb_catalog
-          image.tag: 13
   kubectl:
     manifests:
       - k8s/*.yml

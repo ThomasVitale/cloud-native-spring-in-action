@@ -1,10 +1,15 @@
+server:
+  port: 9003
+
 spring:
+  application:
+    name: dispatcher-service
   config:
     import: "optional:configserver:"
   cloud:
     config:
-      uri: "http://localhost:8888"
-      request-connect-timeout: 1000 # 1s
+      uri: http://localhost:8888
+      request-connect-timeout: 2000 # 2s
       request-read-timeout: 5000 # 5s
       fail-fast: false
       retry:
@@ -18,7 +23,7 @@ spring:
       bindings:
         packlabel-in-0:
           destination: order-accepted
-          group: polar-dispatcher
+          group: ${spring.application.name}
         packlabel-out-0:
           destination: order-dispatched
   rabbitmq:
@@ -26,4 +31,4 @@ spring:
     port: 5672
     username: user
     password: password
-    connection-timeout: 15s
+    connection-timeout: 5s

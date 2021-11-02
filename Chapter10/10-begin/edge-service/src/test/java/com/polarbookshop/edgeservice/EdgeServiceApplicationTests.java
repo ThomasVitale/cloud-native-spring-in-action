@@ -17,7 +17,7 @@ class EdgeServiceApplicationTests {
 	private static final int REDIS_PORT = 6379;
 
 	@Container
-	static GenericContainer<?> redis = new GenericContainer<>(DockerImageName.parse("redis:6"))
+	static GenericContainer<?> redis = new GenericContainer<>(DockerImageName.parse("redis:6.2"))
 			.withExposedPorts(REDIS_PORT);
 
 	@DynamicPropertySource

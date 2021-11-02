@@ -1,4 +1,4 @@
-apiVersion: skaffold/v2beta17
+apiVersion: skaffold/v2beta24
 kind: Config
 metadata:
   name: order-service
@@ -8,19 +8,8 @@ build:
       buildpacks:
         builder: gcr.io/paketo-buildpacks/builder:base
         env:
-          - BP_JVM_VERSION=16.*
+          - BP_JVM_VERSION=17.*
 deploy:
-  helm:
-    releases:
-      - name: polar-postgres-order
-        remoteChart: bitnami/postgresql
-        remote: true
-        setValues:
-          postgresqlUsername: admin
-          postgresqlPassword: admin
-          postgresqlDatabase: polardb_order
-          image.tag: 13
-          service.port: 5433
   kubectl:
     manifests:
       - k8s/*.yml

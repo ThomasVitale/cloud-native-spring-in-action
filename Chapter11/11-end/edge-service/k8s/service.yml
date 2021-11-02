@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: order-service
+  name: edge-service
   labels:
-    app: order-app
+    app: edge-service
 spec:
   type: ClusterIP
   selector:
-    app: order-app
+    app: edge-service
   ports:
   - protocol: TCP
-    port: 9000
+    port: 80
     targetPort: 9000

@@ -1,12 +1,14 @@
 plugins {
-	id 'org.springframework.boot' version '2.5.2'
+	id 'org.springframework.boot' version '2.6.0-RC1'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
 
 group = 'com.polarbookshop'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '16'
+sourceCompatibility = '17'
+
+description = 'Provides functionality for managing the books in the catalog.'
 
 configurations {
 	compileOnly {
@@ -16,10 +18,11 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
 }
 
 ext {
-	set('springCloudVersion', "2020.0.3")
+	set('springCloudVersion', "2021.0.0-M3")
 }
 
 dependencies {
@@ -29,11 +32,10 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	implementation 'org.springframework.retry:spring-retry'
 
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
 
 dependencyManagement {

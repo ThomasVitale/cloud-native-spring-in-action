@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edge-service
+  template:
+    spec:
+      containers:
+        - name: edge-service
+          image: polarbookshop/edge-service:0.0.1-SNAPSHOT
+          imagePullPolicy: Always
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 5" ]
+          ports:
+            - containerPort: 9000
+          env:
+            - name: CATALOG_SERVICE_URL
+              value: http://catalog-service
+            - name: KEYCLOAK_URL
+              value: http://host.docker.internal
+            - name: ORDER_SERVICE_URL
+              value: http://order-service
+          volumeMounts:
+            - name: edge-service-volume
+              mountPath: /workspace/config
+            - name: edge-service-volume-secret
+              mountPath: /workspace/secrets/edge-service-secret
+      volumes:
+        - name: edge-service-volume
+          configMap:
+            name: edge-service
+        - name: edge-service-volume-secret
+          secret:
+            secretName: edge-service

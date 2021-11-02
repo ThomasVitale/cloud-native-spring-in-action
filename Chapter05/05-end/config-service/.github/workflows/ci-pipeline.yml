@@ -3,14 +3,18 @@ on: [push]
 
 jobs:
   build:
-    name: Run unit and integration tests
+    name: Build
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Set up JDK 16
-        uses: actions/setup-java@v1
+      - name: Set up JDK
+        uses: actions/setup-java@v2
         with:
-          java-version: 16
-      - name: Build and test application
-        run: ./gradlew build
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - name: Compile and test application
+        run: |
+          chmod +x gradlew
+          ./gradlew build

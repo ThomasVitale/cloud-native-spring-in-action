@@ -1,7 +1,17 @@
 server:
   port: 8888
+  shutdown: graceful
+  tomcat:
+    connection-timeout: 2s
+    threads:
+      max: 50
+      min-spare: 5
 
 spring:
+  application:
+    name: config-service
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
   cloud:
     config:
       server:
