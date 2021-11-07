@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-service
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9001"
+    spec:
+      terminationGracePeriodSeconds: 20
+      containers:
+        - name: order-service
+          image: polarbookshop/order-service:0.0.1-SNAPSHOT
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 5" ]
+          ports:
+            - containerPort: 9002
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 9002
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 9002
+            initialDelaySeconds: 5
+            periodSeconds: 15
+          volumeMounts:
+            - name: order-service-volume
+              mountPath: /workspace/config
+            - name: order-service-volume-secret
+              mountPath: /workspace/secrets/order-service-secret
+      volumes:
+        - name: order-service-volume
+          configMap:
+            name: order-service
+        - name: order-service-volume-secret
+          secret:
+            secretName: order-service

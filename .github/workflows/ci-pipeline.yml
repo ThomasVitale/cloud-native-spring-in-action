@@ -78,7 +78,17 @@ jobs:
           Chapter13/13-end/config-service,
           Chapter13/13-end/order-service,
           Chapter13/13-end/edge-service,
-          Chapter13/13-end/dispatcher-service
+          Chapter13/13-end/dispatcher-service,
+          Chapter14/14-begin/catalog-service,
+          Chapter14/14-begin/config-service,
+          Chapter14/14-begin/order-service,
+          Chapter14/14-begin/edge-service,
+          Chapter14/14-begin/dispatcher-service,
+          Chapter14/14-end/catalog-service,
+          Chapter14/14-end/config-service,
+          Chapter14/14-end/order-service,
+          Chapter14/14-end/edge-service,
+          Chapter14/14-end/dispatcher-service,
         ]
     steps:
       - name: Checkout repository

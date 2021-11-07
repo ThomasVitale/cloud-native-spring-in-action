@@ -1,0 +1,15 @@
+apiVersion: skaffold/v2beta24
+kind: Config
+metadata:
+  name: catalog-service
+build:
+  artifacts:
+    - image: polarbookshop/catalog-service
+      buildpacks:
+        builder: gcr.io/paketo-buildpacks/builder:base
+        env:
+          - BP_JVM_VERSION=17.*
+deploy:
+  kustomize:
+    paths:
+      - k8s

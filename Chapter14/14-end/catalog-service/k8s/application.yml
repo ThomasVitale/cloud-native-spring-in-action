@@ -1,0 +1,10 @@
+spring:
+  config:
+    import: optional:configserver:,configtree:/workspace/secrets/*/
+  cloud:
+    config:
+      uri: http://config-service
+  datasource:
+    url: jdbc:postgresql://polar-postgres-catalog/polardb_catalog
+  rabbitmq:
+    host: polar-rabbitmq
