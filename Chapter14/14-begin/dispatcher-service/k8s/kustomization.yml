@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+commonLabels:
+  app: dispatcher-service
+
+resources:
+  - deployment.yml
+  - service.yml
+
+configMapGenerator:
+  - name: dispatcher-service
+    files:
+      - application.yml
+    options:
+      disableNameSuffixHash: true
+      labels:
+        spring.cloud.kubernetes.config: "true"
+
+secretGenerator:
+  - name: dispatcher-service
+    literals:
+      - spring.cloud.config.username=user
+      - spring.cloud.config.password=password
+    options:
+      disableNameSuffixHash: true
+      labels:
+        spring.cloud.kubernetes.secret: "true"

@@ -1,0 +1,33 @@
+plugins {
+  id "com.github.node-gradle.node" version "3.1.1"
+}
+
+task lintAngular(type: NpxTask) {
+    command = "ng"
+    args = ["lint"]
+    dependsOn(tasks.npmInstall)
+    inputs.dir("src")
+    inputs.dir("node_modules")
+    inputs.files("angular.json", ".browserslistrc", "tsconfig.json", "tsconfig.app.json", "tsconfig.spec.json",
+        "tslint.json")
+    outputs.upToDateWhen { true }
+}
+
+task testAngular(type: NpxTask) {
+    command = "ng"
+    args = ["test"]
+    dependsOn(tasks.npmInstall)
+    inputs.dir("src")
+    inputs.dir("node_modules")
+    inputs.files("angular.json", ".browserslistrc", "tsconfig.json", "tsconfig.spec.json", "karma.conf.js")
+    outputs.upToDateWhen { true }
+}
+
+task buildAngular(type: NpxTask) {
+    command = "ng"
+    args = ["build"]
+    dependsOn(tasks.npmInstall)
+    inputs.dir(project.fileTree("src").exclude("**/*.spec.ts"))
+    inputs.dir("node_modules")
+    inputs.files("angular.json", ".browserslistrc", "tsconfig.json", "tsconfig.app.json")
+}

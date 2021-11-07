@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dispatcher-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dispatcher-service
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9003"
+    spec:
+      containers:
+        - name: dispatcher-service
+          image: polarbookshop/dispatcher-service:0.0.1-SNAPSHOT
+          imagePullPolicy: Always
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 5" ]
+          ports:
+            - containerPort: 9003
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 9003
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 9003
+            initialDelaySeconds: 5
+            periodSeconds: 15
+          volumeMounts:
+            - name: dispatcher-service-volume
+              mountPath: /workspace/config
+            - name: dispatcher-service-volume-secret
+              mountPath: /workspace/secrets/dispatcher-service-secret
+      volumes:
+        - name: dispatcher-service-volume
+          configMap:
+            name: dispatcher-service
+        - name: dispatcher-service-volume-secret
+          secret:
+            secretName: dispatcher-service

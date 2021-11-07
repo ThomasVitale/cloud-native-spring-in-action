@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-service
+  template:
+    spec:
+      containers:
+        - name: order-service
+          image: polarbookshop/order-service:0.0.1-SNAPSHOT
+          imagePullPolicy: Always
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 5" ]
+          ports:
+            - containerPort: 9002
+          env:
+            - name: KEYCLOAK_URL
+              value: http://polar-keycloak
+          volumeMounts:
+            - name: order-service-volume
+              mountPath: /workspace/config
+            - name: order-service-volume-secret
+              mountPath: /workspace/secrets/order-service-secret
+      volumes:
+        - name: order-service-volume
+          configMap:
+            name: order-service
+        - name: order-service-volume-secret
+          secret:
+            secretName: order-service

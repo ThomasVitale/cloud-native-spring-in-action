@@ -1,0 +1,35 @@
+server:
+  port: 8888
+  shutdown: graceful
+  tomcat:
+    connection-timeout: 2s
+    threads:
+      max: 50
+      min-spare: 5
+
+spring:
+  application:
+    name: config-service
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
+  cloud:
+    bus:
+      enabled: false
+    config:
+      server:
+        git:
+          uri: https://github.com/PolarBookshop/config-repo
+          default-label: main
+          timeout: 5
+          clone-on-start: true
+          force-pull: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: user
+    password: password
+    connection-timeout: 5s
+  security:
+    user:
+      name: user
+      password: password
