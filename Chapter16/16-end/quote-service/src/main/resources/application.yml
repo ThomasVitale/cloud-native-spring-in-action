@@ -1,0 +1,6 @@
+server:
+  port: 9101
+
+spring:
+  application:
+    name: quote-service
