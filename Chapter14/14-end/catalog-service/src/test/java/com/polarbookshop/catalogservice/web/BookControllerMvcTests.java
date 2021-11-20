@@ -6,6 +6,7 @@ import com.polarbookshop.catalogservice.domain.Book;
 import com.polarbookshop.catalogservice.domain.BookNotFoundException;
 import com.polarbookshop.catalogservice.domain.BookService;
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -17,7 +18,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(BookController.class)
@@ -98,11 +102,11 @@ class BookControllerMvcTests {
     }
 
     @Test
-    void whenDeleteBookNotAuthenticatedThenShouldReturn403() throws Exception {
+    void whenDeleteBookNotAuthenticatedThenShouldReturn401() throws Exception {
         var isbn = "7373731394";
         mockMvc
                 .perform(delete("/books/" + isbn))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -139,7 +143,7 @@ class BookControllerMvcTests {
                 .perform(post("/books")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(bookToCreate)))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -169,14 +173,14 @@ class BookControllerMvcTests {
     }
 
     @Test
-    void whenPutBookAndNotAuthenticatedThenShouldReturn403() throws Exception {
+    void whenPutBookAndNotAuthenticatedThenShouldReturn401() throws Exception {
         var isbn = "7373731394";
         var bookToCreate = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
         mockMvc
                 .perform(put("/books/" + isbn)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(bookToCreate)))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 
 }

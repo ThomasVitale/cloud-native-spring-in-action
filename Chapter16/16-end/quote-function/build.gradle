@@ -2,8 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.6.0'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
-	id 'org.springframework.experimental.aot' version '0.11.0-M1'
-	id 'org.graalvm.buildtools.native' version '0.9.3'
+	id 'org.springframework.experimental.aot' version '0.11.0-RC1'
 }
 
 group = 'com.polarbookshop'
@@ -45,8 +44,4 @@ bootBuildImage {
 	builder = 'paketobuildpacks/builder:tiny'
 	environment = ['BP_NATIVE_IMAGE': 'true']
 	imageName = "polarbookshop/${project.name}:${project.version}"
-}
-
-nativeBuild {
-	classpath processAotResources.outputs, compileAotJava.outputs
 }

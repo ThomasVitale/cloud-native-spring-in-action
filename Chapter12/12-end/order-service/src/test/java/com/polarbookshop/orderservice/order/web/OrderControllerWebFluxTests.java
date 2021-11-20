@@ -17,7 +17,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.csrf;
 import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.mockJwt;
 
 @WebFluxTest(OrderController.class)
@@ -42,7 +41,6 @@ class OrderControllerWebFluxTests {
 
 		webClient
 				.mutateWith(mockJwt().authorities(new SimpleGrantedAuthority("ROLE_customer")))
-				.mutateWith(csrf())
 				.post()
 				.uri("/orders/")
 				.bodyValue(orderRequest)
