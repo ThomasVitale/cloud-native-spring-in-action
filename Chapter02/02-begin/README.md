@@ -9,7 +9,7 @@ Either way, you'll get a zip archive that you can extract and import in your IDE
 From the [Spring Initialzr](https://start.spring.io/) website, choose the following:
 
 * _Project_: Gradle (or Maven)
-* _Spring Boot_: 2.6.0-RC1 (or the latest production version available)
+* _Spring Boot_: 2.6.0 (or the latest production version available)
 * _Group_: `com.polarbookshop`
 * _Artifact_: `catalog-service`
 * _Name_: catalog-service
@@ -24,11 +24,11 @@ Then, click "Generate" to download the `catalog-service.zip` archive containing 
 If you prefer using the REST API offered by Spring Initializr, run the following command to initialize a project with Gradle as the build tool:
 
 ```bash
-curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=catalog-service -d name=catalog-service -d packageName=com.polarbookshop.catalogservice -d dependencies=web -d javaVersion=16 -d bootVersion=2.6.0-RC1 -d type=gradle-project -o catalog-service.zip
+curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=catalog-service -d name=catalog-service -d packageName=com.polarbookshop.catalogservice -d dependencies=web -d javaVersion=16 -d bootVersion=2.6.0 -d type=gradle-project -o catalog-service.zip
 ```
 
 For using Maven instead of Gradle:
 
 ```bash
-curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=catalog-service -d name=catalog-service -d packageName=com.polarbookshop.catalogservice -d dependencies=web -d javaVersion=17 -d bootVersion=2.6.0-RC1 -o catalog-service.zip
+curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=catalog-service -d name=catalog-service -d packageName=com.polarbookshop.catalogservice -d dependencies=web -d javaVersion=17 -d bootVersion=2.6.0 -o catalog-service.zip
 ```
