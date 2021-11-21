@@ -37,6 +37,22 @@ Gradle | Maven
 `./gradlew bootRun` | `./mvnw spring-boot:run`
 `./gradlew bootBuildImage` | `./mvnw spring-boot:build-image`
 
+## Useful Tools
+
+When working with Kubernetes manifests, you can install a dedicate plugin in your IDE to help you validating the syntax
+and identifying mistakes.
+
+* [Kubernetes Plugin for IntelliJ IDEA](https://plugins.jetbrains.com/plugin/10485-kubernetes)
+* [Kubernetes Extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-kubernetes-tools)
+
+## Book forum
+
+Feel free to submit questions, feedback, or errata to the forum dedicated to "Cloud Native Spring in Action": https://livebook.manning.com/book/cloud-native-spring-in-action/.
+
+## Contact the author
+
+You are very welcome to contact me for questions, feedback, or suggestions. Feel free to reach out to me on [Twitter](https://twitter.com/vitalethomas), [LinkedIn](https://www.linkedin.com/in/vitalethomas), or here on [GitHub](https://github.com/ThomasVitale/).
+
 ## 1. Introduction to Cloud Native
 
 ## 2. Cloud native patterns and technologies
@@ -108,11 +124,3 @@ Gradle | Maven
 
 * [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter16/16-begin)
 * [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter16/16-end)
-
-## Book forum
-
-Feel free to submit questions, feedback, or errata to the forum dedicated to "Cloud Native Spring in Action": https://livebook.manning.com/book/cloud-native-spring-in-action/.
-
-## Contact the author
-
-You are very welcome to contact me for questions, feedback, or suggestions. Feel free to reach out to me on [Twitter](https://twitter.com/vitalethomas), [LinkedIn](https://www.linkedin.com/in/vitalethomas), or here on [GitHub](https://github.com/ThomasVitale/).
