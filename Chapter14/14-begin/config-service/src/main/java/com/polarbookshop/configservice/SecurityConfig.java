@@ -12,9 +12,9 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain springSecurityFilter(HttpSecurity http) throws Exception {
 		return http
-				.csrf().disable()
-				.authorizeRequests(request -> request.anyRequest().authenticated())
+				.authorizeHttpRequests(request -> request.anyRequest().authenticated())
 				.httpBasic(Customizer.withDefaults())
+				.csrf(AbstractHttpConfigurer::disable)
 				.build();
 	}
 
