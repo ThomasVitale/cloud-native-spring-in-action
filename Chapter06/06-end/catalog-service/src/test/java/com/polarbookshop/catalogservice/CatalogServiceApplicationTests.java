@@ -40,6 +40,7 @@ class CatalogServiceApplicationTests {
                     System.out.println(actualBook);
                     System.out.println(expectedBook);
                     assertThat(actualBook.isbn()).isEqualTo(expectedBook.isbn());
+                    assertThat(actualBook.createdDate()).isEqualTo(expectedBook.createdDate());
                 });
     }
 
