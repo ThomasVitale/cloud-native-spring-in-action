@@ -24,7 +24,7 @@ Then, click "Generate" to download the `catalog-service.zip` archive containing 
 If you prefer using the REST API offered by Spring Initializr, run the following command to initialize a project with Gradle as the build tool:
 
 ```bash
-curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=catalog-service -d name=catalog-service -d packageName=com.polarbookshop.catalogservice -d dependencies=web -d javaVersion=16 -d bootVersion=2.6.0 -d type=gradle-project -o catalog-service.zip
+curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=catalog-service -d name=catalog-service -d packageName=com.polarbookshop.catalogservice -d dependencies=web -d javaVersion=17 -d bootVersion=2.6.0 -d type=gradle-project -o catalog-service.zip
 ```
 
 For using Maven instead of Gradle:
