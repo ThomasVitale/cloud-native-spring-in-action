@@ -35,7 +35,12 @@ class CatalogServiceApplicationTests {
                 .uri("/books/" + bookIsbn)
                 .exchange()
                 .expectStatus().is2xxSuccessful()
-                .expectBody(Book.class).isEqualTo(expectedBook);
+                .expectBody(Book.class).value(actualBook -> {
+                    assertThat(actualBook).isNotNull();
+                    System.out.println(actualBook);
+                    System.out.println(expectedBook);
+                    assertThat(actualBook.isbn()).isEqualTo(expectedBook.isbn());
+                });
     }
 
     @Test
