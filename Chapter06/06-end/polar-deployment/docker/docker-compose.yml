@@ -6,7 +6,7 @@ services:
   catalog-service:
     depends_on:
       - polar-postgres-catalog
-    image: "<your_dockerhub_username>/catalog-service:0.0.1-SNAPSHOT"
+    image: "catalog-service"
     container_name: "catalog-service"
     ports:
       - 9001:9001
@@ -21,7 +21,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres-catalog:5432/polardb_catalog
   
   config-service:
-    image: "<your_dockerhub_username>/config-service:0.0.1-SNAPSHOT"
+    image: "config-service"
     container_name: "config-service"
     ports:
       - 8888:8888

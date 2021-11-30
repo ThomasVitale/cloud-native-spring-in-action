@@ -1,10 +1,10 @@
-apiVersion: skaffold/v2beta24
+apiVersion: skaffold/v2beta26
 kind: Config
 metadata:
   name: config-service
 build:
   artifacts:
-    - image: polarbookshop/config-service
+    - image: config-service
       buildpacks:
         builder: gcr.io/paketo-buildpacks/builder:base
         env:

@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: config-service
-          image: polarbookshop/config-service:0.0.1-SNAPSHOT
-          imagePullPolicy: Always
+          image: config-service
+          imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:
               exec:
