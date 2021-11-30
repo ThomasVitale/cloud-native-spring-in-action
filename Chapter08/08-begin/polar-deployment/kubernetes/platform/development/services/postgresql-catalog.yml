@@ -3,15 +3,15 @@ kind: Deployment
 metadata:
   name: polar-postgres-catalog
   labels:
-    app: polar-postgres-catalog
+    db: polar-postgres-catalog
 spec:
   selector:
     matchLabels:
-      app: polar-postgres-catalog
+      db: polar-postgres-catalog
   template:
     metadata:
       labels:
-        app: polar-postgres-catalog
+        db: polar-postgres-catalog
     spec:
       containers:
         - name: polar-postgres-catalog
@@ -38,11 +38,11 @@ kind: Service
 metadata:
   name: polar-postgres-catalog
   labels:
-    app: polar-postgres-catalog
+    db: polar-postgres-catalog
 spec:
   type: ClusterIP
   selector:
-    app: polar-postgres-catalog
+    db: polar-postgres-catalog
   ports:
   - protocol: TCP
     port: 5432

@@ -6,7 +6,7 @@ services:
   catalog-service:
     depends_on:
       - polar-postgres-catalog
-    image: "<your_dockerhub_username>/catalog-service:0.0.1-SNAPSHOT"
+    image: "catalog-service"
     container_name: "catalog-service"
     ports:
       - 9001:9001
@@ -23,7 +23,7 @@ services:
   order-service:
     depends_on:
       - polar-postgres-order
-    image: "<your_dockerhub_username>/order-service:0.0.1-SNAPSHOT"
+    image: "order-service"
     container_name: "order-service"
     ports:
       - 9002:9002
@@ -38,7 +38,7 @@ services:
       - SPRING_FLYWAY_URL=jdbc:postgresql://polar-postgres-order:5432/polardb_order
   
   config-service:
-    image: "<your_dockerhub_username>/config-service:0.0.1-SNAPSHOT"
+    image: "config-service"
     container_name: "config-service"
     ports:
       - 8888:8888

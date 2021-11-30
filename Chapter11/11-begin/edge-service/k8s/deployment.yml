@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: edge-service
-          image: polarbookshop/edge-service:0.0.1-SNAPSHOT
-          imagePullPolicy: Always
+          image: edge-service
+          imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:
               exec:

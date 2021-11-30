@@ -45,8 +45,8 @@ dependencyManagement {
 }
 
 bootBuildImage {
-	imageName = "polarbookshop/${project.name}:${project.version}"
-	environment = ["BP_JVM_VERSION": "17.*"]
+	imageName = "${project.name}:${project.version}"
+	tags = ["${project.name}:latest"]
 
 	docker {
 		publishRegistry {

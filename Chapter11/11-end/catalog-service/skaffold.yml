@@ -4,7 +4,7 @@ metadata:
   name: catalog-service
 build:
   artifacts:
-    - image: polarbookshop/catalog-service
+    - image: catalog-service
       buildpacks:
         builder: gcr.io/paketo-buildpacks/builder:base
         env:
