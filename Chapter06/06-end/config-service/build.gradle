@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.6.0'
+    id 'org.springframework.boot' version '2.6.1'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
 }
@@ -31,7 +31,8 @@ dependencyManagement {
 }
 
 bootBuildImage {
-    imageName = "polarbookshop/${project.name}:${project.version}"
+    imageName = "${project.name}:${project.version}"
+    tags = ["${project.name}:latest"]
     environment = ["BP_JVM_VERSION": "17.*"]
 
     docker {
