@@ -53,7 +53,8 @@ springBoot {
 }
 
 bootBuildImage {
-	imageName = "polarbookshop/${project.name}:${project.version}"
+	imageName = "${project.name}:${project.version}"
+	tags = ["${project.name}:latest"]
 	environment = ["BP_JVM_VERSION": "17.*"]
 
 	docker {

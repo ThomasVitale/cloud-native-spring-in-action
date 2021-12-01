@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
         - name: quote-function
-          image: <your_dockerhub_username>/quote-function:0.0.1-SNAPSHOT
+          image: quote-function
           ports:
             - containerPort: 9102
           resources:

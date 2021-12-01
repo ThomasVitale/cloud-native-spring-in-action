@@ -13,17 +13,9 @@ configMapGenerator:
   - name: edge-service
     files:
       - application.yml
-    options:
-      disableNameSuffixHash: true
-      labels:
-        spring.cloud.kubernetes.config: "true"
 
 secretGenerator:
   - name: edge-service
     literals:
       - spring.cloud.config.username=user
       - spring.cloud.config.password=password
-    options:
-      disableNameSuffixHash: true
-      labels:
-        spring.cloud.kubernetes.secret: "true"

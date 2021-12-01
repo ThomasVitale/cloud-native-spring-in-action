@@ -4,7 +4,7 @@ metadata:
   name: edge-service
 build:
   artifacts:
-    - image: polarbookshop/edge-service
+    - image: edge-service
       buildpacks:
         builder: gcr.io/paketo-buildpacks/builder:base
         env:

@@ -4,7 +4,7 @@ metadata:
   name: config-service
 build:
   artifacts:
-    - image: polarbookshop/config-service
+    - image: config-service
       buildpacks:
         builder: gcr.io/paketo-buildpacks/builder:base
         env:

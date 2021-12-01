@@ -12,17 +12,9 @@ configMapGenerator:
   - name: catalog-service
     files:
       - application.yml
-    options:
-      disableNameSuffixHash: true
-      labels:
-        spring.cloud.kubernetes.config: "true"
 
 secretGenerator:
   - name: catalog-service
     literals:
       - spring.cloud.config.username=user
       - spring.cloud.config.password=password
-    options:
-      disableNameSuffixHash: true
-      labels:
-        spring.cloud.kubernetes.secret: "true"

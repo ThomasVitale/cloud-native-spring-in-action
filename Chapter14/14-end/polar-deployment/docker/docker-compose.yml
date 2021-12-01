@@ -9,7 +9,7 @@ services:
       - polar-keycloak
       - polar-postgres-catalog
       - tempo
-    image: "<your_dockerhub_username>/catalog-service:0.0.1-SNAPSHOT"
+    image: "catalog-service"
     container_name: "catalog-service"
     ports:
       - 9001:9001
@@ -24,6 +24,7 @@ services:
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres-catalog:5432/polardb_catalog
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
+      - SPRING_ZIPKIN_ENABLED=true
       - ZIPKIN_URL=http://tempo:9411
     logging:
       driver: fluentd
@@ -37,7 +38,7 @@ services:
       - polar-postgres-order
       - polar-rabbitmq
       - tempo
-    image: "<your_dockerhub_username>/order-service:0.0.1-SNAPSHOT"
+    image: "order-service"
     container_name: "order-service"
     ports:
       - 9002:9002
@@ -52,6 +53,7 @@ services:
       - SPRING_R2DBC_URL=r2dbc:postgresql://polar-postgres-order:5432/polardb_order
       - SPRING_FLYWAY_URL=jdbc:postgresql://polar-postgres-order:5432/polardb_order
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
+      - SPRING_ZIPKIN_ENABLED=true
       - ZIPKIN_URL=http://tempo:9411
     logging:
       driver: fluentd
@@ -63,7 +65,7 @@ services:
       - fluent-bit
       - polar-rabbitmq
       - tempo
-    image: "<your_dockerhub_username>/dispatcher-service:0.0.1-SNAPSHOT"
+    image: "dispatcher-service"
     container_name: dispatcher-service
     ports:
       - 9003:9003
@@ -74,6 +76,7 @@ services:
       - BPL_DEBUG_PORT=8003
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
+      - SPRING_ZIPKIN_ENABLED=true
       - ZIPKIN_URL=http://tempo:9411
     logging:
       driver: fluentd
@@ -86,7 +89,7 @@ services:
       - polar-keycloak
       - polar-redis
       - tempo
-    image: "<your_dockerhub_username>/edge-service:0.0.1-SNAPSHOT"
+    image: "edge-service"
     container_name: "edge-service"
     ports:
       - 9000:9000
@@ -101,6 +104,7 @@ services:
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
       - SPRING_REDIS_HOST=polar-redis
+      - SPRING_ZIPKIN_ENABLED=true
       - ZIPKIN_URL=http://tempo:9411
     logging:
       driver: fluentd
@@ -111,7 +115,7 @@ services:
     depends_on:
       - fluent-bit
       - tempo
-    image: "<your_dockerhub_username>/config-service:0.0.1-SNAPSHOT"
+    image: "config-service"
     container_name: "config-service"
     ports:
       - 8888:8888
@@ -124,6 +128,7 @@ services:
       - BPL_DEBUG_PORT=9888
       - ENCRYPT_KEY=sharedkey
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
+      - SPRING_ZIPKIN_ENABLED=true
       - ZIPKIN_URL=http://tempo:9411
     logging:
       driver: fluentd
@@ -169,7 +174,7 @@ services:
       - RABBITMQ_DEFAULT_PASS=password
   
   polar-keycloak:
-    image: jboss/keycloak:15.0.1
+    image: quay.io/keycloak/keycloak:15.0.1
     container_name: "polar-keycloak"
     volumes:
       - ./keycloak:/opt/jboss/keycloak/imports

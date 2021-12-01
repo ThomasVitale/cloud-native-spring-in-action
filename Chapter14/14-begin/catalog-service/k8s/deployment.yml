@@ -11,8 +11,8 @@ spec:
     spec:
       containers:
         - name: catalog-service
-          image: polarbookshop/catalog-service:0.0.1-SNAPSHOT
-          imagePullPolicy: Always
+          image: catalog-service
+          imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:
               exec:

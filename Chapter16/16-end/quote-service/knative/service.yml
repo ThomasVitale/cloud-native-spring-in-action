@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
         - name: quote-service
-          image: <your_dockerhub_username>/quote-service:0.0.1-SNAPSHOT
+          image: quote-service
           ports:
             - containerPort: 9101
           resources:

@@ -70,6 +70,7 @@ spring:
       probability: 1.0
   zipkin:
     base-url: ${ZIPKIN_URL:http://localhost:9411/}
+    enabled: false
 
 polar:
   catalog-service-url: "http://localhost:9001"

@@ -103,6 +103,7 @@ spring:
       probability: 1.0
   zipkin:
     base-url: ${ZIPKIN_URL:http://localhost:9411/}
+    enabled: false
 
 resilience4j:
   circuitbreaker:

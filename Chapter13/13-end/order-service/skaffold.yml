@@ -4,7 +4,7 @@ metadata:
   name: order-service
 build:
   artifacts:
-    - image: polarbookshop/order-service
+    - image: order-service
       buildpacks:
         builder: gcr.io/paketo-buildpacks/builder:base
         env:

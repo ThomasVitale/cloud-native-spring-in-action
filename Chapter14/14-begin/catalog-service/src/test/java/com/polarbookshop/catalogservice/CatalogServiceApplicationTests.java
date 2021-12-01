@@ -36,7 +36,7 @@ class CatalogServiceApplicationTests {
     private WebTestClient webTestClient;
 
     @Container
-    private static final KeycloakContainer keycloakContainer = new KeycloakContainer("jboss/keycloak:15.0.1")
+    private static final KeycloakContainer keycloakContainer = new KeycloakContainer("quay.io/keycloak/keycloak:15.0.1")
        .withRealmImportFile("keycloak_config.json");
 
     @DynamicPropertySource

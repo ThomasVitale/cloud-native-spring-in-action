@@ -43,5 +43,6 @@ springAot {
 bootBuildImage {
 	builder = 'paketobuildpacks/builder:tiny'
 	environment = ['BP_NATIVE_IMAGE': 'true']
-	imageName = "polarbookshop/${project.name}:${project.version}"
+	imageName = "${project.name}:${project.version}"
+	tags = ["${project.name}:latest"]
 }

@@ -11,8 +11,8 @@ spec:
     spec:
       containers:
         - name: dispatcher-service
-          image: polarbookshop/dispatcher-service:0.0.1-SNAPSHOT
-          imagePullPolicy: Always
+          image: dispatcher-service
+          imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:
               exec:
