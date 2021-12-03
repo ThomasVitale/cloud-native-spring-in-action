@@ -12,11 +12,10 @@ description = 'Provides functionality for centralizing the application configura
 
 repositories {
     mavenCentral()
-    maven { url 'https://repo.spring.io/milestone' }
 }
 
 ext {
-    set('springCloudVersion', "2021.0.0-RC1")
+    set('springCloudVersion', "2021.0.0")
 }
 
 dependencies {

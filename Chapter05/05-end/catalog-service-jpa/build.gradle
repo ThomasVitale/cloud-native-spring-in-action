@@ -18,11 +18,10 @@ configurations {
 
 repositories {
 	mavenCentral()
-	maven { url 'https://repo.spring.io/milestone' }
 }
 
 ext {
-	set('springCloudVersion', "2021.0.0-RC1")
+	set('springCloudVersion', "2021.0.0")
 	set('testcontainersVersion', "1.16.2")
 }
 
