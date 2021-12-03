@@ -12,10 +12,11 @@ description = 'Provides functionality for dispatching orders.'
 
 repositories {
 	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
 }
 
 ext {
-	set('springCloudVersion', "2021.0.0")
+	set('springCloudVersion', "2021.0.0-M3")
 }
 
 dependencies {
