@@ -21,6 +21,8 @@ ext {
 dependencies {
 	//implementation 'org.springframework.boot:spring-boot-starter'
 	//implementation 'org.springframework.cloud:spring-cloud-function-context'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
 	implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
