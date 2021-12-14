@@ -1,0 +1,44 @@
+name: CD Pipeline
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - name: Compile and test application
+        run: |
+          chmod +x gradlew
+          ./gradlew build
+  package:
+    name: Package
+    needs: [build]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - name: Get project version
+        uses: thecodemonkey/action-get-gradle-version@master
+        id: version
+      - name: Containerize and publish image
+        run: |
+          chmod +x gradlew
+          ./gradlew bootBuildImage \
+            --imageName docker.io/polarbookshop/order-service:${{ steps.version.outputs.version }} \
+            --publishImage \
+            -PregistryUrl=docker.io \
+            -PregistryUsername=polarbookshop \
+            -PregistryToken=${{ secrets.REGISTRY_TOKEN }}

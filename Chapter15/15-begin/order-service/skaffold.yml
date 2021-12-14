@@ -1,0 +1,15 @@
+apiVersion: skaffold/v2beta26
+kind: Config
+metadata:
+  name: order-service
+build:
+  artifacts:
+    - image: order-service
+      buildpacks:
+        builder: gcr.io/paketo-buildpacks/builder:base
+        env:
+          - BP_JVM_VERSION=17.*
+deploy:
+  kustomize:
+    paths:
+      - k8s

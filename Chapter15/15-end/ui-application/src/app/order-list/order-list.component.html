@@ -1,0 +1,24 @@
+<div class="grid-container">
+    <h1 class="mat-h1">My Orders</h1>
+    <mat-grid-list [cols]="colNumber | async" rowHeight="380px">
+      <mat-grid-tile *ngFor="let order of orders" colspan="1" rowspan="1">
+        <mat-card class="dashboard-card">
+          <mat-card-header>
+            <mat-card-title>
+              Order #{{order.id}}
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="dashboard-card-content">
+            <mat-list role="list">
+                <mat-list-item role="listitem">Book: {{ order.bookName }}</mat-list-item>
+                <mat-list-item role="listitem">ISBN: {{ order.bookIsbn }}</mat-list-item>
+                <mat-list-item role="listitem">Price: ${{ order.bookPrice }}</mat-list-item>
+                <mat-list-item role="listitem">Quantity: {{ order.quantity }}</mat-list-item>
+                <mat-list-item role="listitem">Status: {{ order.status }}</mat-list-item>
+                <mat-list-item role="listitem">Total: ${{ (order.bookPrice * order.quantity).toPrecision(4) }}</mat-list-item>
+              </mat-list>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
