@@ -1,8 +1,8 @@
 name: CD Pipeline
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*'
 
 jobs:
   build:
@@ -33,12 +33,27 @@ jobs:
       - name: Get project version
         uses: thecodemonkey/action-get-gradle-version@master
         id: version
+      - name: Save app version as environment variable
+        run: |
+          echo "APP_VERSION=${{ steps.version.outputs.version }}" >> $GITHUB_ENV
       - name: Containerize and publish image
         run: |
           chmod +x gradlew
           ./gradlew bootBuildImage \
-            --imageName docker.io/polarbookshop/edge-service:${{ steps.version.outputs.version }} \
+            --imageName ghcr.io/polarbookshop/edge-service:${{ env.APP_VERSION }} \
             --publishImage \
-            -PregistryUrl=docker.io \
+            -PregistryUrl=ghcr.io \
             -PregistryUsername=polarbookshop \
-            -PregistryToken=${{ secrets.REGISTRY_TOKEN }}
+            -PregistryToken=${{ secrets.GITHUB_TOKEN }}
+      - name: Trigger application release in the deployment repository
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.ACCESS_TOKEN_REPO }}
+          repository: ${{ github.event.repository.owner.name }}/polar-deployment
+          event-type: release_app_event
+          client-payload: '{
+                "app_image": "ghcr.io/polarbookshop/edge-service",
+                "app_name": "edge-service",
+                "app_tag": "${{ github.ref_name }}",
+                "app_version": "${{ env.APP_VERSION }}"
+              }'

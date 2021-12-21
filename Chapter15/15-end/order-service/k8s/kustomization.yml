@@ -12,9 +12,3 @@ configMapGenerator:
   - name: order-service
     files:
       - application.yml
-
-secretGenerator:
-  - name: order-service
-    literals:
-      - spring.cloud.config.username=user
-      - spring.cloud.config.password=password

@@ -9,6 +9,7 @@ spring:
   cloud:
     bus:
       enabled: false
+      id: ${spring.application.name}:${spring.profiles.active:default}
     config:
       uri: http://localhost:8888
       username: user
@@ -50,7 +51,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: functions, health, heapdump, info, prometheus
+        include: env, functions, health, heapdump, info, prometheus
   endpoint:
     health:
       show-details: always

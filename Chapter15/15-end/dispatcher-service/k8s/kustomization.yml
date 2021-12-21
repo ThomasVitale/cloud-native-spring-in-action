@@ -12,9 +12,3 @@ configMapGenerator:
   - name: dispatcher-service
     files:
       - application.yml
-
-secretGenerator:
-  - name: dispatcher-service
-    literals:
-      - spring.cloud.config.username=user
-      - spring.cloud.config.password=password

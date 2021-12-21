@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.polarbookshop'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.2-SNAPSHOT'
 sourceCompatibility = '17'
 
 description = 'Provides functionality for dispatching orders.'
@@ -55,8 +55,7 @@ springBoot {
 }
 
 bootBuildImage {
-	imageName = "${project.name}:${project.version}"
-	tags = ["${project.name}:latest"]
+	imageName = "${project.name}"
 	environment = ["BP_JVM_VERSION": "17.*"]
 
 	docker {

@@ -14,6 +14,7 @@ spring:
   cloud:
     bus:
       enabled: false
+      id: ${spring.application.name}:${spring.profiles.active:default}
     config:
       uri: http://localhost:8888
       username: user
@@ -97,7 +98,7 @@ spring:
             scope: openid,roles
         provider:
           keycloak:
-            issuer-uri: ${KEYCLOAK_URL:http://localhost:8080}/auth/realms/PolarBookshop
+            issuer-uri: http://localhost:8080/auth/realms/PolarBookshop
   sleuth:
     sampler:
       probability: 1.0
@@ -125,7 +126,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health, heapdump, info, prometheus
+        include: env, health, heapdump, info, prometheus
   endpoint:
     health:
       show-details: always

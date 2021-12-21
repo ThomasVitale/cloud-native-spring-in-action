@@ -8,11 +8,6 @@ spec:
     matchLabels:
       app: order-service
   template:
-    metadata:
-      annotations:
-        prometheus.io/path: /actuator/prometheus
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "9001"
     spec:
       terminationGracePeriodSeconds: 20
       containers:
@@ -40,12 +35,7 @@ spec:
           volumeMounts:
             - name: order-service-volume
               mountPath: /workspace/config
-            - name: order-service-volume-secret
-              mountPath: /workspace/secrets/order-service-secret
       volumes:
         - name: order-service-volume
           configMap:
             name: order-service
-        - name: order-service-volume-secret
-          secret:
-            secretName: order-service

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+spec:
+  template:
+    spec:
+      containers:
+        - name: order-service
+          volumeMounts:
+            - name: config-credentials-volume
+              mountPath: /workspace/secrets/config
+            - name: postgres-order-credentials-volume
+              mountPath: /workspace/secrets/postgres
+            - name: rabbitmq-credentials-volume
+              mountPath: /workspace/secrets/rabbitmq
+      volumes:
+        - name: config-credentials-volume
+          secret:
+            secretName: config-credentials
+        - name: postgres-order-credentials-volume
+          secret:
+            secretName: polar-postgres-order-credentials
+        - name: rabbitmq-credentials-volume
+          secret:
+            secretName: polar-rabbitmq-credentials

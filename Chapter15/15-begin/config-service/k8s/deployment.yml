@@ -8,11 +8,6 @@ spec:
     matchLabels:
       app: config-service
   template:
-    metadata:
-      annotations:
-        prometheus.io/path: /actuator/prometheus
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "8888"
     spec:
       containers:
         - name: config-service
@@ -42,12 +37,7 @@ spec:
           volumeMounts:
             - name: config-service-volume
               mountPath: /workspace/config
-            - name: config-service-volume-secret
-              mountPath: /workspace/secrets/config-service
       volumes:
         - name: config-service-volume
           configMap:
             name: config-service
-        - name: config-service-volume-secret
-          secret:
-            secretName: config-service

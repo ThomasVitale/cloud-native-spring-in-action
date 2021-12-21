@@ -17,6 +17,7 @@ spring:
   cloud:
     bus:
       enabled: false
+      id: ${spring.application.name}:${spring.profiles.active:default}
     config:
       uri: http://localhost:8888
       username: user
@@ -48,8 +49,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${KEYCLOAK_URL:http://localhost:8080}/auth/realms/PolarBookshop
-          # jwk-set-uri: ${KEYCLOAK_URL:http://localhost:8080}/auth/realms/PolarBookshop/protocol/openid-connect/certs
+          issuer-uri: http://localhost:8080/auth/realms/PolarBookshop
+          # jwk-set-uri: http://localhost:8080/auth/realms/PolarBookshop/protocol/openid-connect/certs
   sleuth:
     sampler:
       probability: 1.0
@@ -64,7 +65,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: flyway, health, heapdump, info, prometheus
+        include: env, flyway, health, heapdump, info, prometheus
   endpoint:
     health:
       show-details: always

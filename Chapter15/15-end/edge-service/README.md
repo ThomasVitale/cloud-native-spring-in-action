@@ -13,5 +13,5 @@
 After building the application, you can also run it from the Java CLI:
 
 ```bash
-java -jar build/libs/edge-service-0.0.1-SNAPSHOT.jar
+java -jar build/libs/edge-service-<version>.jar
 ```

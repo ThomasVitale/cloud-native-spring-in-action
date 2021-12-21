@@ -1,0 +1,24 @@
+- op: add
+  path: /metadata/annotations
+  value: 
+    kubernetes.io/ingress.class: addon-http-application-routing
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location ~* "^/actuator" {
+        deny all;
+        return 403;
+      }
+
+- op: add
+  path: /spec/rules/0/host
+  value: 82369d949ea44f80943e.northeurope.aksapp.io
+
+- op: add
+  path: /spec/rules/0/http/paths/0
+  value:
+    path: /monitor
+    pathType: Prefix
+    backend:
+      service:
+        name: config-service
+        port:
+          number: 80

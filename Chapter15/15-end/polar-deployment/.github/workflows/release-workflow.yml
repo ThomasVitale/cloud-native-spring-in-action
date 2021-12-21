@@ -1,0 +1,29 @@
+name: Release Workflow
+
+on:
+  repository_dispatch:
+    types: [release_app_event]
+
+jobs:
+  update-version:
+    name: Update application version
+    runs-on: ubuntu-20.04
+    env:
+      APP_IMAGE: ${{ github.event.client_payload.app_image }}
+      APP_NAME: ${{ github.event.client_payload.app_name }}
+      APP_TAG: ${{ github.event.client_payload.app_tag }}
+      APP_VERSION: ${{ github.event.client_payload.app_version }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Update image version
+        run: |
+          cd kubernetes/applications/${{ env.APP_NAME }}/production
+          kustomize edit set image ${{ env.APP_NAME }}=${{ env.APP_IMAGE }}:${{ env.APP_VERSION }}
+          sed -i 's/v[0-9].[0-9].[0-9]/${{ env.APP_TAG }}/' kustomization.yaml
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: "Update ${{ env.APP_NAME }} to version ${{ env.APP_VERSION }}"
+          branch: new_release_${{ env.APP_NAME }}-${{ env.APP_VERSION }}
+          title: 'Update ${{ env.APP_NAME }} to version ${{ env.APP_VERSION }}'
+          body: This PR was automatically created.
