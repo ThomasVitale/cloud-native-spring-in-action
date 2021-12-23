@@ -17,9 +17,9 @@ patches:
 
 configMapGenerator:
 - behavior: merge
-  name: edge-service
   files:
   - application-prod.yml
+  name: edge-service
 
 images:
 - name: edge-service
@@ -27,5 +27,5 @@ images:
   newTag: 0.0.1
 
 replicas:
-- name: edge-service
-  count: 1
+- count: 1
+  name: edge-service

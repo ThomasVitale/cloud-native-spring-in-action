@@ -17,7 +17,7 @@ spec:
       volumes:
         - name: config-credentials-volume
           secret:
-            secretName: config-credentials
+            secretName: config-client-credentials
         - name: postgres-order-credentials-volume
           secret:
             secretName: polar-postgres-order-credentials

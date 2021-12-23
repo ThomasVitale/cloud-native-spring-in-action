@@ -11,9 +11,9 @@ patches:
 
 configMapGenerator:
 - behavior: merge
-  name: config-service
   files:
   - application-prod.yml
+  name: config-service
 
 images:
 - name: config-service
@@ -21,5 +21,5 @@ images:
   newTag: 0.0.1
 
 replicas:
-- name: config-service
-  count: 1
+- count: 1
+  name: config-service

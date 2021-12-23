@@ -19,7 +19,7 @@ spec:
       volumes:
         - name: config-credentials-volume
           secret:
-            secretName: config-credentials
+            secretName: config-client-credentials
         - name: polar-keycloak-client-credentials-volume
           secret:
             secretName: polar-keycloak-client-credentials
