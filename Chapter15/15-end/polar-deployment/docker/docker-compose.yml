@@ -24,7 +24,7 @@ services:
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres-catalog:5432/polardb_catalog
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://polar-keycloak:8080/auth/realms/PolarBookshop
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://host.docker.internal:8080/auth/realms/PolarBookshop
       - SPRING_ZIPKIN_ENABLED=true
       - ZIPKIN_URL=http://tempo:9411
     logging:
@@ -53,7 +53,7 @@ services:
       - SPRING_R2DBC_URL=r2dbc:postgresql://polar-postgres-order:5432/polardb_order
       - SPRING_FLYWAY_URL=jdbc:postgresql://polar-postgres-order:5432/polardb_order
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://polar-keycloak:8080/auth/realms/PolarBookshop
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://host.docker.internal:8080/auth/realms/PolarBookshop
       - SPRING_ZIPKIN_ENABLED=true
       - ZIPKIN_URL=http://tempo:9411
     logging:
