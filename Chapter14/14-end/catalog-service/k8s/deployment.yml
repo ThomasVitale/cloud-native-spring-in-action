@@ -8,11 +8,6 @@ spec:
     matchLabels:
       app: catalog-service
   template:
-    metadata:
-      annotations:
-        prometheus.io/path: /actuator/prometheus
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "9001"
     spec:
       containers:
         - name: catalog-service
@@ -38,18 +33,13 @@ spec:
             periodSeconds: 15
           env:
             - name: BPL_JVM_THREAD_COUNT
-              value: "25"
+              value: "50"
             - name: KEYCLOAK_URL
               value: http://polar-keycloak
           volumeMounts:
             - name: catalog-service-volume
               mountPath: /workspace/config
-            - name: catalog-service-volume-secret
-              mountPath: /workspace/secrets/catalog-service
       volumes:
         - name: catalog-service-volume
           configMap:
             name: catalog-service
-        - name: catalog-service-volume-secret
-          secret:
-            secretName: catalog-service

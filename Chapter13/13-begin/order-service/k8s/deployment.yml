@@ -25,8 +25,6 @@ spec:
           ports:
             - containerPort: 9002
           env:
-            - name: KEYCLOAK_URL
-              value: http://polar-keycloak
             - name: POLAR_CATALOG_SERVICE_URL
               value: http://catalog-service
             - name: SPRING_CLOUD_CONFIG_URI
@@ -37,3 +35,5 @@ spec:
               value: r2dbc:postgresql://polar-postgres-order/polardb_order
             - name: SPRING_FLYWAY_URL
               value: jdbc:postgresql://polar-postgres-order/polardb_order
+            - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
+              value: http://host.docker.internal:8080/auth/realms/PolarBookshop

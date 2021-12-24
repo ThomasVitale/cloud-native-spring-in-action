@@ -21,18 +21,11 @@ spec:
             - containerPort: 9001
           env:
             - name: BPL_JVM_THREAD_COUNT
-              value: "25"
-            - name: KEYCLOAK_URL
-              value: http://polar-keycloak
+              value: "50"
           volumeMounts:
             - name: catalog-service-volume
               mountPath: /workspace/config
-            - name: catalog-service-volume-secret
-              mountPath: /workspace/secrets/catalog-service
       volumes:
         - name: catalog-service-volume
           configMap:
             name: catalog-service
-        - name: catalog-service-volume-secret
-          secret:
-            secretName: catalog-service

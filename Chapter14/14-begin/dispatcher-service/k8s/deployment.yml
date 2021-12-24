@@ -22,12 +22,7 @@ spec:
           volumeMounts:
             - name: dispatcher-service-volume
               mountPath: /workspace/config
-            - name: dispatcher-service-volume-secret
-              mountPath: /workspace/secrets/dispatcher-service-secret
       volumes:
         - name: dispatcher-service-volume
           configMap:
             name: dispatcher-service
-        - name: dispatcher-service-volume-secret
-          secret:
-            secretName: dispatcher-service

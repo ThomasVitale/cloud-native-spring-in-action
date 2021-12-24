@@ -27,11 +27,11 @@ spec:
           env:
             - name: CATALOG_SERVICE_URL
               value: http://catalog-service
-            - name: KEYCLOAK_URL
-              value: http://host.docker.internal
             - name: ORDER_SERVICE_URL
               value: http://order-service
             - name: SPRING_CLOUD_CONFIG_URI
               value: http://config-service
             - name: SPRING_REDIS_HOST
               value: polar-redis
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI
+              value: http://host.docker.internal:8080/auth/realms/PolarBookshop

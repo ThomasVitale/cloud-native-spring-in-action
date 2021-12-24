@@ -34,8 +34,6 @@ spec:
           env:
             - name: BPL_JVM_THREAD_COUNT
               value: "50"
-            - name: KEYCLOAK_URL
-              value: http://polar-keycloak
           volumeMounts:
             - name: catalog-service-volume
               mountPath: /workspace/config
