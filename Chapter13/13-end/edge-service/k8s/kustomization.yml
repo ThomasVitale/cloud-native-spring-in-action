@@ -13,9 +13,3 @@ configMapGenerator:
   - name: edge-service
     files:
       - application.yml
-
-secretGenerator:
-  - name: edge-service
-    literals:
-      - spring.cloud.config.username=user
-      - spring.cloud.config.password=password

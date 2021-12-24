@@ -12,9 +12,3 @@ configMapGenerator:
   - name: config-service
     files:
       - application.yml
-
-secretGenerator:
-  - name: config-service
-    literals:
-      - spring.security.user.name=user
-      - spring.security.user.password=password
