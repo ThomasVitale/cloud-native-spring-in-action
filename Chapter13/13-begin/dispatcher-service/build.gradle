@@ -44,7 +44,7 @@ dependencyManagement {
 }
 
 bootBuildImage {
-	iimageName = "${project.name}"
+	imageName = "${project.name}"
 	environment = ["BP_JVM_VERSION": "17.*"]
 
 	docker {
