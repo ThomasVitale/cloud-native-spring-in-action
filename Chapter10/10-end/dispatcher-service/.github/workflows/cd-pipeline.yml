@@ -33,11 +33,14 @@ jobs:
       - name: Get project version
         uses: thecodemonkey/action-get-gradle-version@master
         id: version
+      - name: Save app version as environment variable
+        run: |
+          echo "APP_VERSION=${{ steps.version.outputs.version }}" >> $GITHUB_ENV
       - name: Containerize and publish image
         run: |
           chmod +x gradlew
           ./gradlew bootBuildImage \
-            --imageName docker.io/polarbookshop/dispatcher-service:${{ steps.version.outputs.version }} \
+            --imageName docker.io/polarbookshop/dispatcher-service:${{ env.APP_VERSION }} \
             --publishImage \
             -PregistryUrl=docker.io \
             -PregistryUsername=polarbookshop \
