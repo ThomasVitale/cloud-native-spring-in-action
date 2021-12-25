@@ -15,6 +15,7 @@ spring:
   cloud:
     bus:
       enabled: false
+      id: ${spring.application.name}:${spring.profiles.active:default}:${random.long}
     config:
       server:
         git:

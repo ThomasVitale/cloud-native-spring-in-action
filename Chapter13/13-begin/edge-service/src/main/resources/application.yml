@@ -87,7 +87,7 @@ spring:
             scope: openid,roles
         provider:
           keycloak:
-            issuer-uri: ${KEYCLOAK_URL:http://localhost:8080}/auth/realms/PolarBookshop
+            issuer-uri: http://localhost:8080/auth/realms/PolarBookshop
 
 resilience4j:
   circuitbreaker:

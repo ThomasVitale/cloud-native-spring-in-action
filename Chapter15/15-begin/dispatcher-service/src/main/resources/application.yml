@@ -9,7 +9,7 @@ spring:
   cloud:
     bus:
       enabled: false
-      id: ${spring.application.name}:${spring.profiles.active:default}
+      id: ${spring.application.name}:${spring.profiles.active:default}:${random.long}
     config:
       uri: http://localhost:8888
       username: user
