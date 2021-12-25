@@ -1,6 +1,6 @@
 spring:
   config:
-    import: optional:configserver:,configtree:/workspace/secrets/*/
+    import: "optional:configserver:"
   cloud:
     config:
       uri: http://config-service
@@ -8,3 +8,9 @@ spring:
     host: polar-rabbitmq
   redis:
     host: polar-redis
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://host.docker.internal:8080/auth/realms/PolarBookshop

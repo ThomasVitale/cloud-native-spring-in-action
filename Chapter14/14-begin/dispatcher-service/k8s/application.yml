@@ -1,6 +1,6 @@
 spring:
   config:
-    import: optional:configserver:,configtree:/workspace/secrets/*/
+    import: "optional:configserver:"
   cloud:
     config:
       uri: http://config-service

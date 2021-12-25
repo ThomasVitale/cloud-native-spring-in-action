@@ -1,8 +1,3 @@
 spring:
-  config:
-    import: configtree:/workspace/secrets/*/
-  cloud:
-    bus:
-      enabled: true
   rabbitmq:
     host: polar-rabbitmq

@@ -1,6 +1,6 @@
 spring:
   config:
-    import: optional:configserver:,configtree:/workspace/secrets/*/
+    import: "optional:configserver:"
   cloud:
     config:
       uri: http://config-service
@@ -8,3 +8,8 @@ spring:
     url: jdbc:postgresql://polar-postgres-catalog/polardb_catalog
   rabbitmq:
     host: polar-rabbitmq
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://host.docker.internal:8080/auth/realms/PolarBookshop
