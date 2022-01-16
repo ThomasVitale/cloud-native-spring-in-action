@@ -1,0 +1,9 @@
+spring:
+  config:
+    import: configserver:,configtree:/workspace/secrets/*/
+  cloud:
+    config:
+      fail-fast: true
+  rabbitmq:
+    host: polar-rabbitmq.rabbitmq-system.svc.cluster.local
+    port: 5672

@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.polarbookshop'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.2-SNAPSHOT'
 sourceCompatibility = '17'
 
 repositories {
@@ -31,6 +31,17 @@ springAot {
 
 bootBuildImage {
 	builder = 'paketobuildpacks/builder:tiny'
-	environment = ['BP_NATIVE_IMAGE': 'true']
+	environment = [
+			'BP_JVM_VERSION': '17.*',
+			'BP_NATIVE_IMAGE': 'true'
+	]
 	imageName = "${project.name}"
+
+	docker {
+		publishRegistry {
+			username = project.findProperty("registryUsername")
+			password = project.findProperty("registryToken")
+			url = project.findProperty("registryUrl")
+		}
+	}
 }

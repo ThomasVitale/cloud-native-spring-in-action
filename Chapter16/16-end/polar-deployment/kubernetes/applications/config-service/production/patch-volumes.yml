@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-service
+spec:
+  template:
+    spec:
+      containers:
+        - name: config-service
+          volumeMounts:
+            - name: config-server-credentials-volume
+              mountPath: /workspace/secrets/config
+            - name: rabbitmq-credentials-volume
+              mountPath: /workspace/secrets/rabbitmq
+      volumes:
+        - name: config-server-credentials-volume
+          secret:
+            secretName: config-server-credentials
+        - name: rabbitmq-credentials-volume
+          secret:
+            secretName: polar-rabbitmq-credentials

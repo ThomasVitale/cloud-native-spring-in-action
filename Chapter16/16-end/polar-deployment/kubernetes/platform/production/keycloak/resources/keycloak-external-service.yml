@@ -1,0 +1,7 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: polar-keycloak
+spec:
+  type: ExternalName
+  externalName: polar-keycloak.keycloak-system.svc.cluster.local

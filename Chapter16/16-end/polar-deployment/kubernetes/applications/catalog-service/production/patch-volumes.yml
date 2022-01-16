@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog-service
+spec:
+  template:
+    spec:
+      containers:
+        - name: catalog-service
+          volumeMounts:
+            - name: config-credentials-volume
+              mountPath: /workspace/secrets/config
+            - name: postgres-catalog-credentials-volume
+              mountPath: /workspace/secrets/postgres
+            - name: rabbitmq-credentials-volume
+              mountPath: /workspace/secrets/rabbitmq
+      volumes:
+        - name: config-credentials-volume
+          secret:
+            secretName: config-client-credentials
+        - name: postgres-catalog-credentials-volume
+          secret:
+            secretName: polar-postgres-catalog-credentials
+        - name: rabbitmq-credentials-volume
+          secret:
+            secretName: polar-rabbitmq-credentials

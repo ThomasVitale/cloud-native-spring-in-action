@@ -1,0 +1,14 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: edge-service
+  namespace: flux-system
+spec:
+  interval: 30s
+  path: ./kubernetes/applications/edge-service/production
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: applications
+  targetNamespace: default
+
