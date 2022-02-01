@@ -19,7 +19,7 @@ From the [Spring Initialzr](https://start.spring.io/) website, choose the follow
 
 Then, click "Generate" to download the `catalog-service.zip` archive containing the project.
 
-## Initialize Greeting Service with Spring Initializr - REST API
+## Initialize Catalog Service with Spring Initializr - REST API
 
 If you prefer using the REST API offered by Spring Initializr, run the following command to initialize a project with Gradle as the build tool:
 
