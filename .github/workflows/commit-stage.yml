@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: Commit Stage
 on: [push]
 
 jobs:
@@ -18,6 +18,7 @@ jobs:
           Chapter05/05-begin/catalog-service,
           Chapter05/05-begin/config-service,
           Chapter05/05-intermediate/catalog-service,
+          Chapter05/05-intermediate/config-service,
           Chapter05/05-end/catalog-service,
           Chapter05/05-end/catalog-service-jpa,
           Chapter05/05-end/config-service,
@@ -112,8 +113,19 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: gradle
-      - name: Compile and test application
+      - name: Code vulnerability scanning
+        uses: anchore/scan-action@v3
+        with:
+          path: "${{ github.workspace }}/${{ matrix.project }}"
+          fail-build: false
+          severity-cutoff: high
+          acs-report-enable: true
+      - name: Upload vulnerability report
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: ${{ steps.scan.outputs.sarif }}
+      - name: Build, unit tests and integration tests
         run: |
           cd ${{ matrix.project }}
           chmod +x gradlew
-          ./gradlew clean build
+          ./gradlew build

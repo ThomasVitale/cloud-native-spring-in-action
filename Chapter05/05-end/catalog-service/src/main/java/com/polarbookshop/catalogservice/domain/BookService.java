@@ -41,7 +41,7 @@ public class BookService {
         if (existingBook.isEmpty()) {
             return addBookToCatalog(book);
         }
-        Book bookToUpdate = new Book(
+        var bookToUpdate = new Book(
                 existingBook.get().id(),
                 existingBook.get().isbn(),
                 book.title(),

@@ -40,7 +40,7 @@ docker run --name polar-postgres-catalog \
     -e POSTGRES_PASSWORD=password \
     -e POSTGRES_DB=polardb_catalog \
     -p 5432:5432 \
-    -d postgres:13.4
+    -d postgres:14.1
 ```
 
 ### Container Commands

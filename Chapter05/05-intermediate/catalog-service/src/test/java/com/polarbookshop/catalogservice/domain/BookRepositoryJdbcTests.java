@@ -4,7 +4,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import com.polarbookshop.catalogservice.persistence.DataConfig;
+import com.polarbookshop.catalogservice.config.DataConfig;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
