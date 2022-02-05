@@ -115,7 +115,7 @@ jobs:
           cache: gradle
       - name: Code vulnerability scanning
         uses: anchore/scan-action@v3
-        id: sarif
+        id: scan
         with:
           path: "${{ github.workspace }}/${{ matrix.project }}"
           fail-build: false
