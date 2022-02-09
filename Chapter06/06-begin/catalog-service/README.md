@@ -40,7 +40,7 @@ docker run --name polar-postgres-catalog \
     -e POSTGRES_PASSWORD=password \
     -e POSTGRES_DB=polardb_catalog \
     -p 5432:5432 \
-    -d postgres:13.4
+    -d postgres:14.1
 ```
 
 ### Container Commands
@@ -59,9 +59,23 @@ Start an interactive PSQL console:
 docker exec -it polar-postgres-catalog psql -U user -d polardb_catalog
 ```
 
-| PSQL Command	             | Description                    |
-|:--------------------------:|:------------------------------:|
-| `\list`                    | List all databases.            |
-| `\connect polardb_catalog` | Connect to specific database.  |
-| `\dt`                      | List all tables.               |
-| `\quit`                    | Quit interactive psql console. |
+| PSQL Command	              | Description                                    |
+|:---------------------------|:-----------------------------------------------|
+| `\list`                    | List all databases.                            |
+| `\connect polardb_catalog` | Connect to specific database.                  |
+| `\dt`                      | List all tables.                               |
+| `\d book`                  | Show the `book` table schema.                  |
+| `\d flyway_schema_history` | Show the `flyway_schema_history` table schema. |
+| `\quit`                    | Quit interactive psql console.                 |
+
+From within the PSQL console, you can also fetch all the data stored in the `book` table.
+
+```bash
+select * from book;
+```
+
+The following query is to fetch all the data stored in the `flyway_schema_history` table.
+
+```bash
+select * from flyway_schema_history;
+```

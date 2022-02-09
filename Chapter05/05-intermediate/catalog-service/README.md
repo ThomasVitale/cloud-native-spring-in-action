@@ -35,7 +35,7 @@ java -jar build/libs/catalog-service-0.0.1-SNAPSHOT.jar
 Run PostgreSQL as a Docker container
 
 ```bash
-docker run --name polar-postgres-catalog \
+docker run --name polar-postgres \
     -e POSTGRES_USER=user \
     -e POSTGRES_PASSWORD=password \
     -e POSTGRES_DB=polardb_catalog \
@@ -45,23 +45,30 @@ docker run --name polar-postgres-catalog \
 
 ### Container Commands
 
-| Docker Command	              | Description       |
-|:-------------------------------:|:-----------------:|
-| `docker stop polar-postgres-catalog`   | Stop container.   |
-| `docker start polar-postgres-catalog`  | Start container.  |
-| `docker remove polar-postgres-catalog` | Remove container. |
+| Docker Command	                     | Description       |
+|:------------------------------------|:-----------------:|
+| `docker stop polar-postgres`        | Stop container.   |
+| `docker start polar-postgres`       | Start container.  |
+| `docker remove polar-postgres`      | Remove container. |
 
 ### Database Commands
 
 Start an interactive PSQL console:
 
 ```bash
-docker exec -it polar-postgres-catalog psql -U user -d polardb_catalog
+docker exec -it polar-postgres psql -U user -d polardb_catalog
 ```
 
-| PSQL Command	             | Description                    |
-|:--------------------------:|:------------------------------:|
-| `\list`                    | List all databases.            |
-| `\connect polardb_catalog` | Connect to specific database.  |
-| `\dt`                      | List all tables.               |
-| `\quit`                    | Quit interactive psql console. |
+| PSQL Command	              | Description                                    |
+|:---------------------------|:-----------------------------------------------|
+| `\list`                    | List all databases.                            |
+| `\connect polardb_catalog` | Connect to specific database.                  |
+| `\dt`                      | List all tables.                               |
+| `\d book`                  | Show the `book` table schema.                  |
+| `\quit`                    | Quit interactive psql console.                 |
+
+From within the PSQL console, you can also fetch all the data stored in the `book` table.
+
+```bash
+select * from book;
+```
