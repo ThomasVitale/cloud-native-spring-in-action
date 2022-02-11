@@ -1,8 +1,8 @@
 package com.polarbookshop.catalogservice.domain;
 
-import org.springframework.stereotype.Service;
-
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
 
 @Service
 public class BookService {
@@ -30,9 +30,6 @@ public class BookService {
     }
 
     public void removeBookFromCatalog(String isbn) {
-        if (!bookRepository.existsByIsbn(isbn)) {
-            throw new BookNotFoundException(isbn);
-        }
         bookRepository.deleteByIsbn(isbn);
     }
 
