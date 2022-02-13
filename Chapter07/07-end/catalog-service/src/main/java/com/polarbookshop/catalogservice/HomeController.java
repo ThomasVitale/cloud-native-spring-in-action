@@ -1,4 +1,4 @@
-package com.polarbookshop.catalogservice.web;
+package com.polarbookshop.catalogservice;
 
 import com.polarbookshop.catalogservice.config.PolarProperties;
 import org.springframework.web.bind.annotation.GetMapping;
