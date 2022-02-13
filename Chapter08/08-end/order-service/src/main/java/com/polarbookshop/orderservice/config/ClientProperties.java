@@ -1,4 +1,4 @@
-package com.polarbookshop.orderservice.book;
+package com.polarbookshop.orderservice.config;
 
 import java.net.URI;
 

@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: polar-postgres-catalog
+  name: polar-postgres
   labels:
-    db: polar-postgres-catalog
+    db: polar-postgres
 spec:
   selector:
     matchLabels:
-      db: polar-postgres-catalog
+      db: polar-postgres
   template:
     metadata:
       labels:
-        db: polar-postgres-catalog
+        db: polar-postgres
     spec:
       containers:
-        - name: polar-postgres-catalog
-          image: postgres:13.4
+        - name: polar-postgres
+          image: postgres:14.1
           env:
             - name: POSTGRES_USER
               value: user
@@ -36,13 +36,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: polar-postgres-catalog
+  name: polar-postgres
   labels:
-    db: polar-postgres-catalog
+    db: polar-postgres
 spec:
   type: ClusterIP
   selector:
-    db: polar-postgres-catalog
+    db: polar-postgres
   ports:
   - protocol: TCP
     port: 5432
