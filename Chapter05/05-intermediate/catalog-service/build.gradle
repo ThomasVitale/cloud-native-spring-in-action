@@ -52,6 +52,6 @@ bootRun {
 	systemProperty 'spring.profiles.active', 'test-data'
 }
 
-test {
+tasks.named('test') {
 	useJUnitPlatform()
 }

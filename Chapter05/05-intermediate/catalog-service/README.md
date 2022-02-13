@@ -12,7 +12,6 @@
 | `/books/{isbn}` | `PUT`    | Book       | 200    | Book           | Update the book with the given ISBN. |
 |                 |          |            | 201    | Book           | Create a book with the given ISBN. |
 | `/books/{isbn}` | `DELETE` |            | 204    |                | Delete the book with the given ISBN. |
-|                 |          |            | 404    |                | No book with the given ISBN exists. |
 
 ## Useful Commands
 
