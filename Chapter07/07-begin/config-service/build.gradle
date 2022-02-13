@@ -42,6 +42,6 @@ bootBuildImage {
     }
 }
 
-test {
-    useJUnitPlatform()
+tasks.named('test') {
+	useJUnitPlatform()
 }
