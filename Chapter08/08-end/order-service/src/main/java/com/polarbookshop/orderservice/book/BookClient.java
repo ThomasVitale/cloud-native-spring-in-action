@@ -5,11 +5,8 @@ import java.time.Duration;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
-import org.springframework.core.NestedRuntimeException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClientException;
-import org.springframework.web.reactive.function.client.WebClientRequestException;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 @Component
