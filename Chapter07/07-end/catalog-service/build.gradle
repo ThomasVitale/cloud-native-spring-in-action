@@ -21,7 +21,7 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "2021.0.0")
+	set('springCloudVersion', "2021.0.1")
 	set('testcontainersVersion', "1.16.2")
 }
 
