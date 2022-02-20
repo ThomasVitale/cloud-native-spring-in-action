@@ -39,6 +39,13 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew build
+      - name: Validate Kubernetes manifests
+        uses: stefanprodan/kube-tools@v1
+        with:
+          kubectl: 1.23.4
+          kubeval: 0.16.1
+          command: |
+            kubeval --strict -d k8s
   package:
     name: Package and Publish
     if: ${{ github.ref == 'refs/heads/main' }}
