@@ -2,70 +2,32 @@
 
 echo "\n📦 Initializing Kubernetes cluster...\n"
 
-kind create cluster --config kind-config.yml
+minikube start --cpus 2 --memory 4g --driver docker --profile polar
 
-echo "\n-----------------------------------------------------\n"
+echo "\n🔌 Enabling NGINX Ingress Controller...\n"
 
-echo "🔌 Installing NGINX Ingress..."
+minikube addons enable ingress --profile polar
 
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
-
-sleep 5
-
-echo "\n⌛ Waiting for NGINX Ingress to be deployed..."
-
-while [ $(kubectl get pod -n ingress-nginx -l app.kubernetes.io/component=controller | grep ingress-nginx | wc -l) -eq 0 ] ; do
-  sleep 5
-done
-
-echo "\n⌛ Waiting for NGINX Ingress to be ready..."
-
-kubectl wait --namespace ingress-nginx \
-  --for=condition=ready pod \
-  --selector=app.kubernetes.io/component=controller \
-  --timeout=180s
-
-echo "\n-----------------------------------------------------\n"
-
-echo "📦 Deploying platform services..."
+echo "\n📦 Deploying platform services..."
 
 kubectl apply -f services
 
 sleep 5
 
-echo "\n-----------------------------------------------------\n"
+echo "\n⌛ Waiting for PostgreSQL to be deployed..."
 
-echo "⌛ Waiting for PostgreSQL Catalog to be deployed..."
-
-while [ $(kubectl get pod -l db=polar-postgres-catalog | wc -l) -eq 0 ] ; do
+while [ $(kubectl get pod -l db=polar-postgres | wc -l) -eq 0 ] ; do
   sleep 5
 done
 
-echo "\n⌛ Waiting for PostgreSQL Catalog to be ready..."
+echo "\n⌛ Waiting for PostgreSQL to be ready..."
 
 kubectl wait \
   --for=condition=ready pod \
-  --selector=db=polar-postgres-catalog \
+  --selector=db=polar-postgres \
   --timeout=90s
 
-echo "\n-----------------------------------------------------\n"
-
-echo "⌛ Waiting for PostgreSQL Order to be deployed..."
-
-while [ $(kubectl get pod -l db=polar-postgres-order | wc -l) -eq 0 ] ; do
-  sleep 5
-done
-
-echo "\n⌛ Waiting for PostgreSQL Order to be ready..."
-
-kubectl wait \
-  --for=condition=ready pod \
-  --selector=db=polar-postgres-order \
-  --timeout=90s
-
-echo "\n-----------------------------------------------------\n"
-
-echo "⌛ Waiting for Redis to be deployed..."
+echo "\n⌛ Waiting for Redis to be deployed..."
 
 while [ $(kubectl get pod -l db=polar-redis | wc -l) -eq 0 ] ; do
   sleep 5

@@ -1,7 +1,9 @@
 #!/bin/sh
 
-echo "\n🏴‍☠️ Destroying Kubernetes cluster..."
+echo "\n🏴️ Destroying Kubernetes cluster...\n"
 
-kind delete cluster --name polar-cluster
+minikube stop --profile polar
 
-echo "\n🏴‍☠️ Cluster destroyed\n"
+minikube delete --profile polar
+
+echo "\n🏴️ Cluster destroyed\n"
