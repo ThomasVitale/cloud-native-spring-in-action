@@ -25,7 +25,7 @@ spring:
         multiplier: 1.1
     gateway:
       httpclient:
-        connect-timeout: 5000 # 5s
+        connect-timeout: 2000 # 2s
         response-timeout: 5s
         pool:
           type: elastic

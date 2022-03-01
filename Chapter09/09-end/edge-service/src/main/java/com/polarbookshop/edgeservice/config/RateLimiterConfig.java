@@ -1,4 +1,4 @@
-package com.polarbookshop.edgeservice;
+package com.polarbookshop.edgeservice.config;
 
 import reactor.core.publisher.Mono;
 
