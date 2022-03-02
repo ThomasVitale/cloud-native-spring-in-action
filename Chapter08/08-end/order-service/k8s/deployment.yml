@@ -25,7 +25,7 @@ spec:
           ports:
             - containerPort: 9002
           env:
-            - name: POLAR_CATALOG_SERVICE_URL
+            - name: POLAR_CATALOG_SERVICE_URI
               value: http://catalog-service
             - name: SPRING_CLOUD_CONFIG_URI
               value: http://config-service

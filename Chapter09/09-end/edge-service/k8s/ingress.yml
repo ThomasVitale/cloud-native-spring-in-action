@@ -4,7 +4,8 @@ metadata:
   name: polar-ingress
 spec:
   rules:
-    - http:
+    - host: polar-bookshop.127.0.0.1.sslip.io
+      http:
         paths:
           - path: /
             pathType: Prefix

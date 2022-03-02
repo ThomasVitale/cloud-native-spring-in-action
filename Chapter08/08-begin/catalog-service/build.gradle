@@ -50,7 +50,7 @@ dependencyManagement {
 }
 
 bootRun {
-	systemProperty 'spring.profiles.active', 'test-data'
+	systemProperty 'spring.profiles.active', 'testdata'
 }
 
 bootBuildImage {

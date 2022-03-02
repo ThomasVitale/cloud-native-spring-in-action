@@ -19,7 +19,7 @@ services:
       - BPL_DEBUG_PORT=8001
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres:5432/polardb_catalog
-      - SPRING_PROFILES_ACTIVE=test-data
+      - SPRING_PROFILES_ACTIVE=testdata
   
   order-service:
     depends_on:
