@@ -5,7 +5,7 @@ services:
 
   catalog-service:
     depends_on:
-      - polar-postgres-catalog
+      - polar-postgres
     image: "catalog-service"
     container_name: "catalog-service"
     ports:
@@ -18,11 +18,12 @@ services:
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=8001
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres-catalog:5432/polardb_catalog
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres:5432/polardb_catalog
+      - SPRING_PROFILES_ACTIVE=testdata
   
   order-service:
     depends_on:
-      - polar-postgres-order
+      - polar-postgres
     image: "order-service"
     container_name: "order-service"
     ports:
@@ -32,10 +33,10 @@ services:
       # Buildpacks environment variable to enable debug through a socket on port 8002
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=8002
-      - POLAR_CATALOG_SERVICE_URL=http://catalog-service:9001
+      - POLAR_CATALOG_SERVICE_URI=http://catalog-service:9001
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-      - SPRING_R2DBC_URL=r2dbc:postgresql://polar-postgres-order:5432/polardb_order
-      - SPRING_FLYWAY_URL=jdbc:postgresql://polar-postgres-order:5432/polardb_order
+      - SPRING_R2DBC_URL=r2dbc:postgresql://polar-postgres:5432/polardb_order
+      - SPRING_FLYWAY_URL=jdbc:postgresql://polar-postgres:5432/polardb_order
   
   edge-service:
     depends_on:
@@ -69,25 +70,16 @@ services:
 
   # Backing Services
 
-  polar-postgres-catalog:
-    image: "postgres:13.4"
-    container_name: "polar-postgres-catalog"
+  polar-postgres:
+    image: "postgres:14.1"
+    container_name: "polar-postgres"
     ports:
       - 5432:5432
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=polardb_catalog
-
-  polar-postgres-order:
-    image: "postgres:13.4"
-    container_name: "polar-postgres-order"
-    ports:
-      - 5433:5432
-    environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=polardb_order
+    volumes:
+      - ./postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   polar-redis:
     image: "redis:6.2"
