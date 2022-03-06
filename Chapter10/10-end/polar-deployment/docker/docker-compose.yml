@@ -104,11 +104,10 @@ services:
       - 6379:6379
   
   polar-rabbitmq:
-    image: rabbitmq:3.8-management
+    image: rabbitmq:3.9-management
     container_name: polar-rabbitmq
     ports:
       - 5672:5672
       - 15672:15672
-    environment:
-      - RABBITMQ_DEFAULT_USER=user
-      - RABBITMQ_DEFAULT_PASS=password
+    volumes:
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
