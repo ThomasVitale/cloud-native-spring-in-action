@@ -38,7 +38,6 @@ spring:
     function:
       definition: dispatchOrder
     stream:
-      source: acceptOrder
       bindings:
         dispatchOrder-in-0:
           destination: order-dispatched
