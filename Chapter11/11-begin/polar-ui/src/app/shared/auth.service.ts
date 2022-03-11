@@ -2,7 +2,7 @@ import { HttpClient, HttpXsrfTokenExtractor } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Location } from '@angular/common';
 import { Observable } from 'rxjs';
-import { User } from './types';
+import { User } from './data/types';
 
 @Injectable({
   providedIn: 'root'
