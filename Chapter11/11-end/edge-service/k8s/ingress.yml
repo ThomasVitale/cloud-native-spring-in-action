@@ -17,7 +17,7 @@ spec:
     - host: polar-keycloak.127.0.0.1.sslip.io
       http:
         paths:
-            - path: /auth
+            - path: /
               pathType: Prefix
               backend:
                 service:
