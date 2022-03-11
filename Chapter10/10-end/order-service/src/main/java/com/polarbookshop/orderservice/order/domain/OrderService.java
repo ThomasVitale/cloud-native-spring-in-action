@@ -50,20 +50,20 @@ public class OrderService {
 		return Order.build(bookIsbn, null, null, quantity, OrderStatus.REJECTED);
 	}
 
-	public void publishOrderAcceptedEvent(Order order) {
+	private void publishOrderAcceptedEvent(Order order) {
 		if (!order.status().equals(OrderStatus.ACCEPTED)) {
 			return;
 		}
-		OrderAcceptedMessage orderAcceptedMessage = new OrderAcceptedMessage(order.id());
+		var orderAcceptedMessage = new OrderAcceptedMessage(order.id());
 		log.info("Sending order accepted event with id: {}", order.id());
 		var result = streamBridge.send("acceptOrder-out-0", orderAcceptedMessage);
 		log.info("Result of sending data for order with id {}: {}", order.id(), result);
 	}
 
-	public Flux<Order> updateDispatchedOrder(Flux<OrderDispatchedMessage> flux) {
+	public Flux<Order> consumeOrderDispatchedEvent(Flux<OrderDispatchedMessage> flux) {
 		return flux
-				.flatMap(message -> orderRepository.findById(message.orderId())
-						.map(this::buildDispatchedOrder))
+				.flatMap(message -> orderRepository.findById(message.orderId()))
+				.map(this::buildDispatchedOrder)
 				.flatMap(orderRepository::save);
 	}
 
