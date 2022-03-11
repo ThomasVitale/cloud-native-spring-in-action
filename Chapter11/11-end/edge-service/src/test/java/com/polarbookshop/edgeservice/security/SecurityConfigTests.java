@@ -1,5 +1,6 @@
 package com.polarbookshop.edgeservice.security;
 
+import com.polarbookshop.edgeservice.config.SecurityConfig;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
