@@ -69,6 +69,7 @@ services:
       - BPL_DEBUG_PORT=8000
       - CATALOG_SERVICE_URL=http://catalog-service:9001
       - ORDER_SERVICE_URL=http://order-service:9002
+      - SPA_URL=http://polar-ui:9004
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - SPRING_REDIS_HOST=polar-redis
       - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI=http://host.docker.internal:8080/auth/realms/PolarBookshop
@@ -91,8 +92,6 @@ services:
     container_name: "polar-ui"
     ports:
       - 9004:9004
-    environment:
-      - PORT=9004
 
   # Backing Services
 
@@ -123,13 +122,13 @@ services:
       - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
   
   polar-keycloak:
-    image: quay.io/keycloak/keycloak:15.0.1
+    image: quay.io/keycloak/keycloak:17.0.0-legacy
     container_name: "polar-keycloak"
     volumes:
       - ./keycloak:/opt/jboss/keycloak/imports
     environment:
-      KEYCLOAK_USER: user
-      KEYCLOAK_PASSWORD: password
-      KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json
+      - KEYCLOAK_USER=user
+      - KEYCLOAK_PASSWORD=password
+      - KEYCLOAK_IMPORT=/opt/jboss/keycloak/imports/realm-export.json
     ports:
       - 8080:8080

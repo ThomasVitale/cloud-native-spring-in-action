@@ -1,6 +1,6 @@
 package com.polarbookshop.edgeservice.config;
 
-import reactor.core.publisher.Mono;
+import java.security.Principal;
 
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +12,7 @@ public class RateLimiterConfig {
 	@Bean
 	KeyResolver keyResolver() {
 		return exchange -> exchange.getPrincipal()
-				.flatMap(p -> Mono.just(p.getName()))
+				.map(Principal::getName)
 				.defaultIfEmpty("ANONYMOUS");
 	}
 	

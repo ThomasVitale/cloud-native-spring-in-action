@@ -53,6 +53,19 @@ kubectl wait \
   --selector=db=polar-rabbitmq \
   --timeout=90s
 
+echo "⌛ Waiting for Polar UI to be deployed..."
+
+while [ $(kubectl get pod -l app=polar-ui | wc -l) -eq 0 ] ; do
+  sleep 5
+done
+
+echo "\n⌛ Waiting for Polar UI to be ready..."
+
+kubectl wait \
+  --for=condition=ready pod \
+  --selector=app=polar-ui \
+  --timeout=90s
+
 echo "⌛ Waiting for Keycloak to be deployed..."
 
 while [ $(kubectl get pod -l app=polar-keycloak | wc -l) -eq 0 ] ; do
