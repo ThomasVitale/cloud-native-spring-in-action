@@ -56,15 +56,3 @@ bootBuildImage {
 tasks.named('test') {
 	useJUnitPlatform()
 }
-
-//processResources {
-//	dependsOn 'compileFrontend'
-//	from ('../ui-application/dist/ui-application') {
-//		into 'static'
-//	}
-//}
-//
-//task compileFrontend(type: GradleBuild) {
-//	dir = '../ui-application'
-//	tasks = ['buildAngular']
-//}
