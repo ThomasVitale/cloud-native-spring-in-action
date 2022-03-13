@@ -1,10 +1,8 @@
-package com.polarbookshop.edgeservice.security;
+package com.polarbookshop.edgeservice.user;
 
 import java.util.List;
 
 import com.polarbookshop.edgeservice.config.SecurityConfig;
-import com.polarbookshop.edgeservice.user.User;
-import com.polarbookshop.edgeservice.user.UserController;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
