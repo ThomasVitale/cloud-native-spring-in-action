@@ -3,6 +3,7 @@ server:
   shutdown: graceful
   tomcat:
     connection-timeout: 2s
+    keep-alive-timeout: 15s
     threads:
       max: 50
       min-spare: 5
@@ -17,7 +18,7 @@ spring:
   cloud:
     config:
       uri: http://localhost:8888
-      request-connect-timeout: 2000 # 2s
+      request-connect-timeout: 5000 # 5s
       request-read-timeout: 5000 # 5s
       fail-fast: false
       retry:
@@ -25,8 +26,6 @@ spring:
         initial-interval: 1000 # 1s
         max-interval: 2000 # 2s
         multiplier: 1.1
-  profiles:
-    active: test-data
   datasource:
     username: user
     password: password

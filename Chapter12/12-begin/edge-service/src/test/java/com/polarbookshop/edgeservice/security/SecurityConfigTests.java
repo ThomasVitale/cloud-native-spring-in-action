@@ -1,5 +1,6 @@
 package com.polarbookshop.edgeservice.security;
 
+import com.polarbookshop.edgeservice.config.SecurityConfig;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -10,11 +11,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.csrf;
-import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.mockOidcLogin;
 
 @WebFluxTest
 @Import(SecurityConfig.class)
@@ -37,7 +37,7 @@ class SecurityConfigTests {
 	@Test
 	void whenLogoutAuthenticatedAndNoCsrfTokenThen403() {
 		webClient
-				.mutateWith(mockOidcLogin())
+				.mutateWith(SecurityMockServerConfigurers.mockOidcLogin())
 				.post().uri("/logout")
 				.exchange()
 				.expectStatus().isForbidden();
@@ -49,8 +49,8 @@ class SecurityConfigTests {
 				.thenReturn(Mono.just(testClientRegistration()));
 
 		webClient
-				.mutateWith(mockOidcLogin())
-				.mutateWith(csrf())
+				.mutateWith(SecurityMockServerConfigurers.mockOidcLogin())
+				.mutateWith(SecurityMockServerConfigurers.csrf())
 				.post().uri("/logout")
 				.exchange()
 				.expectStatus().isFound();
@@ -60,9 +60,9 @@ class SecurityConfigTests {
 		return ClientRegistration.withRegistrationId("test")
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 				.clientId("test")
-				.authorizationUri("https://sso.polarbookshop.org/auth")
-				.tokenUri("https://sso.polarbookshop.org/token")
-				.redirectUri("https://polarbookshop.org")
+				.authorizationUri("https://sso.polarbookshop.com/auth")
+				.tokenUri("https://sso.polarbookshop.com/token")
+				.redirectUri("https://polarbookshop.com")
 				.build();
 	}
 

@@ -3,6 +3,7 @@ package com.polarbookshop.orderservice.order.domain;
 import com.polarbookshop.orderservice.book.Book;
 import com.polarbookshop.orderservice.book.BookClient;
 import com.polarbookshop.orderservice.order.event.OrderAcceptedMessage;
+import com.polarbookshop.orderservice.order.event.OrderDispatchedMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -31,26 +32,6 @@ public class OrderService {
 		return orderRepository.findAllByCreatedBy(userId);
 	}
 
-	public void updateOrderStatus(Long orderId, OrderStatus status) {
-		orderRepository.findById(orderId)
-				.map(existingOrder ->
-						new Order(
-								existingOrder.id(),
-								existingOrder.bookIsbn(),
-								existingOrder.bookName(),
-								existingOrder.bookPrice(),
-								existingOrder.quantity(),
-								status,
-								existingOrder.createdDate(),
-								existingOrder.lastModifiedDate(),
-								existingOrder.createdBy(),
-								existingOrder.lastModifiedBy(),
-								existingOrder.version()
-						))
-				.flatMap(orderRepository::save)
-				.subscribe();
-	}
-
 	@Transactional
 	public Mono<Order> submitOrder(String isbn, int quantity) {
 		return bookClient.getBookByIsbn(isbn)
@@ -69,14 +50,37 @@ public class OrderService {
 		return Order.build(bookIsbn, null, null, quantity, OrderStatus.REJECTED);
 	}
 
-	public void publishOrderAcceptedEvent(Order order) {
+	private void publishOrderAcceptedEvent(Order order) {
 		if (!order.status().equals(OrderStatus.ACCEPTED)) {
 			return;
 		}
-		OrderAcceptedMessage orderAcceptedMessage = new OrderAcceptedMessage(order.id());
+		var orderAcceptedMessage = new OrderAcceptedMessage(order.id());
 		log.info("Sending order accepted event with id: {}", order.id());
-		var result = streamBridge.send("order-accepted", orderAcceptedMessage);
+		var result = streamBridge.send("acceptOrder-out-0", orderAcceptedMessage);
 		log.info("Result of sending data for order with id {}: {}", order.id(), result);
+	}
+
+	public Flux<Order> consumeOrderDispatchedEvent(Flux<OrderDispatchedMessage> flux) {
+		return flux
+				.flatMap(message -> orderRepository.findById(message.orderId()))
+				.map(this::buildDispatchedOrder)
+				.flatMap(orderRepository::save);
+	}
+
+	private Order buildDispatchedOrder(Order existingOrder) {
+		return new Order(
+				existingOrder.id(),
+				existingOrder.bookIsbn(),
+				existingOrder.bookName(),
+				existingOrder.bookPrice(),
+				existingOrder.quantity(),
+				OrderStatus.DISPATCHED,
+				existingOrder.createdDate(),
+				existingOrder.lastModifiedDate(),
+				existingOrder.createdBy(),
+				existingOrder.lastModifiedBy(),
+				existingOrder.version()
+		);
 	}
 
 }

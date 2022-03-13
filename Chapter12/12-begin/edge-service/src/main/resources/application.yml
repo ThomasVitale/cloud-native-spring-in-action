@@ -2,6 +2,7 @@ server:
   port: 9000
   netty:
     connection-timeout: 2s
+    idle-timeout: 15s
   shutdown: graceful
 
 spring:
@@ -14,7 +15,7 @@ spring:
   cloud:
     config:
       uri: http://localhost:8888
-      request-connect-timeout: 2000 # 2s
+      request-connect-timeout: 5000 # 5s
       request-read-timeout: 5000 # 5s
       fail-fast: false
       retry:
@@ -24,7 +25,7 @@ spring:
         multiplier: 1.1
     gateway:
       httpclient:
-        connect-timeout: 5000 # 5s
+        connect-timeout: 2000 # 2s
         response-timeout: 5s
         pool:
           type: elastic
@@ -49,6 +50,10 @@ spring:
               factor: 2
               basedOnPreviousValue: false
       routes:
+        - id: spa-route
+          uri: ${SPA_URL:http://localhost:9004}
+          predicates:
+            - Path=/,/*.css,/*.js,/favicon.ico
         - id: catalog-route
           uri: ${CATALOG_SERVICE_URL:http://localhost:9001}/books
           predicates:
@@ -70,7 +75,7 @@ spring:
     connect-timeout: 2s
     host: localhost
     port: 6379
-    timeout: 500ms
+    timeout: 1s
   session:
     store-type: redis
     timeout: 10m
@@ -86,7 +91,7 @@ spring:
             scope: openid
         provider:
           keycloak:
-            iissuer-uri: http://localhost:8080/auth/realms/PolarBookshop
+            issuer-uri: http://localhost:8080/auth/realms/PolarBookshop
 
 resilience4j:
   circuitbreaker:

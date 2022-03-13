@@ -2,6 +2,9 @@ package com.polarbookshop.edgeservice.security;
 
 import java.util.List;
 
+import com.polarbookshop.edgeservice.config.SecurityConfig;
+import com.polarbookshop.edgeservice.user.User;
+import com.polarbookshop.edgeservice.user.UserController;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +17,6 @@ import org.springframework.security.test.web.reactive.server.SecurityMockServerC
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.mockOidcLogin;
 
 @WebFluxTest(UserController.class)
 @Import(SecurityConfig.class)
@@ -48,7 +50,7 @@ class UserControllerTests {
 	}
 
 	private SecurityMockServerConfigurers.OidcLoginMutator configureMockOidcLogin(User expectedUser) {
-		return mockOidcLogin().idToken(builder -> {
+		return SecurityMockServerConfigurers.mockOidcLogin().idToken(builder -> {
 			builder.claim(StandardClaimNames.PREFERRED_USERNAME, expectedUser.username());
 			builder.claim(StandardClaimNames.GIVEN_NAME, expectedUser.firstName());
 			builder.claim(StandardClaimNames.FAMILY_NAME, expectedUser.lastName());
