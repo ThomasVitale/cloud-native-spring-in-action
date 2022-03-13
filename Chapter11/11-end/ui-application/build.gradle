@@ -2,6 +2,11 @@ plugins {
   id "com.github.node-gradle.node" version "3.2.0"
 }
 
+node {
+	download = true
+	version = "16.14.0"
+}
+
 task lintAngular(type: NpxTask) {
     command = "ng"
     args = ["lint"]
@@ -30,4 +35,14 @@ task buildAngular(type: NpxTask) {
     inputs.dir(project.fileTree("src").exclude("**/*.spec.ts"))
     inputs.dir("node_modules")
     inputs.files("angular.json", ".browserslistrc", "tsconfig.json", "tsconfig.app.json")
+	finalizedBy "nginxConfig"
+}
+
+task nginxConfig(type: Copy) {
+	from "nginx"
+	into "dist"
+}
+
+task clean(type: Delete) {
+	delete "dist"
 }
