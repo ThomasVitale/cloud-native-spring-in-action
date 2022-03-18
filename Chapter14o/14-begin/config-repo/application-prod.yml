@@ -1,0 +1,4 @@
+spring:
+  cloud:
+    bus:
+      enabled: true

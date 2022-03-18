@@ -21,5 +21,5 @@ public class WebEndpoints {
 						ServerResponse.status(HttpStatus.SERVICE_UNAVAILABLE).build())
 				.build();
 	}
-	
+
 }

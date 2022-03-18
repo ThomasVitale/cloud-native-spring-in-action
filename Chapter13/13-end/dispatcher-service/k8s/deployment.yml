@@ -2,12 +2,17 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dispatcher-service
+  labels:
+    app: dispatcher-service
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: dispatcher-service
   template:
+    metadata:
+      labels:
+        app: dispatcher-service
     spec:
       containers:
         - name: dispatcher-service
@@ -19,10 +24,20 @@ spec:
                 command: [ "sh", "-c", "sleep 5" ]
           ports:
             - containerPort: 9003
-          volumeMounts:
-            - name: dispatcher-service-volume
-              mountPath: /workspace/config
-      volumes:
-        - name: dispatcher-service-volume
-          configMap:
-            name: dispatcher-service
+          env:
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: http://config-service
+            - name: SPRING_RABBITMQ_HOST
+              value: polar-rabbitmq
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 9003
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 9003
+            initialDelaySeconds: 5
+            periodSeconds: 15

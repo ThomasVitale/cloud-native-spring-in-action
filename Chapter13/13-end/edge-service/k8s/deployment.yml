@@ -2,12 +2,17 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: edge-service
+  labels:
+    app: edge-service
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: edge-service
   template:
+    metadata:
+      labels:
+        app: edge-service
     spec:
       containers:
         - name: edge-service
@@ -24,10 +29,21 @@ spec:
               value: http://catalog-service
             - name: ORDER_SERVICE_URL
               value: http://order-service
-          volumeMounts:
-            - name: edge-service-volume
-              mountPath: /workspace/config
-      volumes:
-        - name: edge-service-volume
-          configMap:
-            name: edge-service
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: http://config-service
+            - name: SPRING_REDIS_HOST
+              value: polar-redis
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI
+              value: http://polar-keycloak/auth/realms/PolarBookshop
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 9000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 9000
+            initialDelaySeconds: 5
+            periodSeconds: 15

@@ -3,6 +3,7 @@ server:
   shutdown: graceful
   netty:
     connection-timeout: 2s
+    idle-timeout: 15s
 
 spring:
   application:
@@ -12,7 +13,7 @@ spring:
   r2dbc:
     username: user
     password: password
-    url: r2dbc:postgresql://localhost:5433/polardb_order
+    url: r2dbc:postgresql://localhost:5432/polardb_order
     pool:
       max-create-connection-time: 2s
       initial-size: 5
@@ -20,18 +21,13 @@ spring:
   flyway:
     user: ${spring.r2dbc.username}
     password: ${spring.r2dbc.password}
-    url: jdbc:postgresql://localhost:5433/polardb_order
+    url: jdbc:postgresql://localhost:5432/polardb_order
   config:
     import: "optional:configserver:"
   cloud:
-    bus:
-      enabled: false
-      id: ${spring.application.name}:${spring.profiles.active:default}:${random.long}
     config:
       uri: http://localhost:8888
-      username: user
-      password: password
-      request-connect-timeout: 2000 # 2s
+      request-connect-timeout: 5000 # 5s
       request-read-timeout: 5000 # 5s
       fail-fast: false
       retry:
@@ -42,7 +38,6 @@ spring:
     function:
       definition: dispatchOrder
     stream:
-      source: acceptOrder
       bindings:
         dispatchOrder-in-0:
           destination: order-dispatched
@@ -66,6 +61,33 @@ spring:
         jwt:
           issuer-uri: http://localhost:8080/auth/realms/PolarBookshop
           # jwk-set-uri: http://localhost:8080/auth/realms/PolarBookshop/protocol/openid-connect/certs
+  sleuth:
+    sampler:
+      probability: 1.0
+  zipkin:
+    base-url: ${ZIPKIN_URL:http://localhost:9411/}
+    enabled: false
 
 polar:
-  catalog-service-url: "http://localhost:9001"
+  catalog-service-uri: "http://localhost:9001"
+
+info:
+  system: Polar Bookshop
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: env, health, heapdump, info, prometheus
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
