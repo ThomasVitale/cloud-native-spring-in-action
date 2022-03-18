@@ -89,7 +89,7 @@ class BookRepositoryJdbcTests {
 
     @Test
     @WithMockUser("john")
-    void whenCreateBookuthenticatedThenAuditMetadata() {
+    void whenCreateBookAuthenticatedThenAuditMetadata() {
         var bookToCreate = Book.build("1232343457", "Title", "Author", 12.90, "Polarsophia");
         var createdBook = bookRepository.save(bookToCreate);
 
