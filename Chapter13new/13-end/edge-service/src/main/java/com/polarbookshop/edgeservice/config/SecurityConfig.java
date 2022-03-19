@@ -2,6 +2,7 @@ package com.polarbookshop.edgeservice.config;
 
 import reactor.core.publisher.Mono;
 
+import org.springframework.boot.actuate.autoconfigure.security.reactive.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,7 @@ public class SecurityConfig {
 	SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http, ReactiveClientRegistrationRepository clientRegistrationRepository) {
 		return http
 				.authorizeExchange(exchange -> exchange
+						.matchers(EndpointRequest.toAnyEndpoint()).permitAll()
 						.pathMatchers("/", "/*.css", "/*.js", "/favicon.ico").permitAll()
 					 	.pathMatchers(HttpMethod.GET, "/books/**").permitAll()
 						.anyExchange().authenticated()

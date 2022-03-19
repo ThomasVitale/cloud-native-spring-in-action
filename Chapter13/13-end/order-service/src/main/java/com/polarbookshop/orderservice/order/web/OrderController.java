@@ -36,7 +36,7 @@ public class OrderController {
 
 	@PostMapping
 	public Mono<Order> submitOrder(@RequestBody @Valid OrderRequest orderRequest) {
-		log.info("Submitting order for {} copies of the book with ISBN {}", orderRequest.quantity(), orderRequest.isbn());
+		log.info("Order for {} copies of the book with ISBN {}", orderRequest.quantity(), orderRequest.isbn());
 		return orderService.submitOrder(orderRequest.isbn(), orderRequest.quantity());
 	}
 

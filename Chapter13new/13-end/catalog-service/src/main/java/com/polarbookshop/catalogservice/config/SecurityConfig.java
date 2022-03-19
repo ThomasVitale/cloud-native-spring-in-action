@@ -1,5 +1,6 @@
 package com.polarbookshop.catalogservice.config;
 
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,6 +19,7 @@ public class SecurityConfig {
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http
 				.authorizeHttpRequests(authorize -> authorize
+						.requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
 						.mvcMatchers(HttpMethod.GET, "/", "/books/**").permitAll()
 						.anyRequest().hasRole("employee")
 				)

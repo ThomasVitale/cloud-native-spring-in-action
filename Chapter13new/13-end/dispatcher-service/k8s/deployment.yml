@@ -13,6 +13,10 @@ spec:
     metadata:
       labels:
         app: dispatcher-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "9003"
     spec:
       containers:
         - name: dispatcher-service
@@ -29,3 +33,15 @@ spec:
               value: http://config-service
             - name: SPRING_RABBITMQ_HOST
               value: polar-rabbitmq
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 9003
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 9003
+            initialDelaySeconds: 5
+            periodSeconds: 15

@@ -21,6 +21,7 @@ repositories {
 }
 
 ext {
+	set('otelVersion', "1.12.1")
 	set('springCloudVersion', "2021.0.1")
 	set('testcontainersVersion', "1.16.2")
 	set('testKeycloakVersion', "1.10.0")
@@ -36,6 +37,8 @@ dependencies {
 	implementation 'org.springframework.retry:spring-retry'
 	implementation 'org.flywaydb:flyway-core'
 
+	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+	runtimeOnly "io.opentelemetry.javaagent:opentelemetry-javaagent:${otelVersion}"
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
@@ -52,6 +55,10 @@ dependencyManagement {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 		mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
 	}
+}
+
+springBoot {
+	buildInfo()
 }
 
 bootRun {
