@@ -87,6 +87,7 @@ services:
       - fluent-bit
       - polar-keycloak
       - polar-redis
+      - polar-ui
       - tempo
     image: "edge-service"
     container_name: "edge-service"
@@ -137,6 +138,8 @@ services:
     container_name: "polar-ui"
     ports:
       - 9004:9004
+    environment:
+      - PORT=9004
 
   # Backing Services
   

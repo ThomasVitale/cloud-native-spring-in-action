@@ -58,6 +58,7 @@ services:
     depends_on:
       - polar-keycloak
       - polar-redis
+      - polar-ui
     image: "edge-service"
     container_name: "edge-service"
     ports:
@@ -92,6 +93,8 @@ services:
     container_name: "polar-ui"
     ports:
       - 9004:9004
+    environment:
+      - PORT=9004
 
   # Backing Services
 
