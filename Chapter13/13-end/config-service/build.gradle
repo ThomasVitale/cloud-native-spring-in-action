@@ -1,7 +1,7 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.3'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.6.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
 }
 
 group = 'com.polarbookshop'
@@ -15,16 +15,16 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "2021.0.1")
+	set('otelVersion', "1.12.1")
+    set('springCloudVersion', "2021.0.1")
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.cloud:spring-cloud-config-server'
-    implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
-    implementation 'org.springframework.cloud:spring-cloud-sleuth-zipkin'
 
-    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+	runtimeOnly "io.opentelemetry.javaagent:opentelemetry-javaagent:${otelVersion}"
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
@@ -36,20 +36,20 @@ dependencyManagement {
 }
 
 springBoot {
-    buildInfo()
+	buildInfo()
 }
 
 bootBuildImage {
-	imageName = "${project.name}"
-	environment = ["BP_JVM_VERSION": "17.*"]
+    imageName = "${project.name}"
+    environment = ["BP_JVM_VERSION": "17.*"]
 
-	docker {
-		publishRegistry {
-			username = project.findProperty("registryUsername")
-			password = project.findProperty("registryToken")
-			url = project.findProperty("registryUrl")
-		}
-	}
+    docker {
+        publishRegistry {
+            username = project.findProperty("registryUsername")
+            password = project.findProperty("registryToken")
+            url = project.findProperty("registryUrl")
+        }
+    }
 }
 
 tasks.named('test') {

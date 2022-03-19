@@ -51,19 +51,19 @@ management:
   endpoints:
     web:
       exposure:
-        include: env, flyway, health, heapdump, info, prometheus
+        include: configprops, env, flyway, health, heapdump, info, loggers, mappings, prometheus
   endpoint:
     health:
       show-details: always
       show-components: always
       probes:
         enabled: true
-  metrics:
-    tags:
-      application: ${spring.application.name}
   info:
     env:
       enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
 
 polar:
   greeting: Welcome to the local book catalog!

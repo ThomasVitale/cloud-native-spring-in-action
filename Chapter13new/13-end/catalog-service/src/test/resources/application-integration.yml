@@ -1,3 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:tc:postgresql:14.1:///

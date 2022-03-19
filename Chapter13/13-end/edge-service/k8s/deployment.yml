@@ -13,6 +13,10 @@ spec:
     metadata:
       labels:
         app: edge-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "9000"
     spec:
       containers:
         - name: edge-service

@@ -61,15 +61,10 @@ spring:
         jwt:
           issuer-uri: http://localhost:8080/auth/realms/PolarBookshop
           # jwk-set-uri: http://localhost:8080/auth/realms/PolarBookshop/protocol/openid-connect/certs
-  sleuth:
-    sampler:
-      probability: 1.0
-  zipkin:
-    base-url: ${ZIPKIN_URL:http://localhost:9411/}
-    enabled: false
 
-polar:
-  catalog-service-uri: "http://localhost:9001"
+logging:
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
 
 info:
   system: Polar Bookshop
@@ -78,7 +73,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: env, health, heapdump, info, prometheus
+        include: bindings, configprops, env, flyway, functions, health, heapdump, info, loggers, mappings, prometheus
   endpoint:
     health:
       show-details: always
@@ -91,3 +86,6 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
+
+polar:
+  catalog-service-uri: "http://localhost:9001"

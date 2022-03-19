@@ -22,58 +22,58 @@ import org.springframework.test.context.DynamicPropertySource;
 @Testcontainers
 class OrderRepositoryR2dbcTests {
 
-	@Container
-	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:13.4"))
-			.withReuse(true);
+    @Container
+    static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:13.4"))
+            .withReuse(true);
 
-	@Autowired
-	private OrderRepository orderRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
-	@DynamicPropertySource
-	static void postgresqlProperties(DynamicPropertyRegistry registry) {
-		registry.add("spring.r2dbc.url", OrderRepositoryR2dbcTests::r2dbcUrl);
-		registry.add("spring.r2dbc.username", postgresql::getUsername);
-		registry.add("spring.r2dbc.password", postgresql::getPassword);
-		registry.add("spring.flyway.url", postgresql::getJdbcUrl);
-	}
+    @DynamicPropertySource
+    static void postgresqlProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.r2dbc.url", OrderRepositoryR2dbcTests::r2dbcUrl);
+        registry.add("spring.r2dbc.username", postgresql::getUsername);
+        registry.add("spring.r2dbc.password", postgresql::getPassword);
+        registry.add("spring.flyway.url", postgresql::getJdbcUrl);
+    }
 
-	private static String r2dbcUrl() {
-		return String.format("r2dbc:postgresql://%s:%s/%s", postgresql.getContainerIpAddress(),
-				postgresql.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT), postgresql.getDatabaseName());
-	}
+    private static String r2dbcUrl() {
+        return String.format("r2dbc:postgresql://%s:%s/%s", postgresql.getContainerIpAddress(),
+                postgresql.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT), postgresql.getDatabaseName());
+    }
 
-	@Test
-	void findOrderByIdWhenNotExisting() {
-		StepVerifier.create(orderRepository.findById(394L))
-				.expectNextCount(0)
-				.verifyComplete();
-	}
+    @Test
+    void findOrderByIdWhenNotExisting() {
+        StepVerifier.create(orderRepository.findById(394L))
+                .expectNextCount(0)
+                .verifyComplete();
+    }
 
-	@Test
-	void createRejectedOrder() {
-		var rejectedOrder = OrderService.buildRejectedOrder( "1234567890", 3);
-		StepVerifier.create(orderRepository.save(rejectedOrder))
-				.expectNextMatches(order -> order.status().equals(OrderStatus.REJECTED))
-				.verifyComplete();
-	}
+    @Test
+    void createRejectedOrder() {
+        var rejectedOrder = OrderService.buildRejectedOrder( "1234567890", 3);
+        StepVerifier.create(orderRepository.save(rejectedOrder))
+                .expectNextMatches(order -> order.status().equals(OrderStatus.REJECTED))
+                .verifyComplete();
+    }
 
-	@Test
-	void whenCreateOrderNotAuthenticatedThenNoAuditMetadata() {
-		var rejectedOrder = OrderService.buildRejectedOrder( "1234567890", 3);
-		StepVerifier.create(orderRepository.save(rejectedOrder))
-				.expectNextMatches(order -> Objects.isNull(order.createdBy()) &&
-						Objects.isNull(order.lastModifiedBy()))
-				.verifyComplete();
-	}
+    @Test
+    void whenCreateOrderNotAuthenticatedThenNoAuditMetadata() {
+        var rejectedOrder = OrderService.buildRejectedOrder( "1234567890", 3);
+        StepVerifier.create(orderRepository.save(rejectedOrder))
+                .expectNextMatches(order -> Objects.isNull(order.createdBy()) &&
+                        Objects.isNull(order.lastModifiedBy()))
+                .verifyComplete();
+    }
 
-	@Test
-	@WithMockUser("melinda")
-	void whenCreateOrderAuthenticatedThenAuditMetadata() {
-		var rejectedOrder = OrderService.buildRejectedOrder( "1234567890", 3);
-		StepVerifier.create(orderRepository.save(rejectedOrder))
-				.expectNextMatches(order -> order.createdBy().equals("melinda") &&
-						order.lastModifiedBy().equals("melinda"))
-				.verifyComplete();
-	}
+    @Test
+    @WithMockUser("melinda")
+    void whenCreateOrderAuthenticatedThenAuditMetadata() {
+        var rejectedOrder = OrderService.buildRejectedOrder( "1234567890", 3);
+        StepVerifier.create(orderRepository.save(rejectedOrder))
+                .expectNextMatches(order -> order.createdBy().equals("melinda") &&
+                        order.lastModifiedBy().equals("melinda"))
+                .verifyComplete();
+    }
 
 }

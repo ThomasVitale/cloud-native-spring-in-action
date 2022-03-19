@@ -1,6 +1,0 @@
-spring:
-  cloud:
-    bus:
-      enabled: true
-  zipkin:
-    enabled: true

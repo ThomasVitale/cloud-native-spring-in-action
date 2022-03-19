@@ -93,12 +93,6 @@ spring:
         provider:
           keycloak:
             issuer-uri: http://localhost:8080/auth/realms/PolarBookshop
-  sleuth:
-    sampler:
-      probability: 1.0
-  zipkin:
-    base-url: ${ZIPKIN_URL:http://localhost:9411/}
-    enabled: false
 
 resilience4j:
   circuitbreaker:
@@ -113,6 +107,14 @@ resilience4j:
       default:
         timeoutDuration: 5s
 
+logging:
+  group:
+    circuitbreaker: io.github.resilience4j, org.springframework.cloud.circuitbreaker
+  level:
+    circuitbreaker: info
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+
 info:
   system: Polar Bookshop
 
@@ -120,25 +122,16 @@ management:
   endpoints:
     web:
       exposure:
-        include: health, heapdump, info, prometheus
+        include: configprops, env, gateway, health, heapdump, info, loggers, mappings, prometheus
   endpoint:
     health:
       show-details: always
       show-components: always
       probes:
         enabled: true
-      group:
-        readiness:
-          include: readinessState,redis
   info:
     env:
       enabled: true
   metrics:
     tags:
       application: ${spring.application.name}
-
-logging:
-  group:
-    circuitbreaker: io.github.resilience4j, org.springframework.cloud.circuitbreaker
-  level:
-    circuitbreaker: info

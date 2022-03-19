@@ -1,5 +1,7 @@
 package com.polarbookshop.edgeservice.config;
 
+import reactor.core.publisher.Mono;
+
 import org.springframework.boot.actuate.autoconfigure.security.reactive.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -17,7 +19,6 @@ import org.springframework.security.web.server.authentication.logout.ServerLogou
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
 import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.web.server.WebFilter;
-import reactor.core.publisher.Mono;
 
 @EnableWebFluxSecurity
 public class SecurityConfig {
@@ -33,7 +34,7 @@ public class SecurityConfig {
 				.authorizeExchange(exchange -> exchange
 						.matchers(EndpointRequest.toAnyEndpoint()).permitAll()
 						.pathMatchers("/", "/*.css", "/*.js", "/favicon.ico").permitAll()
-						.pathMatchers(HttpMethod.GET, "/books/**").permitAll()
+					 	.pathMatchers(HttpMethod.GET, "/books/**").permitAll()
 						.anyExchange().authenticated()
 				)
 				.exceptionHandling(exceptionHandling -> exceptionHandling
