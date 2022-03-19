@@ -39,12 +39,10 @@ spring:
         jwt:
           issuer-uri: http://localhost:8080/auth/realms/PolarBookshop
           # jwk-set-uri: http://localhost:8080/auth/realms/PolarBookshop/protocol/openid-connect/certs
-  sleuth:
-    sampler:
-      probability: 1.0
-  zipkin:
-    base-url: ${ZIPKIN_URL:http://localhost:9411/}
-    enabled: false
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
 
 info:
   system: Polar Bookshop
