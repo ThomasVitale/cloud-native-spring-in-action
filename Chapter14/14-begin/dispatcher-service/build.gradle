@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.2'
+	id 'org.springframework.boot' version '2.6.3'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
@@ -15,15 +15,21 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "2021.0.0")
+	set('otelVersion', "1.12.1")
+	set('springCloudVersion', "2021.0.1")
 }
 
 dependencies {
 	//implementation 'org.springframework.boot:spring-boot-starter'
 	//implementation 'org.springframework.cloud:spring-cloud-function-context'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
 	implementation 'org.springframework.retry:spring-retry'
+
+	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+	runtimeOnly "io.opentelemetry.javaagent:opentelemetry-javaagent:${otelVersion}"
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
@@ -43,6 +49,10 @@ dependencyManagement {
 	}
 }
 
+springBoot {
+	buildInfo()
+}
+
 bootBuildImage {
 	imageName = "${project.name}"
 	environment = ["BP_JVM_VERSION": "17.*"]
@@ -56,6 +66,6 @@ bootBuildImage {
 	}
 }
 
-test {
+tasks.named('test') {
 	useJUnitPlatform()
 }

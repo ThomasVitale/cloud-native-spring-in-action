@@ -3,6 +3,7 @@ server:
   shutdown: graceful
   tomcat:
     connection-timeout: 2s
+    keep-alive-timeout: 15s
     threads:
       max: 50
       min-spare: 5
@@ -21,3 +22,28 @@ spring:
           timeout: 5
           clone-on-start: true
           force-pull: true
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+
+info:
+  system: Polar Bookshop
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: configprops, env, health, heapdump, info, loggers, mappings, prometheus
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}

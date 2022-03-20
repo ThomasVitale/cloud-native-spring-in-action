@@ -4,15 +4,9 @@ metadata:
   name: polar-ingress
 spec:
   rules:
-    - http:
+    - host: polar-bookshop.127.0.0.1.sslip.io
+      http:
         paths:
-          - path: /auth
-            pathType: Prefix
-            backend:
-              service:
-                name: polar-keycloak
-                port:
-                  number: 80
           - path: /
             pathType: Prefix
             backend:

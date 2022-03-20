@@ -3,6 +3,7 @@ server:
   shutdown: graceful
   tomcat:
     connection-timeout: 2s
+    keep-alive-timeout: 15s
     threads:
       max: 50
       min-spare: 5
@@ -17,7 +18,7 @@ spring:
   cloud:
     config:
       uri: http://localhost:8888
-      request-connect-timeout: 2000 # 2s
+      request-connect-timeout: 5000 # 5s
       request-read-timeout: 5000 # 5s
       fail-fast: false
       retry:
@@ -41,11 +42,30 @@ spring:
           issuer-uri: http://localhost:8080/auth/realms/PolarBookshop
           # jwk-set-uri: http://localhost:8080/auth/realms/PolarBookshop/protocol/openid-connect/certs
 
+logging:
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+
+info:
+  system: Polar Bookshop
+
 management:
   endpoints:
     web:
       exposure:
-        include: refresh
+        include: configprops, env, flyway, health, heapdump, info, loggers, mappings, prometheus
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
 
 polar:
   greeting: Welcome to the local book catalog!

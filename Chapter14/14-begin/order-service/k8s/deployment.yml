@@ -13,6 +13,10 @@ spec:
     metadata:
       labels:
         app: order-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "9002"
     spec:
       containers:
         - name: order-service
@@ -25,15 +29,27 @@ spec:
           ports:
             - containerPort: 9002
           env:
-            - name: POLAR_CATALOG_SERVICE_URL
+            - name: POLAR_CATALOG_SERVICE_URI
               value: http://catalog-service
             - name: SPRING_CLOUD_CONFIG_URI
               value: http://config-service
             - name: SPRING_RABBITMQ_HOST
               value: polar-rabbitmq
             - name: SPRING_R2DBC_URL
-              value: r2dbc:postgresql://polar-postgres-order/polardb_order
+              value: r2dbc:postgresql://polar-postgres/polardb_order
             - name: SPRING_FLYWAY_URL
-              value: jdbc:postgresql://polar-postgres-order/polardb_order
+              value: jdbc:postgresql://polar-postgres/polardb_order
             - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
-              value: http://host.docker.internal:8080/auth/realms/PolarBookshop
+              value: http://polar-keycloak/auth/realms/PolarBookshop
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 9002
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 9002
+            initialDelaySeconds: 5
+            periodSeconds: 15
