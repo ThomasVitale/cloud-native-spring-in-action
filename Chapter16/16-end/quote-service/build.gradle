@@ -1,12 +1,12 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.2'
+	id 'org.springframework.boot' version '2.6.4'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
-	id 'org.springframework.experimental.aot' version '0.11.1'
+	id 'org.springframework.experimental.aot' version '0.11.3'
 }
 
 group = 'com.polarbookshop'
-version = '0.0.2-SNAPSHOT'
+version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 repositories {
@@ -21,7 +21,7 @@ dependencies {
 	testImplementation 'io.projectreactor:reactor-test'
 }
 
-test {
+tasks.named('test') {
 	useJUnitPlatform()
 }
 
@@ -29,12 +29,9 @@ springAot {
 	removeSpelSupport = true
 }
 
-bootBuildImage {
+tasks.named('bootBuildImage') {
 	builder = 'paketobuildpacks/builder:tiny'
-	environment = [
-			'BP_JVM_VERSION': '17.*',
-			'BP_NATIVE_IMAGE': 'true'
-	]
+	environment = ['BP_NATIVE_IMAGE': 'true']
 	imageName = "${project.name}"
 
 	docker {

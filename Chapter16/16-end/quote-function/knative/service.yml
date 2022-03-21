@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
         - name: quote-function
-          image: ghcr.io/polarbookshop/quote-function:0.0.1
+          image: ghcr.io/polarbookshop/quote-function
           ports:
             - containerPort: 9102
           resources:
