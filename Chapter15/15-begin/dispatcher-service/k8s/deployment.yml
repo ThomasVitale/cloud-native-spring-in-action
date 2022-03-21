@@ -2,12 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dispatcher-service
+  labels:
+    app: dispatcher-service
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: dispatcher-service
   template:
+    metadata:
+      labels:
+        app: dispatcher-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "9003"
     spec:
       containers:
         - name: dispatcher-service
@@ -32,9 +41,9 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 15
           volumeMounts:
-            - name: dispatcher-service-volume
+            - name: dispatcher-config-volume
               mountPath: /workspace/config
       volumes:
-        - name: dispatcher-service-volume
+        - name: dispatcher-config-volume
           configMap:
-            name: dispatcher-service
+            name: dispatcher-config

@@ -2,12 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: edge-service
+  labels:
+    app: edge-service
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: edge-service
   template:
+    metadata:
+      labels:
+        app: edge-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "9000"
     spec:
       containers:
         - name: edge-service
@@ -19,6 +28,11 @@ spec:
                 command: [ "sh", "-c", "sleep 5" ]
           ports:
             - containerPort: 9000
+          env:
+            - name: CATALOG_SERVICE_URL
+              value: http://catalog-service
+            - name: ORDER_SERVICE_URL
+              value: http://order-service
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
@@ -31,15 +45,10 @@ spec:
               port: 9000
             initialDelaySeconds: 5
             periodSeconds: 15
-          env:
-            - name: CATALOG_SERVICE_URL
-              value: http://catalog-service
-            - name: ORDER_SERVICE_URL
-              value: http://order-service
           volumeMounts:
-            - name: edge-service-volume
+            - name: edge-config-volume
               mountPath: /workspace/config
       volumes:
-        - name: edge-service-volume
+        - name: edge-config-volume
           configMap:
-            name: edge-service
+            name: edge-config

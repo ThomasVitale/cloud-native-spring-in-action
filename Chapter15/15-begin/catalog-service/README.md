@@ -12,7 +12,6 @@
 | `/books/{isbn}` | `PUT`    | Book       | 200    | Book           | Update the book with the given ISBN. |
 |                 |          |            | 201    | Book           | Create a book with the given ISBN. |
 | `/books/{isbn}` | `DELETE` |            | 204    |                | Delete the book with the given ISBN. |
-|                 |          |            | 404    |                | No book with the given ISBN exists. |
 
 ## Useful Commands
 
@@ -27,5 +26,5 @@
 After building the application, you can also run it from the Java CLI:
 
 ```bash
-java -jar build/libs/catalog-service-<version>.jar
+java -jar build/libs/catalog-service-0.0.1-SNAPSHOT.jar
 ```

@@ -2,6 +2,7 @@ server:
   port: 9000
   netty:
     connection-timeout: 2s
+    idle-timeout: 15s
   shutdown: graceful
 
 spring:
@@ -10,18 +11,14 @@ spring:
   lifecycle:
     timeout-per-shutdown-phase: 15s
   config:
-    import: "optional:configserver:"
+    import: "" # When using Config Service, add "optional:configserver:"
   cloud:
-    bus:
-      enabled: false
-      id: ${spring.application.name}:${spring.profiles.active:default}:${random.long}
     config:
+      enabled: false # When using Config Service, set to true
       uri: http://localhost:8888
-      username: user
-      password: password
-      request-connect-timeout: 2000 # 2s
+      request-connect-timeout: 5000 # 5s
       request-read-timeout: 5000 # 5s
-      fail-fast: false
+      fail-fast: false # In production, set to true
       retry:
         max-attempts: 6
         initial-interval: 1000 # 1s
@@ -29,7 +26,7 @@ spring:
         multiplier: 1.1
     gateway:
       httpclient:
-        connect-timeout: 5000 # 5s
+        connect-timeout: 2000 # 2s
         response-timeout: 5s
         pool:
           type: elastic
@@ -55,6 +52,10 @@ spring:
               factor: 2
               basedOnPreviousValue: false
       routes:
+        - id: spa-route
+          uri: ${SPA_URL:http://localhost:9004}
+          predicates:
+            - Path=/,/*.css,/*.js,/favicon.ico
         - id: catalog-route
           uri: ${CATALOG_SERVICE_URL:http://localhost:9001}/books
           predicates:
@@ -72,17 +73,11 @@ spring:
             - name: CircuitBreaker
               args:
                 name: orderCircuitBreaker
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: user
-    password: password
-    connection-timeout: 5s
   redis:
     connect-timeout: 2s
     host: localhost
     port: 6379
-    timeout: 500ms
+    timeout: 1s
   session:
     store-type: redis
     timeout: 10m
@@ -99,12 +94,6 @@ spring:
         provider:
           keycloak:
             issuer-uri: http://localhost:8080/auth/realms/PolarBookshop
-  sleuth:
-    sampler:
-      probability: 1.0
-  zipkin:
-    base-url: ${ZIPKIN_URL:http://localhost:9411/}
-    enabled: false
 
 resilience4j:
   circuitbreaker:
@@ -119,6 +108,14 @@ resilience4j:
       default:
         timeoutDuration: 5s
 
+logging:
+  group:
+    circuitbreaker: io.github.resilience4j, org.springframework.cloud.circuitbreaker
+  level:
+    circuitbreaker: info
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+
 info:
   system: Polar Bookshop
 
@@ -126,25 +123,16 @@ management:
   endpoints:
     web:
       exposure:
-        include: health, heapdump, info, prometheus
+        include: configprops, env, gateway, health, heapdump, info, loggers, mappings, prometheus
   endpoint:
     health:
       show-details: always
       show-components: always
       probes:
         enabled: true
-      group:
-        readiness:
-          include: readinessState,redis
   info:
     env:
       enabled: true
   metrics:
     tags:
       application: ${spring.application.name}
-
-logging:
-  group:
-    circuitbreaker: io.github.resilience4j, org.springframework.cloud.circuitbreaker
-  level:
-    circuitbreaker: info

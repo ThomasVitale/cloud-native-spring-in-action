@@ -2,14 +2,22 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: order-service
+  labels:
+    app: order-service
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: order-service
   template:
+    metadata:
+      labels:
+        app: order-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "9002"
     spec:
-      terminationGracePeriodSeconds: 20
       containers:
         - name: order-service
           image: order-service
@@ -33,9 +41,9 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 15
           volumeMounts:
-            - name: order-service-volume
+            - name: order-config-volume
               mountPath: /workspace/config
       volumes:
-        - name: order-service-volume
+        - name: order-config-volume
           configMap:
-            name: order-service
+            name: order-config

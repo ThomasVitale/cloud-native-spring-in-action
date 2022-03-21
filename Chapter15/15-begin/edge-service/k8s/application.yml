@@ -1,11 +1,4 @@
 spring:
-  config:
-    import: "optional:configserver:"
-  cloud:
-    config:
-      uri: http://config-service
-  rabbitmq:
-    host: polar-rabbitmq
   redis:
     host: polar-redis
   security:
@@ -13,4 +6,4 @@ spring:
       client:
         provider:
           keycloak:
-            issuer-uri: http://host.docker.internal:8080/auth/realms/PolarBookshop
+            issuer-uri: http://polar-keycloak/auth/realms/PolarBookshop

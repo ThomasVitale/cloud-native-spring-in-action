@@ -1,3 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rabbitmq-config
+  labels:
+    db: polar-rabbitmq
+data:
+  rabbitmq.conf: |
+    default_user = user
+    default_pass = password
+    vm_memory_high_watermark.relative = 1.0
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,14 +29,7 @@ spec:
     spec:
       containers:
         - name: polar-rabbitmq
-          image: rabbitmq:3.8-management
-          env:
-            - name: RABBITMQ_DEFAULT_USER
-              value: user
-            - name: RABBITMQ_DEFAULT_PASS
-              value: password 
-            - name: RABBITMQ_VM_MEMORY_HIGH_WATERMARK
-              value: "1.0"
+          image: rabbitmq:3.9-management
           resources:
             requests:
               cpu: 100m
@@ -30,6 +37,13 @@ spec:
             limits:
               cpu: 200m
               memory: 150Mi
+          volumeMounts:
+            - mountPath: /etc/rabbitmq
+              name: rabbitmq-config-volume
+      volumes:
+        - name: rabbitmq-config-volume
+          configMap:
+            name: rabbitmq-config
 
 ---
 

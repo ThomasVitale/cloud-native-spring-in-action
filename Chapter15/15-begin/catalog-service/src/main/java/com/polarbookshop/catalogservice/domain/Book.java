@@ -1,12 +1,18 @@
 package com.polarbookshop.catalogservice.domain;
 
-import org.springframework.data.annotation.*;
+import java.time.Instant;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
-import java.time.Instant;
+
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Version;
 
 public record Book (
 
@@ -46,8 +52,8 @@ public record Book (
 
 ){
 
-    public static Book build(String isbn, String title, String author, Double price, String publisher) {
-        return new Book(null, isbn, title, author, price, publisher, null, null, null, null, 0);
-    }
+        public static Book build(String isbn, String title, String author, Double price, String publisher) {
+                return new Book(null, isbn, title, author, price, publisher, null, null, null, null, 0);
+        }
 
 }

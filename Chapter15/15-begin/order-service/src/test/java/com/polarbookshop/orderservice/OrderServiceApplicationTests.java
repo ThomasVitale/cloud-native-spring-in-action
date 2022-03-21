@@ -1,5 +1,9 @@
 package com.polarbookshop.orderservice;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +16,12 @@ import com.polarbookshop.orderservice.order.web.OrderRequest;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
+import reactor.core.publisher.Mono;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,15 +35,6 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
-import reactor.core.publisher.Mono;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -49,13 +50,13 @@ class OrderServiceApplicationTests {
 	private static KeycloakToken isabelleTokens;
 
 	@Container
-	private static final KeycloakContainer keycloakContainer = new KeycloakContainer("quay.io/keycloak/keycloak:15.0.1")
-		 .withRealmImportFile("keycloak_config.json")
-		 .withEnv("DB_VENDOR", "h2");
+	private static final KeycloakContainer keycloakContainer = new KeycloakContainer("quay.io/keycloak/keycloak:17.0.0-legacy")
+			.withRealmImportFile("keycloak_config.json")
+			.withEnv("DB_VENDOR", "h2");
 
 	@Container
 	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:13.4"))
-		 .withReuse(true);
+			.withReuse(true);
 
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -78,20 +79,20 @@ class OrderServiceApplicationTests {
 		registry.add("spring.flyway.url", postgresql::getJdbcUrl);
 
 		registry.add("spring.security.oauth2.resourceserver.jwt.issuer-uri",
-			 () -> keycloakContainer.getAuthServerUrl() + "/realms/PolarBookshop");
+				() -> keycloakContainer.getAuthServerUrl() + "/realms/PolarBookshop");
 	}
 
 	private static String r2dbcUrl() {
 		return String.format("r2dbc:postgresql://%s:%s/%s", postgresql.getContainerIpAddress(),
-			 postgresql.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT), postgresql.getDatabaseName());
+				postgresql.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT), postgresql.getDatabaseName());
 	}
 
 	@BeforeAll
 	static void generateAccessTokens() {
 		WebClient webClient = WebClient.builder()
-			 .baseUrl(keycloakContainer.getAuthServerUrl() + "/realms/PolarBookshop/protocol/openid-connect/token")
-			 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-			 .build();
+				.baseUrl(keycloakContainer.getAuthServerUrl() + "/realms/PolarBookshop/protocol/openid-connect/token")
+				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+				.build();
 
 		isabelleTokens = authenticateWith("isabelle", "password", webClient);
 		bjornTokens = authenticateWith("bjorn", "password", webClient);
@@ -105,25 +106,25 @@ class OrderServiceApplicationTests {
 		OrderRequest orderRequest = new OrderRequest(bookIsbn, 1);
 
 		Order expectedOrder = webTestClient.post().uri("/orders")
-			 .headers(headers -> headers.setBearerAuth(bjornTokens.accessToken()))
-			 .bodyValue(orderRequest)
-			 .exchange()
-			 .expectStatus().is2xxSuccessful()
-			 .expectBody(Order.class).returnResult().getResponseBody();
+				.headers(headers -> headers.setBearerAuth(bjornTokens.accessToken()))
+				.bodyValue(orderRequest)
+				.exchange()
+				.expectStatus().is2xxSuccessful()
+				.expectBody(Order.class).returnResult().getResponseBody();
 		assertThat(expectedOrder).isNotNull();
 		assertThat(objectMapper.readValue(output.receive().getPayload(), OrderAcceptedMessage.class))
-			 .isEqualTo(new OrderAcceptedMessage(expectedOrder.id()));
+				.isEqualTo(new OrderAcceptedMessage(expectedOrder.id()));
 
 		webTestClient.get().uri("/orders")
-			 .headers(headers -> headers.setBearerAuth(bjornTokens.accessToken()))
-			 .exchange()
-			 .expectStatus().is2xxSuccessful()
-			 .expectBodyList(Order.class).value(orders -> {
-				 List<Long> orderIds = orders.stream()
-						.map(Order::id)
-						.collect(Collectors.toList());
-				 assertThat(orderIds).contains(expectedOrder.id());
-			 });
+				.headers(headers -> headers.setBearerAuth(bjornTokens.accessToken()))
+				.exchange()
+				.expectStatus().is2xxSuccessful()
+				.expectBodyList(Order.class).value(orders -> {
+					List<Long> orderIds = orders.stream()
+							.map(Order::id)
+							.collect(Collectors.toList());
+					assertThat(orderIds).contains(expectedOrder.id());
+				});
 	}
 
 	@Test
@@ -134,37 +135,37 @@ class OrderServiceApplicationTests {
 		OrderRequest orderRequest = new OrderRequest(bookIsbn, 1);
 
 		Order orderByBjorn = webTestClient.post().uri("/orders")
-			 .headers(headers -> headers.setBearerAuth(bjornTokens.accessToken()))
-			 .bodyValue(orderRequest)
-			 .exchange()
-			 .expectStatus().is2xxSuccessful()
-			 .expectBody(Order.class).returnResult().getResponseBody();
+				.headers(headers -> headers.setBearerAuth(bjornTokens.accessToken()))
+				.bodyValue(orderRequest)
+				.exchange()
+				.expectStatus().is2xxSuccessful()
+				.expectBody(Order.class).returnResult().getResponseBody();
 		assertThat(orderByBjorn).isNotNull();
 		assertThat(objectMapper.readValue(output.receive().getPayload(), OrderAcceptedMessage.class))
-			 .isEqualTo(new OrderAcceptedMessage(orderByBjorn.id()));
+				.isEqualTo(new OrderAcceptedMessage(orderByBjorn.id()));
 
 		Order orderByIsabelle = webTestClient.post().uri("/orders")
-			 .headers(headers -> headers.setBearerAuth(isabelleTokens.accessToken()))
-			 .bodyValue(orderRequest)
-			 .exchange()
-			 .expectStatus().is2xxSuccessful()
-			 .expectBody(Order.class).returnResult().getResponseBody();
+				.headers(headers -> headers.setBearerAuth(isabelleTokens.accessToken()))
+				.bodyValue(orderRequest)
+				.exchange()
+				.expectStatus().is2xxSuccessful()
+				.expectBody(Order.class).returnResult().getResponseBody();
 		assertThat(orderByIsabelle).isNotNull();
 		assertThat(objectMapper.readValue(output.receive().getPayload(), OrderAcceptedMessage.class))
-			 .isEqualTo(new OrderAcceptedMessage(orderByIsabelle.id()));
+				.isEqualTo(new OrderAcceptedMessage(orderByIsabelle.id()));
 
 		webTestClient.get().uri("/orders")
-			 .headers(headers -> headers.setBearerAuth(bjornTokens.accessToken()))
-			 .exchange()
-			 .expectStatus().is2xxSuccessful()
-			 .expectBodyList(Order.class)
-			 .value(orders -> {
-				 List<Long> orderIds = orders.stream()
-						.map(Order::id)
-						.collect(Collectors.toList());
-				 assertThat(orderIds).contains(orderByBjorn.id());
-				 assertThat(orderIds).doesNotContain(orderByIsabelle.id());
-			 });
+				.headers(headers -> headers.setBearerAuth(bjornTokens.accessToken()))
+				.exchange()
+				.expectStatus().is2xxSuccessful()
+				.expectBodyList(Order.class)
+				.value(orders -> {
+					List<Long> orderIds = orders.stream()
+							.map(Order::id)
+							.collect(Collectors.toList());
+					assertThat(orderIds).contains(orderByBjorn.id());
+					assertThat(orderIds).doesNotContain(orderByIsabelle.id());
+				});
 	}
 
 	@Test
@@ -175,22 +176,22 @@ class OrderServiceApplicationTests {
 		OrderRequest orderRequest = new OrderRequest(bookIsbn, 3);
 
 		Order createdOrder = webTestClient.post().uri("/orders")
-			 .headers(headers -> headers.setBearerAuth(bjornTokens.accessToken()))
-			 .bodyValue(orderRequest)
-			 .exchange()
-			 .expectStatus().is2xxSuccessful()
-			 .expectBody(Order.class)
-			 .value(order -> {
-				 assertThat(order.bookIsbn()).isEqualTo(orderRequest.isbn());
-				 assertThat(order.quantity()).isEqualTo(orderRequest.quantity());
-				 assertThat(order.bookName()).isEqualTo(book.title() + " - " + book.author());
-				 assertThat(order.bookPrice()).isEqualTo(book.price());
-				 assertThat(order.status()).isEqualTo(OrderStatus.ACCEPTED);
-			 })
-			 .returnResult().getResponseBody();
+				.headers(headers -> headers.setBearerAuth(bjornTokens.accessToken()))
+				.bodyValue(orderRequest)
+				.exchange()
+				.expectStatus().is2xxSuccessful()
+				.expectBody(Order.class)
+				.value(order -> {
+					assertThat(order.bookIsbn()).isEqualTo(orderRequest.isbn());
+					assertThat(order.quantity()).isEqualTo(orderRequest.quantity());
+					assertThat(order.bookName()).isEqualTo(book.title() + " - " + book.author());
+					assertThat(order.bookPrice()).isEqualTo(book.price());
+					assertThat(order.status()).isEqualTo(OrderStatus.ACCEPTED);
+				})
+				.returnResult().getResponseBody();
 
 		assertThat(objectMapper.readValue(output.receive().getPayload(), OrderAcceptedMessage.class))
-			 .isEqualTo(new OrderAcceptedMessage(createdOrder.id()));
+				.isEqualTo(new OrderAcceptedMessage(createdOrder.id()));
 	}
 
 	@Test
@@ -200,29 +201,29 @@ class OrderServiceApplicationTests {
 		OrderRequest orderRequest = new OrderRequest(bookIsbn, 3);
 
 		webTestClient.post().uri("/orders")
-			 .headers(headers -> headers.setBearerAuth(bjornTokens.accessToken()))
-			 .bodyValue(orderRequest)
-			 .exchange()
-			 .expectStatus().is2xxSuccessful()
-			 .expectBody(Order.class)
-			 .value(order -> {
-				 assertThat(order.bookIsbn()).isEqualTo(orderRequest.isbn());
-				 assertThat(order.quantity()).isEqualTo(orderRequest.quantity());
-				 assertThat(order.status()).isEqualTo(OrderStatus.REJECTED);
-			 });
+				.headers(headers -> headers.setBearerAuth(bjornTokens.accessToken()))
+				.bodyValue(orderRequest)
+				.exchange()
+				.expectStatus().is2xxSuccessful()
+				.expectBody(Order.class)
+				.value(order -> {
+					assertThat(order.bookIsbn()).isEqualTo(orderRequest.isbn());
+					assertThat(order.quantity()).isEqualTo(orderRequest.quantity());
+					assertThat(order.status()).isEqualTo(OrderStatus.REJECTED);
+				});
 	}
 
 	private static KeycloakToken authenticateWith(String username, String password, WebClient webClient) {
 		return webClient
-			 .post()
-			 .body(BodyInserters.fromFormData("grant_type", "password")
-					.with("client_id", "polar-test")
-					.with("username", username)
-					.with("password", password)
-			 )
-			 .retrieve()
-			 .bodyToMono(KeycloakToken.class)
-			 .block();
+				.post()
+				.body(BodyInserters.fromFormData("grant_type", "password")
+						.with("client_id", "polar-test")
+						.with("username", username)
+						.with("password", password)
+				)
+				.retrieve()
+				.bodyToMono(KeycloakToken.class)
+				.block();
 	}
 
 	private record KeycloakToken(String accessToken) {
