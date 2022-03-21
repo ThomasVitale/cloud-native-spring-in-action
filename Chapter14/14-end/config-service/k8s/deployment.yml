@@ -2,12 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: config-service
+  labels:
+    app: config-service
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: config-service
   template:
+    metadata:
+      labels:
+        app: config-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "8888"
     spec:
       containers:
         - name: config-service
@@ -22,10 +31,15 @@ spec:
           env:
             - name: BPL_JVM_THREAD_COUNT
               value: "50"
-          volumeMounts:
-            - name: config-service-volume
-              mountPath: /workspace/config
-      volumes:
-        - name: config-service-volume
-          configMap:
-            name: config-service
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8888
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8888
+            initialDelaySeconds: 5
+            periodSeconds: 15

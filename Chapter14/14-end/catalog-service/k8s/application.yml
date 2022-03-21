@@ -1,15 +1,10 @@
+polar:
+  greeting: Welcome to the book catalog from a development Kubernetes environment!
 spring:
-  config:
-    import: "optional:configserver:"
-  cloud:
-    config:
-      uri: http://config-service
   datasource:
-    url: jdbc:postgresql://polar-postgres-catalog/polardb_catalog
-  rabbitmq:
-    host: polar-rabbitmq
+    url: jdbc:postgresql://polar-postgres/polardb_catalog
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://host.docker.internal:8080/auth/realms/PolarBookshop
+          issuer-uri: http://polar-keycloak/auth/realms/PolarBookshop

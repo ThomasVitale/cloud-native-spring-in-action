@@ -15,7 +15,9 @@ spec:
     spec:
       containers:
         - name: polar-keycloak
-          image: quay.io/keycloak/keycloak:15.0.1
+          image: quay.io/keycloak/keycloak:17.0.0-legacy
+          ports:
+            - containerPort: 8080
           env:
             - name: KEYCLOAK_USER
               value: user
@@ -27,15 +29,15 @@ spec:
             httpGet:
               path: /auth/realms/master
               port: 8080
-            initialDelaySeconds: 30
-            timeoutSeconds: 30
+            initialDelaySeconds: 180
+            periodSeconds: 30
           resources:
             requests:
               cpu: 100m
-              memory: 200Mi
+              memory: 250Mi
             limits:
               cpu: 500m
-              memory: 400Mi
+              memory: 500Mi
           volumeMounts:
             - name: polar-keycloak-config-volume
               mountPath: /opt/jboss/keycloak/imports/
@@ -60,3 +62,24 @@ spec:
   - protocol: TCP
     port: 80
     targetPort: 8080
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: keycloak-ingress
+  labels:
+    app: polar-keycloak
+spec:
+  rules:
+    - host: polar-keycloak
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: polar-keycloak
+                port:
+                  number: 80
