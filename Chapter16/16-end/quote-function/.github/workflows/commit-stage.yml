@@ -39,10 +39,29 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew build
+  native:
+    name: Build and Test (Native)
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+      - name: Set up GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          version: '22.0.0.2'
+          java-version: '17'
+          components: 'native-image'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build, unit tests and integration tests (native)
+        run: |
+          chmod +x gradlew
+          ./gradlew nativeBuild
   package:
     name: Package and Publish
     if: ${{ github.ref == 'refs/heads/main' }}
-    needs: [ build ]
+    needs: [ build, native ]
     runs-on: ubuntu-20.04
     permissions:
       contents: read
