@@ -29,6 +29,8 @@ spec:
               value: http://catalog-service
             - name: ORDER_SERVICE_URL
               value: http://order-service
+            - name: SPA_URL
+              value: http://polar-ui
             - name: SPRING_CLOUD_CONFIG_URI
               value: http://config-service
             - name: SPRING_REDIS_HOST

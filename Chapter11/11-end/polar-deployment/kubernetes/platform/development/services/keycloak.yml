@@ -25,18 +25,12 @@ spec:
               value: password 
             - name: KEYCLOAK_IMPORT
               value: /opt/jboss/keycloak/imports/realm-config.json
-          startupProbe:
-            httpGet:
-              path: /auth/realms/master
-              port: 8080
-            failureThreshold: 15
-            periodSeconds: 30
           readinessProbe:
             httpGet:
               path: /auth/realms/master
               port: 8080
-            initialDelaySeconds: 30
-            periodSeconds: 15
+            initialDelaySeconds: 180
+            periodSeconds: 30
           resources:
             requests:
               cpu: 100m

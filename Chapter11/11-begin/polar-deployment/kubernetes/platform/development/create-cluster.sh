@@ -8,6 +8,8 @@ echo "\n🔌 Enabling NGINX Ingress Controller...\n"
 
 minikube addons enable ingress --profile polar
 
+sleep 15
+
 echo "\n📦 Deploying platform services..."
 
 kubectl apply -f services
@@ -25,7 +27,7 @@ echo "\n⌛ Waiting for PostgreSQL to be ready..."
 kubectl wait \
   --for=condition=ready pod \
   --selector=db=polar-postgres \
-  --timeout=90s
+  --timeout=180s
 
 echo "\n⌛ Waiting for Redis to be deployed..."
 
@@ -38,7 +40,7 @@ echo "\n⌛ Waiting for Redis to be ready..."
 kubectl wait \
   --for=condition=ready pod \
   --selector=db=polar-redis \
-  --timeout=90s
+  --timeout=180s
 
 echo "\n⌛ Waiting for RabbitMQ to be deployed..."
 
@@ -51,6 +53,6 @@ echo "\n⌛ Waiting for RabbitMQ to be ready..."
 kubectl wait \
   --for=condition=ready pod \
   --selector=db=polar-rabbitmq \
-  --timeout=90s
+  --timeout=180s
 
 echo "\n⛵ Happy Sailing!\n"
