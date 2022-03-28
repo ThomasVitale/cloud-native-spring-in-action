@@ -33,6 +33,8 @@ spec:
               value: http://catalog-service
             - name: ORDER_SERVICE_URL
               value: http://order-service
+            - name: SPA_URL
+              value: http://polar-ui
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness

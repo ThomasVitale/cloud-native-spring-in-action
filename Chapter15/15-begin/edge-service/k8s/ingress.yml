@@ -3,9 +3,9 @@ kind: Ingress
 metadata:
   name: polar-ingress
 spec:
+  ingressClassName: nginx
   rules:
-    - host: polar-bookshop.127.0.0.1.sslip.io
-      http:
+    - http:
         paths:
           - path: /
             pathType: Prefix

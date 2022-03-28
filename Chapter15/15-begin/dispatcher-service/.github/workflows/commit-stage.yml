@@ -4,7 +4,7 @@ on: push
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: polarbookshop/dispatcher-service
-  VERSION: latest
+  VERSION: ${{ github.sha }}
 
 jobs:
   build:
@@ -90,3 +90,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish container image
         run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+      - name: Publish container image (latest)
+        run: |
+          docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }} \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
