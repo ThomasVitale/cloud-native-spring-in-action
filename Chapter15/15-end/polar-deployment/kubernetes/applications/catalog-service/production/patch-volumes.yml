@@ -8,19 +8,14 @@ spec:
       containers:
         - name: catalog-service
           volumeMounts:
-            - name: config-credentials-volume
-              mountPath: /workspace/secrets/config
-            - name: postgres-catalog-credentials-volume
+            - name: postgres-credentials-volume
               mountPath: /workspace/secrets/postgres
-            - name: rabbitmq-credentials-volume
-              mountPath: /workspace/secrets/rabbitmq
+            - name: keycloak-issuer-resourceserver-secret-volume
+              mountPath: /workspace/secrets/keycloak
       volumes:
-        - name: config-credentials-volume
-          secret:
-            secretName: config-client-credentials
-        - name: postgres-catalog-credentials-volume
+        - name: postgres-credentials-volume
           secret:
             secretName: polar-postgres-catalog-credentials
-        - name: rabbitmq-credentials-volume
+        - name: keycloak-issuer-resourceserver-secret-volume
           secret:
-            secretName: polar-rabbitmq-credentials
+            secretName: keycloak-issuer-resourceserver-secret

@@ -1,18 +1,3 @@
 spring:
   config:
-    import: configserver:,configtree:/workspace/secrets/*/
-  cloud:
-    config:
-      fail-fast: true
-  rabbitmq:
-    host: polar-rabbitmq.rabbitmq-system.svc.cluster.local
-    port: 5672
-  redis:
-    host: polar-redis.redis.cache.windows.net
-    port: 6379
-  security:
-    oauth2:
-      client:
-        provider:
-          keycloak:
-            issuer-uri: http://82369d949ea44f80943e.northeurope.aksapp.io/auth/realms/PolarBookshop
+    import: configtree:/workspace/secrets/*/

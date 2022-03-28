@@ -1,3 +1,0 @@
-spring:
-  rabbitmq:
-    connection-timeout: 10s

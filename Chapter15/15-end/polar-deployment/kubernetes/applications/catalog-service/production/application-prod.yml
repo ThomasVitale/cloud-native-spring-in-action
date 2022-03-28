@@ -1,16 +1,5 @@
+polar:
+  greeting: Welcome to our book catalog from a production Kubernetes environment!
 spring:
   config:
-    import: configserver:,configtree:/workspace/secrets/*/
-  cloud:
-    config:
-      fail-fast: true
-  datasource:
-    url: jdbc:postgresql://polar-postgres.postgres.database.azure.com:5432/polardb_catalog
-  rabbitmq:
-    host: polar-rabbitmq.rabbitmq-system.svc.cluster.local
-    port: 5672
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://82369d949ea44f80943e.northeurope.aksapp.io/auth/realms/PolarBookshop
+    import: configtree:/workspace/secrets/*/

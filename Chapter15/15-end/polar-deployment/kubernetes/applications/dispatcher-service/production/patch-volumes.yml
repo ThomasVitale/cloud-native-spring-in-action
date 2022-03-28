@@ -8,14 +8,9 @@ spec:
       containers:
         - name: dispatcher-service
           volumeMounts:
-            - name: config-credentials-volume
-              mountPath: /workspace/secrets/config
             - name: rabbitmq-credentials-volume
               mountPath: /workspace/secrets/rabbitmq
       volumes:
-        - name: config-credentials-volume
-          secret:
-            secretName: config-client-credentials
         - name: rabbitmq-credentials-volume
           secret:
             secretName: polar-rabbitmq-credentials

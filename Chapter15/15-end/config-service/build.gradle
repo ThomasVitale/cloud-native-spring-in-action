@@ -1,11 +1,11 @@
 plugins {
-    id 'org.springframework.boot' version '2.6.2'
+    id 'org.springframework.boot' version '2.6.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
 }
 
 group = 'com.polarbookshop'
-version = '0.0.3-SNAPSHOT'
+version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 description = 'Provides functionality for centralizing the application configuration.'
@@ -15,19 +15,16 @@ repositories {
 }
 
 ext {
-    set('springCloudVersion', "2021.0.0")
+	set('otelVersion', "1.12.1")
+    set('springCloudVersion', "2021.0.1")
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.cloud:spring-cloud-config-monitor'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.cloud:spring-cloud-config-server'
-    implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
-    implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
-    implementation 'org.springframework.cloud:spring-cloud-sleuth-zipkin'
 
-    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+	runtimeOnly "io.opentelemetry.javaagent:opentelemetry-javaagent:${otelVersion}"
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
@@ -39,7 +36,7 @@ dependencyManagement {
 }
 
 springBoot {
-    buildInfo()
+	buildInfo()
 }
 
 bootBuildImage {
@@ -55,6 +52,6 @@ bootBuildImage {
     }
 }
 
-test {
-    useJUnitPlatform()
+tasks.named('test') {
+	useJUnitPlatform()
 }

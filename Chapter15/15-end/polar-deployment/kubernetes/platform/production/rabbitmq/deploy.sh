@@ -6,7 +6,7 @@ echo "\n🐰 RabbitMQ deployment started."
 
 echo "\n📦 Installing RabbitMQ Cluster Kubernetes Operator..."
 
-kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/download/v1.10.0/cluster-operator.yml"
+kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/download/v1.12.1/cluster-operator.yml"
 
 echo "\n⌛ Waiting for RabbitMQ Operator to be deployed..."
 
@@ -51,13 +51,19 @@ echo "\n-----------------------------------------------------"
 export RABBITMQ_USERNAME=$(kubectl get secret polar-rabbitmq-default-user -o jsonpath='{.data.username}' -n=rabbitmq-system | base64 --decode)
 export RABBITMQ_PASSWORD=$(kubectl get secret polar-rabbitmq-default-user -o jsonpath='{.data.password}' -n=rabbitmq-system | base64 --decode)
 
+echo "Username: $RABBITMQ_USERNAME"
+echo "Password: $RABBITMQ_PASSWORD"
+
+
 echo "\n🔑 Generating Secret with RabbitMQ credentials."
 
 kubectl delete secret polar-rabbitmq-credentials || true
 
 kubectl create secret generic polar-rabbitmq-credentials \
-    --from-literal=spring.rabbitmq.username=$RABBITMQ_USERNAME \
-    --from-literal=spring.rabbitmq.password=$RABBITMQ_PASSWORD
+    --from-literal=spring.rabbitmq.host=polar-rabbitmq.rabbitmq-system.svc.cluster.local \
+    --from-literal=spring.rabbitmq.port=5672 \
+    --from-literal=spring.rabbitmq.username="$RABBITMQ_USERNAME" \
+    --from-literal=spring.rabbitmq.password="$RABBITMQ_PASSWORD"
 
 unset RABBITMQ_USERNAME
 unset RABBITMQ_PASSWORD

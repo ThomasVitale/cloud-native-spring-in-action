@@ -3,6 +3,7 @@ server:
   shutdown: graceful
   tomcat:
     connection-timeout: 2s
+    keep-alive-timeout: 15s
     threads:
       max: 50
       min-spare: 5
@@ -13,18 +14,14 @@ spring:
   lifecycle:
     timeout-per-shutdown-phase: 15s
   config:
-    import: "optional:configserver:"
+    import: "" # When using Config Service, add "optional:configserver:"
   cloud:
-    bus:
-      enabled: false
-      id: ${spring.application.name}:${spring.profiles.active:default}:${random.long}
     config:
+      enabled: false # When using Config Service, set to true
       uri: http://localhost:8888
-      username: user
-      password: password
-      request-connect-timeout: 2000 # 2s
+      request-connect-timeout: 5000 # 5s
       request-read-timeout: 5000 # 5s
-      fail-fast: false
+      fail-fast: false # In production, set to true
       retry:
         max-attempts: 6
         initial-interval: 1000 # 1s
@@ -39,24 +36,16 @@ spring:
     hikari:
       connection-timeout: 2000 #ms
       maximum-pool-size: 5
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: user
-    password: password
-    connection-timeout: 5s
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8080/auth/realms/PolarBookshop
           # jwk-set-uri: http://localhost:8080/auth/realms/PolarBookshop/protocol/openid-connect/certs
-  sleuth:
-    sampler:
-      probability: 1.0
-  zipkin:
-    base-url: ${ZIPKIN_URL:http://localhost:9411/}
-    enabled: false
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
 
 info:
   system: Polar Bookshop
@@ -65,19 +54,19 @@ management:
   endpoints:
     web:
       exposure:
-        include: env, flyway, health, heapdump, info, prometheus
+        include: configprops, env, flyway, health, heapdump, info, loggers, mappings, prometheus
   endpoint:
     health:
       show-details: always
       show-components: always
       probes:
         enabled: true
-  metrics:
-    tags:
-      application: ${spring.application.name}
   info:
     env:
       enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
 
 polar:
   greeting: Welcome to the local book catalog!

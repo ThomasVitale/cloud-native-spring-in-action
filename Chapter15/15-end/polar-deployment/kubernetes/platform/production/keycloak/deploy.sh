@@ -6,16 +6,15 @@ echo "\n🗝️  Keycloak deployment started.\n"
 
 echo "📦 Installing Keycloak..."
 
+clientSecret=$(echo $ random | md5sum | Head -c 20)
+
 kubectl apply -f resources/namespace.yml
-sed "s/polar-keycloak-secret/$KEYCLOAK_CLIENT_SECRET/" resources/keycloak-config.yml | kubectl apply -f -
-kubectl apply -f resources/keycloak-external-service.yml
+sed "s/polar-keycloak-secret/$clientSecret/" resources/keycloak-config.yml | kubectl apply -f -
 
 echo "\n📦 Configuring Helm chart..."
 
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm upgrade --install polar-keycloak bitnami/keycloak \
-  --set auth.adminUser=$KEYCLOAK_ADMIN_USERNAME \
-  --set auth.adminPassword=$KEYCLOAK_ADMIN_PASSWORD \
   --values values.yml \
   --namespace keycloak-system
 
@@ -39,15 +38,15 @@ echo "\n✅  Keycloak cluster has been successfully deployed."
 
 echo "\n🔐 Your Keycloak Admin credentials...\n"
 
-echo "Admin Username: $KEYCLOAK_ADMIN_USERNAME"
-echo "Admin Password: $KEYCLOAK_ADMIN_PASSWORD"
+echo "Admin Username: user"
+echo "Admin Password: $(kubectl get secret --namespace keycloak-system polar-keycloak -o jsonpath="{.data.admin-password}" | base64 --decode)"
 
 echo "\n🔑 Generating Secret with Keycloak client secret."
 
 kubectl delete secret polar-keycloak-client-credentials || true
 
 kubectl create secret generic polar-keycloak-client-credentials \
-    --from-literal=spring.security.oauth2.client.registration.keycloak.client-secret=$KEYCLOAK_CLIENT_SECRET
+    --from-literal=spring.security.oauth2.client.registration.keycloak.client-secret="$clientSecret"
 
 echo "\n🍃 A 'polar-keycloak-client-credentials' has been created for Spring Boot applications to interact with Keycloak."
 

@@ -1,11 +1,11 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.2'
+	id 'org.springframework.boot' version '2.6.3'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
 
 group = 'com.polarbookshop'
-version = '0.0.2-SNAPSHOT'
+version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 description = 'Provides API gateway and cross-cutting concerns.'
@@ -15,7 +15,8 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "2021.0.0")
+	set('otelVersion', "1.12.1")
+	set('springCloudVersion', "2021.0.1")
 	set('testcontainersVersion', "1.16.2")
 }
 
@@ -23,16 +24,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
 	implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j'
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
-	implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
-	implementation 'org.springframework.cloud:spring-cloud-sleuth-zipkin'
 	implementation 'org.springframework.session:spring-session-data-redis'
-	implementation 'io.github.resilience4j:resilience4j-micrometer'
 
+	runtimeOnly 'io.github.resilience4j:resilience4j-micrometer'
 	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+	runtimeOnly "io.opentelemetry.javaagent:opentelemetry-javaagent:${otelVersion}"
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
@@ -64,6 +63,6 @@ bootBuildImage {
 	}
 }
 
-test {
+tasks.named('test') {
 	useJUnitPlatform()
 }
