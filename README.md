@@ -120,12 +120,12 @@ You are very welcome to contact me for questions, feedback, or suggestions. Feel
 * [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter14/14-begin)
 * [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter14/14-end)
 
-## 15. Spring in production with Kubernetes and GitOps
+## 15. Continuous delivery and GitOps
 
 * [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter15/15-begin)
 * [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter15/15-end)
 
-## 16. Serverless and GraalVM native images
+## 16. Serverless, GraalVM and Knative
 
 * [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter16/16-begin)
 * [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter16/16-end)
