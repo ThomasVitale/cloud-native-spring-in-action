@@ -34,10 +34,10 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 350Mi
             limits:
               cpu: 500m
-              memory: 500Mi
+              memory: 750Mi
           volumeMounts:
             - name: polar-keycloak-config-volume
               mountPath: /opt/jboss/keycloak/imports/

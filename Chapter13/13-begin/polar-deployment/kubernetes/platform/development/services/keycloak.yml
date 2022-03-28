@@ -22,7 +22,7 @@ spec:
             - name: KEYCLOAK_USER
               value: user
             - name: KEYCLOAK_PASSWORD
-              value: password 
+              value: password
             - name: KEYCLOAK_IMPORT
               value: /opt/jboss/keycloak/imports/realm-config.json
           readinessProbe:
@@ -34,17 +34,17 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 350Mi
             limits:
               cpu: 500m
-              memory: 500Mi
+              memory: 750Mi
           volumeMounts:
             - name: polar-keycloak-config-volume
               mountPath: /opt/jboss/keycloak/imports/
       volumes:
-      - name: polar-keycloak-config-volume
-        configMap:
-          name: polar-keycloak
+        - name: polar-keycloak-config-volume
+          configMap:
+            name: polar-keycloak
 
 ---
 
@@ -59,9 +59,9 @@ spec:
   selector:
     app: polar-keycloak
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 8080
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
 
 ---
 

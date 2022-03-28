@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dispatcher-service
+spec:
+  template:
+    spec:
+      containers:
+        - name: dispatcher-service
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: staging
