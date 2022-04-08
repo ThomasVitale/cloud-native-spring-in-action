@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   name: polar-ingress
 spec:
+  ingressClassName: nginx
   rules:
     - http:
         paths:

@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: config-service
+  labels:
+    app: config-service
 spec:
   replicas: 1
   selector:
@@ -9,21 +11,26 @@ spec:
       app: config-service
   template:
     metadata:
+      labels:
+        app: config-service
       annotations:
-        prometheus.io/path: /actuator/prometheus
         prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
         prometheus.io/port: "8888"
     spec:
       containers:
         - name: config-service
-          image: polarbookshop/config-service:0.0.1-SNAPSHOT
-          imagePullPolicy: Always
+          image: config-service
+          imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:
               exec:
                 command: [ "sh", "-c", "sleep 5" ]
           ports:
             - containerPort: 8888
+          env:
+            - name: BPL_JVM_THREAD_COUNT
+              value: "50"
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
@@ -36,18 +43,3 @@ spec:
               port: 8888
             initialDelaySeconds: 5
             periodSeconds: 15
-          env:
-            - name: BPL_JVM_THREAD_COUNT
-              value: "50"
-          volumeMounts:
-            - name: config-service-volume
-              mountPath: /workspace/config
-            - name: config-service-volume-secret
-              mountPath: /workspace/secrets/config-service
-      volumes:
-        - name: config-service-volume
-          configMap:
-            name: config-service
-        - name: config-service-volume-secret
-          secret:
-            secretName: config-service

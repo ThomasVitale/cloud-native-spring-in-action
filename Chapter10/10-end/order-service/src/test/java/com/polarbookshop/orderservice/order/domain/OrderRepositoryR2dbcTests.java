@@ -1,6 +1,6 @@
 package com.polarbookshop.orderservice.order.domain;
 
-import com.polarbookshop.orderservice.order.persistence.DataConfig;
+import com.polarbookshop.orderservice.config.DataConfig;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;

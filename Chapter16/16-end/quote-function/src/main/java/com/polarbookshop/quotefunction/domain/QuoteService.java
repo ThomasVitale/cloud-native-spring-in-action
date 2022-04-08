@@ -1,13 +1,11 @@
 package com.polarbookshop.quotefunction.domain;
 
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
-
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Random;
 
 @Service
 public class QuoteService {
@@ -33,7 +31,7 @@ public class QuoteService {
 	public Mono<Quote> getRandomQuoteByGenre(Genre genre) {
 		var quotesForGenre = quotes.stream()
 				.filter(q -> q.genre().equals(genre))
-				.collect(Collectors.toList());
+				.toList();
 		return Mono.just(quotesForGenre.get(random.nextInt(quotesForGenre.size() - 1)));
 	}
 

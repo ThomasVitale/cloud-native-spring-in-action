@@ -1,20 +1,21 @@
 package com.polarbookshop.orderservice.order.domain;
 
-import com.polarbookshop.orderservice.order.persistence.DataConfig;
+import java.util.Objects;
+
+import com.polarbookshop.orderservice.config.DataConfig;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import reactor.test.StepVerifier;
 
-import java.util.Objects;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 
 @DataR2dbcTest
 @Import(DataConfig.class)
@@ -23,7 +24,7 @@ class OrderRepositoryR2dbcTests {
 
     @Container
     static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:13.4"))
-       .withReuse(true);
+            .withReuse(true);
 
     @Autowired
     private OrderRepository orderRepository;
@@ -38,31 +39,31 @@ class OrderRepositoryR2dbcTests {
 
     private static String r2dbcUrl() {
         return String.format("r2dbc:postgresql://%s:%s/%s", postgresql.getContainerIpAddress(),
-           postgresql.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT), postgresql.getDatabaseName());
+                postgresql.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT), postgresql.getDatabaseName());
     }
 
     @Test
     void findOrderByIdWhenNotExisting() {
         StepVerifier.create(orderRepository.findById(394L))
-           .expectNextCount(0)
-           .verifyComplete();
+                .expectNextCount(0)
+                .verifyComplete();
     }
 
     @Test
     void createRejectedOrder() {
         var rejectedOrder = OrderService.buildRejectedOrder( "1234567890", 3);
         StepVerifier.create(orderRepository.save(rejectedOrder))
-           .expectNextMatches(order -> order.status().equals(OrderStatus.REJECTED))
-           .verifyComplete();
+                .expectNextMatches(order -> order.status().equals(OrderStatus.REJECTED))
+                .verifyComplete();
     }
 
     @Test
     void whenCreateOrderNotAuthenticatedThenNoAuditMetadata() {
         var rejectedOrder = OrderService.buildRejectedOrder( "1234567890", 3);
         StepVerifier.create(orderRepository.save(rejectedOrder))
-           .expectNextMatches(order -> Objects.isNull(order.createdBy()) &&
-              Objects.isNull(order.lastModifiedBy()))
-           .verifyComplete();
+                .expectNextMatches(order -> Objects.isNull(order.createdBy()) &&
+                        Objects.isNull(order.lastModifiedBy()))
+                .verifyComplete();
     }
 
     @Test
@@ -70,9 +71,9 @@ class OrderRepositoryR2dbcTests {
     void whenCreateOrderAuthenticatedThenAuditMetadata() {
         var rejectedOrder = OrderService.buildRejectedOrder( "1234567890", 3);
         StepVerifier.create(orderRepository.save(rejectedOrder))
-           .expectNextMatches(order -> order.createdBy().equals("melinda") &&
-              order.lastModifiedBy().equals("melinda"))
-           .verifyComplete();
+                .expectNextMatches(order -> order.createdBy().equals("melinda") &&
+                        order.lastModifiedBy().equals("melinda"))
+                .verifyComplete();
     }
 
 }

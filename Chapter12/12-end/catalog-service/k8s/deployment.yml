@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: catalog-service
-          image: polarbookshop/catalog-service:0.0.1-SNAPSHOT
-          imagePullPolicy: Always
+          image: catalog-service
+          imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:
               exec:
@@ -27,9 +27,11 @@ spec:
           env:
             - name: BPL_JVM_THREAD_COUNT
               value: "50"
-            - name: KEYCLOAK_URL
-              value: http://polar-keycloak
             - name: SPRING_CLOUD_CONFIG_URI
               value: http://config-service
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://polar-postgres-catalog/polardb_catalog
+              value: jdbc:postgresql://polar-postgres/polardb_catalog
+            - name: SPRING_PROFILES_ACTIVE
+              value: testdata
+            - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
+              value: http://polar-keycloak/auth/realms/PolarBookshop

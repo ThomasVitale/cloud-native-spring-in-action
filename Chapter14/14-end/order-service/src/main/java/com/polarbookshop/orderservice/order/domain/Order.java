@@ -1,36 +1,41 @@
 package com.polarbookshop.orderservice.order.domain;
 
-import org.springframework.data.annotation.*;
-import org.springframework.data.relational.core.mapping.Table;
-
 import java.time.Instant;
+
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Version;
+import org.springframework.data.relational.core.mapping.Table;
 
 @Table("orders")
 public record Order (
 
-	 @Id
-	 Long id,
+		@Id
+		Long id,
 
-	 String bookIsbn,
-	 String bookName,
-	 Double bookPrice,
-	 Integer quantity,
-	 OrderStatus status,
+		String bookIsbn,
+		String bookName,
+		Double bookPrice,
+		Integer quantity,
+		OrderStatus status,
 
-	 @CreatedDate
-	 Instant createdDate,
+		@CreatedDate
+		Instant createdDate,
 
-	 @LastModifiedDate
-	 Instant lastModifiedDate,
+		@LastModifiedDate
+		Instant lastModifiedDate,
 
-	 @CreatedBy
-	 String createdBy,
+		@CreatedBy
+		String createdBy,
 
-	 @LastModifiedBy
-	 String lastModifiedBy,
+		@LastModifiedBy
+		String lastModifiedBy,
 
-	 @Version
-	 int version
+		@Version
+		int version
 ){
 
 	public static Order build(String bookIsbn, String bookName, Double bookPrice, Integer quantity, OrderStatus status) {

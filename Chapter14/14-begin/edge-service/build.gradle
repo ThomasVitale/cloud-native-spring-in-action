@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.0-RC1'
+	id 'org.springframework.boot' version '2.6.3'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
@@ -12,22 +12,26 @@ description = 'Provides API gateway and cross-cutting concerns.'
 
 repositories {
 	mavenCentral()
-	maven { url 'https://repo.spring.io/milestone' }
 }
 
 ext {
-	set('springCloudVersion', "2021.0.0-M3")
-	set('testcontainersVersion', "1.16.0")
+	set('otelVersion', "1.12.1")
+	set('springCloudVersion', "2021.0.1")
+	set('testcontainersVersion', "1.16.2")
 }
 
 dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
 	implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j'
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
 	implementation 'org.springframework.session:spring-session-data-redis'
+
+	runtimeOnly 'io.github.resilience4j:resilience4j-micrometer'
+	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+	runtimeOnly "io.opentelemetry.javaagent:opentelemetry-javaagent:${otelVersion}"
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
@@ -42,8 +46,12 @@ dependencyManagement {
 	}
 }
 
+springBoot {
+	buildInfo()
+}
+
 bootBuildImage {
-	imageName = "polarbookshop/${project.name}:${project.version}"
+	imageName = "${project.name}"
 	environment = ["BP_JVM_VERSION": "17.*"]
 
 	docker {
@@ -55,18 +63,6 @@ bootBuildImage {
 	}
 }
 
-test {
+tasks.named('test') {
 	useJUnitPlatform()
-}
-
-processResources {
-	dependsOn 'compileFrontend'
-	from ('../ui-application/dist/ui-application') {
-		into 'static'
-	}
-}
-
-task compileFrontend(type: GradleBuild) {
-	dir = '../ui-application'
-	tasks = ['buildAngular']
 }

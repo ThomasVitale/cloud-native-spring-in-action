@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.0-RC1'
+	id 'org.springframework.boot' version '2.6.3'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
@@ -18,13 +18,13 @@ configurations {
 
 repositories {
 	mavenCentral()
-	maven { url 'https://repo.spring.io/milestone' }
 }
 
 ext {
-	set('springCloudVersion', "2021.0.0-M3")
-	set('testcontainersVersion', "1.16.0")
-	set('testKeycloakVersion', "1.8.0")
+	set('otelVersion', "1.12.1")
+	set('springCloudVersion', "2021.0.1")
+	set('testcontainersVersion', "1.16.2")
+	set('testKeycloakVersion', "1.10.0")
 }
 
 dependencies {
@@ -33,15 +33,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
-	implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
-	implementation 'org.springframework.cloud:spring-cloud-sleuth-zipkin'
 	implementation 'org.springframework.retry:spring-retry'
 	implementation 'org.flywaydb:flyway-core'
 
-	runtimeOnly 'org.postgresql:postgresql'
 	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+	runtimeOnly "io.opentelemetry.javaagent:opentelemetry-javaagent:${otelVersion}"
+	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -63,8 +61,12 @@ springBoot {
 	buildInfo()
 }
 
+bootRun {
+	systemProperty 'spring.profiles.active', 'testdata'
+}
+
 bootBuildImage {
-	imageName = "polarbookshop/${project.name}:${project.version}"
+	imageName = "${project.name}"
 	environment = ["BP_JVM_VERSION": "17.*"]
 
 	docker {
@@ -76,6 +78,6 @@ bootBuildImage {
 	}
 }
 
-test {
+tasks.named('test') {
 	useJUnitPlatform()
 }

@@ -21,13 +21,14 @@ public class BookClient {
 
 	public Mono<Book> getBookByIsbn(String isbn) {
 		return webClient
-			 .get()
-			 .uri(BOOKS_ROOT_API + isbn)
-			 .retrieve()
-			 .bodyToMono(Book.class)
-			 .timeout(Duration.ofSeconds(3), Mono.empty())
-			 .onErrorResume(WebClientResponseException.NotFound.class, exception -> Mono.empty())
-			 .retryWhen(Retry.backoff(3, Duration.ofMillis(100)));
+				.get()
+				.uri(BOOKS_ROOT_API + isbn)
+				.retrieve()
+				.bodyToMono(Book.class)
+				.timeout(Duration.ofSeconds(3), Mono.empty())
+				.onErrorResume(WebClientResponseException.NotFound.class, exception -> Mono.empty())
+				.retryWhen(Retry.backoff(3, Duration.ofMillis(100)))
+				.onErrorResume(Exception.class, exception -> Mono.empty());
 	}
 
 }

@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.0-RC1'
+	id 'org.springframework.boot' version '2.6.3'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
@@ -12,12 +12,11 @@ description = 'Provides API gateway and cross-cutting concerns.'
 
 repositories {
 	mavenCentral()
-	maven { url 'https://repo.spring.io/milestone' }
 }
 
 ext {
-	set('springCloudVersion', "2021.0.0-M3")
-	set('testcontainersVersion', "1.16.0")
+	set('springCloudVersion', "2021.0.1")
+	set('testcontainersVersion', "1.16.2")
 }
 
 dependencies {
@@ -42,7 +41,7 @@ dependencyManagement {
 }
 
 bootBuildImage {
-	imageName = "polarbookshop/${project.name}:${project.version}"
+	imageName = "${project.name}"
 	environment = ["BP_JVM_VERSION": "17.*"]
 
 	docker {
@@ -54,18 +53,6 @@ bootBuildImage {
 	}
 }
 
-test {
+tasks.named('test') {
 	useJUnitPlatform()
-}
-
-processResources {
-	dependsOn 'compileFrontend'
-	from ('../ui-application/dist/ui-application') {
-		into 'static'
-	}
-}
-
-task compileFrontend(type: GradleBuild) {
-	dir = '../ui-application'
-	tasks = ['buildAngular']
 }

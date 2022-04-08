@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - github.com/polarbookshop/edge-service/k8s?ref=main
+
+patchesStrategicMerge:
+  - patch-env.yml
+
+configMapGenerator:
+  - behavior: merge
+    files:
+      - application-staging.yml
+    name: edge-config
+
+images:
+  - name: edge-service
+    newName: ghcr.io/polarbookshop/edge-service
+    newTag: latest
+
+replicas:
+  - name: edge-service
+    count: 1

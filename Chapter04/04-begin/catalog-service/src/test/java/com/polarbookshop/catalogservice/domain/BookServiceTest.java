@@ -1,5 +1,7 @@
 package com.polarbookshop.catalogservice.domain;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,10 +31,10 @@ class BookServiceTest {
     }
 
     @Test
-    void whenBookToDeleteDoesNotExistThenThrows() {
+    void whenBookToReadDoesNotExistThenThrows() {
         var bookIsbn = "1234561232";
-        when(bookRepository.existsByIsbn(bookIsbn)).thenReturn(false);
-        assertThatThrownBy(() -> bookService.removeBookFromCatalog(bookIsbn))
+        when(bookRepository.findByIsbn(bookIsbn)).thenReturn(Optional.empty());
+        assertThatThrownBy(() -> bookService.viewBookDetails(bookIsbn))
                 .isInstanceOf(BookNotFoundException.class)
                 .hasMessage("The book with ISBN " + bookIsbn + " was not found.");
     }

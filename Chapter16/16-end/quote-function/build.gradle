@@ -1,22 +1,23 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.0-RC1'
+	id 'org.springframework.boot' version '2.6.4'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
-	id 'org.springframework.experimental.aot' version '0.11.0-M1'
-	id 'org.graalvm.buildtools.native' version '0.9.3'
+	id 'org.springframework.experimental.aot' version '0.11.3'
 }
 
 group = 'com.polarbookshop'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
+description = 'Provides quotes from the books in the library.'
+
 repositories {
-	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/release' }
 	mavenCentral()
 }
 
 ext {
-	set('springCloudVersion', "2021.0.0-M3")
+	set('springCloudVersion', "2021.0.1")
 }
 
 dependencies {
@@ -33,7 +34,7 @@ dependencyManagement {
 	}
 }
 
-test {
+tasks.named('test') {
 	useJUnitPlatform()
 }
 
@@ -41,12 +42,16 @@ springAot {
 	removeSpelSupport = true
 }
 
-bootBuildImage {
+tasks.named('bootBuildImage') {
 	builder = 'paketobuildpacks/builder:tiny'
 	environment = ['BP_NATIVE_IMAGE': 'true']
-	imageName = "polarbookshop/${project.name}:${project.version}"
-}
+	imageName = "${project.name}"
 
-nativeBuild {
-	classpath processAotResources.outputs, compileAotJava.outputs
+	docker {
+		publishRegistry {
+			username = project.findProperty("registryUsername")
+			password = project.findProperty("registryToken")
+			url = project.findProperty("registryUrl")
+		}
+	}
 }

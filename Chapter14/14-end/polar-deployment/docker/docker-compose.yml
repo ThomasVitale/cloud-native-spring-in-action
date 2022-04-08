@@ -7,37 +7,35 @@ services:
     depends_on:
       - fluent-bit
       - polar-keycloak
-      - polar-postgres-catalog
+      - polar-postgres
       - tempo
-    image: "<your_dockerhub_username>/catalog-service:0.0.1-SNAPSHOT"
+    image: "catalog-service"
     container_name: "catalog-service"
     ports:
       - 9001:9001
       - 8001:8001
     environment:
-      # Buildpacks environment variable to configure the number of threads in memory calculation
       - BPL_JVM_THREAD_COUNT=50
-      # Buildpacks environment variable to enable debug through a socket on port 8001
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=8001
-      - KEYCLOAK_URL=http://host.docker.internal:8080
+      - JAVA_TOOL_OPTIONS=-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.12.1.jar
+      - OTEL_SERVICE_NAME=catalog-service
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres-catalog:5432/polardb_catalog
-      - SPRING_RABBITMQ_HOST=polar-rabbitmq
-      - ZIPKIN_URL=http://tempo:9411
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres:5432/polardb_catalog
+      - SPRING_PROFILES_ACTIVE=testdata
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://host.docker.internal:8080/auth/realms/PolarBookshop
     logging:
       driver: fluentd
       options:
         fluentd-address: 127.0.0.1:24224
-  
+
   order-service:
     depends_on:
       - fluent-bit
       - polar-keycloak
-      - polar-postgres-order
-      - polar-rabbitmq
-      - tempo
-    image: "<your_dockerhub_username>/order-service:0.0.1-SNAPSHOT"
+      - polar-postgres
+    image: "order-service"
     container_name: "order-service"
     ports:
       - 9002:9002
@@ -46,24 +44,25 @@ services:
       # Buildpacks environment variable to enable debug through a socket on port 8002
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=8002
-      - KEYCLOAK_URL=http://host.docker.internal:8080
-      - POLAR_CATALOG_SERVICE_URL=http://catalog-service:9001
+      - JAVA_TOOL_OPTIONS=-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.12.1.jar
+      - OTEL_SERVICE_NAME=order-service
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
+      - POLAR_CATALOG_SERVICE_URI=http://catalog-service:9001
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-      - SPRING_R2DBC_URL=r2dbc:postgresql://polar-postgres-order:5432/polardb_order
-      - SPRING_FLYWAY_URL=jdbc:postgresql://polar-postgres-order:5432/polardb_order
+      - SPRING_R2DBC_URL=r2dbc:postgresql://polar-postgres:5432/polardb_order
+      - SPRING_FLYWAY_URL=jdbc:postgresql://polar-postgres:5432/polardb_order
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
-      - ZIPKIN_URL=http://tempo:9411
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://host.docker.internal:8080/auth/realms/PolarBookshop
     logging:
       driver: fluentd
       options:
         fluentd-address: 127.0.0.1:24224
-  
+
   dispatcher-service:
     depends_on:
       - fluent-bit
       - polar-rabbitmq
-      - tempo
-    image: "<your_dockerhub_username>/dispatcher-service:0.0.1-SNAPSHOT"
+    image: "dispatcher-service"
     container_name: dispatcher-service
     ports:
       - 9003:9003
@@ -72,9 +71,11 @@ services:
       # Buildpacks environment variable to enable debug through a socket on port 8002
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=8003
+      - JAVA_TOOL_OPTIONS=-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.12.1.jar
+      - OTEL_SERVICE_NAME=dispatcher-service
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
-      - ZIPKIN_URL=http://tempo:9411
     logging:
       driver: fluentd
       options:
@@ -85,8 +86,8 @@ services:
       - fluent-bit
       - polar-keycloak
       - polar-redis
-      - tempo
-    image: "<your_dockerhub_username>/edge-service:0.0.1-SNAPSHOT"
+      - polar-ui
+    image: "edge-service"
     container_name: "edge-service"
     ports:
       - 9000:9000
@@ -95,23 +96,24 @@ services:
       # Buildpacks environment variable to enable debug through a socket on port 8000
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=8000
+      - JAVA_TOOL_OPTIONS=-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.12.1.jar
+      - OTEL_SERVICE_NAME=edge-service
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
       - CATALOG_SERVICE_URL=http://catalog-service:9001
-      - KEYCLOAK_URL=http://host.docker.internal:8080
       - ORDER_SERVICE_URL=http://order-service:9002
+      - SPA_URL=http://polar-ui:9004
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-      - SPRING_RABBITMQ_HOST=polar-rabbitmq
       - SPRING_REDIS_HOST=polar-redis
-      - ZIPKIN_URL=http://tempo:9411
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI=http://host.docker.internal:8080/auth/realms/PolarBookshop
     logging:
       driver: fluentd
       options:
         fluentd-address: 127.0.0.1:24224
-  
+
   config-service:
     depends_on:
       - fluent-bit
-      - tempo
-    image: "<your_dockerhub_username>/config-service:0.0.1-SNAPSHOT"
+    image: "config-service"
     container_name: "config-service"
     ports:
       - 8888:8888
@@ -122,68 +124,72 @@ services:
       # Buildpacks environment variable to enable debug through a socket on port 9888
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=9888
-      - ENCRYPT_KEY=sharedkey
-      - SPRING_RABBITMQ_HOST=polar-rabbitmq
-      - ZIPKIN_URL=http://tempo:9411
+      - JAVA_TOOL_OPTIONS=-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.12.1.jar
+      - OTEL_SERVICE_NAME=config-service
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: 127.0.0.1:24224
+
+  polar-ui:
+    depends_on:
+      - fluent-bit
+    image: "ghcr.io/polarbookshop/polar-ui:latest"
+    container_name: "polar-ui"
+    ports:
+      - 9004:9004
+    environment:
+      - PORT=9004
     logging:
       driver: fluentd
       options:
         fluentd-address: 127.0.0.1:24224
   
   # Backing Services
-  
-  polar-postgres-catalog:
-    image: "postgres:13.4"
-    container_name: "polar-postgres-catalog"
+
+  polar-postgres:
+    image: "postgres:14.1"
+    container_name: "polar-postgres"
     ports:
       - 5432:5432
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=polardb_catalog
-
-  polar-postgres-order:
-    image: "postgres:13.4"
-    container_name: "polar-postgres-order"
-    ports:
-      - 5433:5432
-    environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=polardb_order
+    volumes:
+      - ./postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   polar-redis:
     image: "redis:6.2"
     container_name: "polar-redis"
     ports:
       - 6379:6379
-  
+
   polar-rabbitmq:
-    image: rabbitmq:3.8-management
+    image: rabbitmq:3.9-management
     container_name: polar-rabbitmq
     ports:
       - 5672:5672
       - 15672:15672
-    environment:
-      - RABBITMQ_DEFAULT_USER=user
-      - RABBITMQ_DEFAULT_PASS=password
+    volumes:
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
   
   polar-keycloak:
-    image: jboss/keycloak:15.0.1
+    image: quay.io/keycloak/keycloak:17.0.0-legacy
     container_name: "polar-keycloak"
     volumes:
       - ./keycloak:/opt/jboss/keycloak/imports
     environment:
-      KEYCLOAK_USER: user
-      KEYCLOAK_PASSWORD: password
-      KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/full-realm-export.json
+      - KEYCLOAK_USER=user
+      - KEYCLOAK_PASSWORD=password
+      - KEYCLOAK_IMPORT=/opt/jboss/keycloak/imports/full-realm-export.json
     ports:
       - 8080:8080
 
   # Observability
 
   grafana:
-    image: grafana/grafana:8.2.3
+    image: grafana/grafana:8.4.4
     container_name: grafana
     depends_on:
       - loki
@@ -192,45 +198,44 @@ services:
     ports:
       - "3000:3000"
     environment:
-      GF_SECURITY_ADMIN_USER: user
-      GF_SECURITY_ADMIN_PASSWORD: password
+      - GF_SECURITY_ADMIN_USER=user
+      - GF_SECURITY_ADMIN_PASSWORD=password
     volumes:
-      - ./platform/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
-      - ./platform/grafana/dashboards:/etc/grafana/provisioning/dashboards
-  
+      - ./observability/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+      - ./observability/grafana/dashboards:/etc/grafana/provisioning/dashboards
+
   loki:
-    image: grafana/loki:2.4.0
+    image: grafana/loki:2.4.2
     container_name: loki
     depends_on:
       - fluent-bit
     ports:
       - "3100:3100"
-  
-  prometheus:
-    image: prom/prometheus:v2.30.3
-    container_name: prometheus
-    ports:
-      - "9090:9090"
-    volumes:
-      - "./platform/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
-  
-  tempo:
-    image: grafana/tempo:1.2.0
-    container_name: tempo
-    command: -config.file /etc/tempo-config.yml
-    volumes:
-      - ./platform/tempo/tempo.yml:/etc/tempo-config.yml
-    ports:
-      - "3101:3100"     # Tempo
-      - "9411:9411"     # Zipkin
 
   fluent-bit:
-    image: grafana/fluent-bit-plugin-loki:2.4.0-amd64
+    image: grafana/fluent-bit-plugin-loki:2.4.2-amd64
     container_name: fluent-bit
     ports:
       - "24224:24224"
     environment:
       - LOKI_URL=http://loki:3100/loki/api/v1/push
     volumes:
-      - ./platform/fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
-  
+      - ./observability/fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+
+  prometheus:
+    image: prom/prometheus:v2.34.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  tempo:
+    image: grafana/tempo:1.3.2
+    container_name: tempo
+    command: -config.file /etc/tempo-config.yml
+    ports:
+      - "3110:3100"     # Tempo
+      - "4317:4317"     # OTel
+    volumes:
+      - ./observability/tempo/tempo.yml:/etc/tempo-config.yml

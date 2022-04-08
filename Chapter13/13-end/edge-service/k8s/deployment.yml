@@ -2,17 +2,26 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: edge-service
+  labels:
+    app: edge-service
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: edge-service
   template:
+    metadata:
+      labels:
+        app: edge-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "9000"
     spec:
       containers:
         - name: edge-service
-          image: polarbookshop/edge-service:0.0.1-SNAPSHOT
-          imagePullPolicy: Always
+          image: edge-service
+          imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:
               exec:
@@ -22,19 +31,25 @@ spec:
           env:
             - name: CATALOG_SERVICE_URL
               value: http://catalog-service
-            - name: KEYCLOAK_URL
-              value: http://host.docker.internal
             - name: ORDER_SERVICE_URL
               value: http://order-service
-          volumeMounts:
-            - name: edge-service-volume
-              mountPath: /workspace/config
-            - name: edge-service-volume-secret
-              mountPath: /workspace/secrets/edge-service-secret
-      volumes:
-        - name: edge-service-volume
-          configMap:
-            name: edge-service
-        - name: edge-service-volume-secret
-          secret:
-            secretName: edge-service
+            - name: SPA_URL
+              value: http://polar-ui
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: http://config-service
+            - name: SPRING_REDIS_HOST
+              value: polar-redis
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI
+              value: http://polar-keycloak/auth/realms/PolarBookshop
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 9000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 9000
+            initialDelaySeconds: 5
+            periodSeconds: 15

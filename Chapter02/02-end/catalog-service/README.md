@@ -61,5 +61,5 @@ kubectl delete deployment catalog-service
 ### Delete Service for application container
 
 ```bash
-kubectl delete svc catalog-service
+kubectl delete service catalog-service
 ```

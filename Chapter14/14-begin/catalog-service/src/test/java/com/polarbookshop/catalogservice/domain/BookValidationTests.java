@@ -37,10 +37,10 @@ class BookValidationTests {
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertThat(violations).hasSize(2);
         List<String> constraintViolationMessages = violations.stream()
-           .map(ConstraintViolation::getMessage).collect(Collectors.toList());
+                .map(ConstraintViolation::getMessage).collect(Collectors.toList());
         assertThat(constraintViolationMessages)
-           .contains("The book ISBN must be defined.")
-           .contains("The ISBN format must follow the standards ISBN-10 or ISBN-13.");
+                .contains("The book ISBN must be defined.")
+                .contains("The ISBN format must follow the standards ISBN-10 or ISBN-13.");
     }
 
     @Test
@@ -49,7 +49,7 @@ class BookValidationTests {
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage())
-           .isEqualTo("The ISBN format must follow the standards ISBN-10 or ISBN-13.");
+                .isEqualTo("The ISBN format must follow the standards ISBN-10 or ISBN-13.");
     }
 
     @Test
@@ -58,7 +58,7 @@ class BookValidationTests {
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage())
-           .isEqualTo("The book title must be defined.");
+                .isEqualTo("The book title must be defined.");
     }
 
     @Test
@@ -67,7 +67,7 @@ class BookValidationTests {
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage())
-           .isEqualTo("The book author must be defined.");
+                .isEqualTo("The book author must be defined.");
     }
 
     @Test
@@ -76,7 +76,7 @@ class BookValidationTests {
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage())
-           .isEqualTo("The book price must be defined.");
+                .isEqualTo("The book price must be defined.");
     }
 
     @Test
@@ -85,7 +85,7 @@ class BookValidationTests {
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage())
-           .isEqualTo("The book price must be greater than zero.");
+                .isEqualTo("The book price must be greater than zero.");
     }
 
     @Test
@@ -94,7 +94,7 @@ class BookValidationTests {
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage())
-           .isEqualTo("The book price must be greater than zero.");
+                .isEqualTo("The book price must be greater than zero.");
     }
 
     @Test

@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.6.0-RC1'
+    id 'org.springframework.boot' version '2.6.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
 }
@@ -12,11 +12,10 @@ description = 'Provides functionality for centralizing the application configura
 
 repositories {
     mavenCentral()
-    maven { url 'https://repo.spring.io/milestone' }
 }
 
 ext {
-    set('springCloudVersion', "2021.0.0-M3")
+    set('springCloudVersion', "2021.0.1")
 }
 
 dependencies {
@@ -30,6 +29,6 @@ dependencyManagement {
     }
 }
 
-test {
-    useJUnitPlatform()
+tasks.named('test') {
+	useJUnitPlatform()
 }

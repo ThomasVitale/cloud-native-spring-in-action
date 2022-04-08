@@ -5,8 +5,8 @@ services:
 
   catalog-service:
     depends_on:
-      - polar-postgres-catalog
-    image: "<your_dockerhub_username>/catalog-service:0.0.1-SNAPSHOT"
+      - polar-postgres
+    image: "catalog-service"
     container_name: "catalog-service"
     ports:
       - 9001:9001
@@ -18,12 +18,13 @@ services:
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=8001
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres-catalog:5432/polardb_catalog
-  
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres:5432/polardb_catalog
+      - SPRING_PROFILES_ACTIVE=testdata
+
   order-service:
     depends_on:
-      - polar-postgres-order
-    image: "<your_dockerhub_username>/order-service:0.0.1-SNAPSHOT"
+      - polar-postgres
+    image: "order-service"
     container_name: "order-service"
     ports:
       - 9002:9002
@@ -32,16 +33,16 @@ services:
       # Buildpacks environment variable to enable debug through a socket on port 8002
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=8002
-      - POLAR_CATALOG_SERVICE_URL=http://catalog-service:9001
+      - POLAR_CATALOG_SERVICE_URI=http://catalog-service:9001
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-      - SPRING_R2DBC_URL=r2dbc:postgresql://polar-postgres-order:5432/polardb_order
-      - SPRING_FLYWAY_URL=jdbc:postgresql://polar-postgres-order:5432/polardb_order
+      - SPRING_R2DBC_URL=r2dbc:postgresql://polar-postgres:5432/polardb_order
+      - SPRING_FLYWAY_URL=jdbc:postgresql://polar-postgres:5432/polardb_order
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
-  
+
   dispatcher-service:
     depends_on:
       - polar-rabbitmq
-    image: "<your_dockerhub_username>/dispatcher-service:0.0.1-SNAPSHOT"
+    image: "dispatcher-service"
     container_name: dispatcher-service
     ports:
       - 9003:9003
@@ -57,7 +58,8 @@ services:
     depends_on:
       - polar-keycloak
       - polar-redis
-    image: "<your_dockerhub_username>/edge-service:0.0.1-SNAPSHOT"
+      - polar-ui
+    image: "edge-service"
     container_name: "edge-service"
     ports:
       - 9000:9000
@@ -67,13 +69,14 @@ services:
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=8000
       - CATALOG_SERVICE_URL=http://catalog-service:9001
-      - KEYCLOAK_URL=http://host.docker.internal:8080
       - ORDER_SERVICE_URL=http://order-service:9002
+      - SPA_URL=http://polar-ui:9004
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - SPRING_REDIS_HOST=polar-redis
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI=http://host.docker.internal:8080/auth/realms/PolarBookshop
   
   config-service:
-    image: "<your_dockerhub_username>/config-service:0.0.1-SNAPSHOT"
+    image: "config-service"
     container_name: "config-service"
     ports:
       - 8888:8888
@@ -84,53 +87,51 @@ services:
       # Buildpacks environment variable to enable debug through a socket on port 9888
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=9888
-  
+
+  polar-ui:
+    image: "ghcr.io/polarbookshop/polar-ui:latest"
+    container_name: "polar-ui"
+    ports:
+      - 9004:9004
+    environment:
+      - PORT=9004
+
   # Backing Services
 
-  polar-postgres-catalog:
-    image: "postgres:13.4"
-    container_name: "polar-postgres-catalog"
+  polar-postgres:
+    image: "postgres:14.1"
+    container_name: "polar-postgres"
     ports:
       - 5432:5432
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=polardb_catalog
-
-  polar-postgres-order:
-    image: "postgres:13.4"
-    container_name: "polar-postgres-order"
-    ports:
-      - 5433:5432
-    environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=polardb_order
+    volumes:
+      - ./postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   polar-redis:
     image: "redis:6.2"
     container_name: "polar-redis"
     ports:
       - 6379:6379
-  
+
   polar-rabbitmq:
-    image: rabbitmq:3.8-management
+    image: rabbitmq:3.9-management
     container_name: polar-rabbitmq
     ports:
       - 5672:5672
       - 15672:15672
-    environment:
-      - RABBITMQ_DEFAULT_USER=user
-      - RABBITMQ_DEFAULT_PASS=password
+    volumes:
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
   
   polar-keycloak:
-    image: jboss/keycloak:15.0.1
+    image: quay.io/keycloak/keycloak:17.0.0-legacy
     container_name: "polar-keycloak"
     volumes:
       - ./keycloak:/opt/jboss/keycloak/imports
     environment:
-      KEYCLOAK_USER: user
-      KEYCLOAK_PASSWORD: password
-      KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json
+      - KEYCLOAK_USER=user
+      - KEYCLOAK_PASSWORD=password
+      - KEYCLOAK_IMPORT=/opt/jboss/keycloak/imports/realm-export.json
     ports:
       - 8080:8080

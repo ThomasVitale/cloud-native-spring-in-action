@@ -18,7 +18,7 @@ Chapter after chapter, you'll build, containerize, and deploy cloud native appli
     * [Docker for Linux](https://docs.docker.com/engine/install/ubuntu/)
     * [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop)
     * [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop)
-* Kubernetes 1.21+
+* Kubernetes 1.22+
     * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
     * [kind](https://kind.sigs.k8s.io)
 * Other
@@ -36,6 +36,22 @@ Gradle | Maven
 `./gradlew bootJar` | `./mvnw spring-boot:repackage`
 `./gradlew bootRun` | `./mvnw spring-boot:run`
 `./gradlew bootBuildImage` | `./mvnw spring-boot:build-image`
+
+## Useful Tools
+
+When working with Kubernetes manifests, you can install a dedicate plugin in your IDE to help you validating the syntax
+and identifying mistakes.
+
+* [Kubernetes Plugin for IntelliJ IDEA](https://plugins.jetbrains.com/plugin/10485-kubernetes)
+* [Kubernetes Extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-kubernetes-tools)
+
+## Book forum
+
+Feel free to submit questions, feedback, or errata to the forum dedicated to "Cloud Native Spring in Action": https://livebook.manning.com/book/cloud-native-spring-in-action/.
+
+## Contact the author
+
+You are very welcome to contact me for questions, feedback, or suggestions. Feel free to reach out to me on [Twitter](https://twitter.com/vitalethomas), [LinkedIn](https://www.linkedin.com/in/vitalethomas), or here on [GitHub](https://github.com/ThomasVitale/).
 
 ## 1. Introduction to Cloud Native
 
@@ -94,25 +110,22 @@ Gradle | Maven
 * [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter12/12-begin)
 * [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter12/12-end)
 
-## 13. Configuration and secrets management
+## 13. Observability and monitoring
 
 * [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter13/13-begin)
 * [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter13/13-end)
 
-## 14. Observability and monitoring
+## 14. Configuration and secrets management
 
 * [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter14/14-begin)
 * [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter14/14-end)
 
-## 16. Serverless and GraalVM native images
+## 15. Continuous delivery and GitOps
+
+* [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter15/15-begin)
+* [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter15/15-end)
+
+## 16. Serverless, GraalVM and Knative
 
 * [Starting point](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter16/16-begin)
 * [Final version](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter16/16-end)
-
-## Book forum
-
-Feel free to submit questions, feedback, or errata to the forum dedicated to "Cloud Native Spring in Action": https://livebook.manning.com/book/cloud-native-spring-in-action/.
-
-## Contact the author
-
-You are very welcome to contact me for questions, feedback, or suggestions. Feel free to reach out to me on [Twitter](https://twitter.com/vitalethomas), [LinkedIn](https://www.linkedin.com/in/vitalethomas), or here on [GitHub](https://github.com/ThomasVitale/).

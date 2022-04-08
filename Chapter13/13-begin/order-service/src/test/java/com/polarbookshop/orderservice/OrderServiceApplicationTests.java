@@ -50,7 +50,7 @@ class OrderServiceApplicationTests {
 	private static KeycloakToken isabelleTokens;
 
 	@Container
-	private static final KeycloakContainer keycloakContainer = new KeycloakContainer("jboss/keycloak:15.0.1")
+	private static final KeycloakContainer keycloakContainer = new KeycloakContainer("quay.io/keycloak/keycloak:17.0.0-legacy")
 			.withRealmImportFile("keycloak_config.json")
 			.withEnv("DB_VENDOR", "h2");
 

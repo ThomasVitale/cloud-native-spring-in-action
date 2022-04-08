@@ -9,7 +9,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("test-data")
+@Profile("testdata")
 public class BookDataLoader {
 
 	private final BookRepository bookRepository;

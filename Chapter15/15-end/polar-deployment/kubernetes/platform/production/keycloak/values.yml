@@ -1,0 +1,26 @@
+fullnameOverride: polar-keycloak
+commonAnnotations:
+  app: polar-keycloak
+image:
+  tag: 16.1.1-debian-10-r52
+extraEnvVars:
+  - name: KEYCLOAK_EXTRA_ARGS
+    value: "-Dkeycloak.import=/config/realm-config.json"  
+extraVolumeMounts:
+  - name: config-volume
+    mountPath: "/config"
+    readOnly: true
+extraVolumes:
+  - name: config-volume
+    configMap:
+      name: keycloak-config
+resources:
+  requests:
+    cpu: 0.2
+    memory: 750Mi
+  limits:
+    cpu: 2
+    memory: 750Mi
+service:
+  type: LoadBalancer
+  port: 80
