@@ -5,13 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BookService {
-
-    private final BookRepository bookRepository;
-
-    public BookService(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
+public record BookService(BookRepository bookRepository) {
 
     public Iterable<Book> viewBookList() {
         return bookRepository.findAll();

@@ -13,7 +13,7 @@ public record BookService(BookRepository bookRepository) {
 
     public Book viewBookDetails(String isbn) {
         return bookRepository.findByIsbn(isbn)
-                .orElseThrow(() -> new BookNotFoundException(isbn));
+                             .orElseThrow(() -> new BookNotFoundException(isbn));
     }
 
     public Book addBookToCatalog(Book book) {
@@ -32,11 +32,7 @@ public record BookService(BookRepository bookRepository) {
         if (existingBook.isEmpty()) {
             return addBookToCatalog(book);
         }
-        var bookToUpdate = new Book(
-                existingBook.get().isbn(),
-                book.title(),
-                book.author(),
-                book.price());
+        var bookToUpdate = new Book(existingBook.get().isbn(), book.title(), book.author(), book.price());
         return bookRepository.save(bookToUpdate);
     }
 

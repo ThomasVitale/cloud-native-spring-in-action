@@ -40,7 +40,7 @@ docker run --rm --name catalog-service -p 8080:8080 catalog-service:0.0.1-SNAPSH
 kubectl create deployment catalog-service --image=catalog-service:0.0.1-SNAPSHOT
 ```
 
-### Create Service for application Deployment
+### Expose port 8080 on the pod level
 
 ```bash
 kubectl expose deployment catalog-service --name=catalog-service --port=8080
