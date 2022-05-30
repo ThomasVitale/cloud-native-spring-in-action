@@ -8,7 +8,7 @@ import javax.validation.constraints.Positive;
 public record Book (
 
     @NotBlank(message = "The book ISBN must be defined.")
-    @Pattern(regexp = "^([0-9]{10}|[0-9]{13})$", message = "The ISBN format must follow the standards ISBN-10 or ISBN-13.")
+    @Pattern(regexp = "^([0-9]{10}|[0-9]{13})$", message = "The ISBN format must be valid.")
     String isbn,
 
     @NotBlank(message = "The book title must be defined.")
