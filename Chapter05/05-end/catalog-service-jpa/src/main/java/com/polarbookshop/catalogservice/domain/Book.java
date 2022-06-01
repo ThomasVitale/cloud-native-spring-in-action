@@ -22,7 +22,7 @@ public class Book {
         private Long id;
 
         @NotBlank(message = "The book ISBN must be defined.")
-        @Pattern(regexp = "^([0-9]{10}|[0-9]{13})$", message = "The ISBN format must follow the standards ISBN-10 or ISBN-13.")
+		@Pattern(regexp = "^([0-9]{10}|[0-9]{13})$", message = "The ISBN format must be valid.")
         private String isbn;
 
         @NotBlank(message = "The book title must be defined.")
@@ -60,7 +60,7 @@ public class Book {
                 this.version = version;
         }
 
-        public static Book build(String isbn, String title, String author, Double price, String publisher) {
+        public static Book of(String isbn, String title, String author, Double price, String publisher) {
                 return new Book(null, isbn, title, author, price, publisher, null, null, 0);
         }
 
