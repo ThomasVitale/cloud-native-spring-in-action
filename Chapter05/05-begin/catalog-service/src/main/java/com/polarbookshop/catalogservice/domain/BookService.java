@@ -1,7 +1,5 @@
 package com.polarbookshop.catalogservice.domain;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,17 +31,17 @@ public class BookService {
         bookRepository.deleteByIsbn(isbn);
     }
 
-    public Book editBookDetails(String isbn, Book book) {
-        Optional<Book> existingBook = bookRepository.findByIsbn(isbn);
-        if (existingBook.isEmpty()) {
-            return addBookToCatalog(book);
-        }
-        var bookToUpdate = new Book(
-                existingBook.get().isbn(),
-                book.title(),
-                book.author(),
-                book.price());
-        return bookRepository.save(bookToUpdate);
-    }
+	public Book editBookDetails(String isbn, Book book) {
+		return bookRepository.findByIsbn(isbn)
+				.map(existingBook -> {
+					var bookToUpdate = new Book(
+							existingBook.isbn(),
+							book.title(),
+							book.author(),
+							book.price());
+					return bookRepository.save(bookToUpdate);
+				})
+				.orElseGet(() -> addBookToCatalog(book));
+	}
 
 }

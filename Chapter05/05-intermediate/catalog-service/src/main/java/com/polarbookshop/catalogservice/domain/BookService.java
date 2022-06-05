@@ -44,7 +44,8 @@ public class BookService {
 							existingBook.lastModifiedDate(),
 							existingBook.version());
 					return bookRepository.save(bookToUpdate);
-				}).orElseGet(() -> addBookToCatalog(book));
+				})
+				.orElseGet(() -> addBookToCatalog(book));
     }
 
 }
