@@ -1,5 +1,10 @@
 # Catalog Service
 
+This application is part of the Polar Bookshop system and provides the functionality for managing
+the books in the bookshop catalog. It's part of the project built in the
+[Cloud Native Spring in Action](https://www.manning.com/books/cloud-native-spring-in-action) book
+by [Thomas Vitale](https://www.thomasvitale.com).
+
 ## REST API
 
 | Endpoint	      | Method   | Req. body  | Status | Resp. body     | Description    		   	     |
@@ -34,12 +39,13 @@ java -jar build/libs/catalog-service-0.0.1-SNAPSHOT.jar
 Run PostgreSQL as a Docker container
 
 ```bash
-docker run --name polar-postgres \
+docker run -d \
+    --name polar-postgres \
     -e POSTGRES_USER=user \
     -e POSTGRES_PASSWORD=password \
     -e POSTGRES_DB=polardb_catalog \
     -p 5432:5432 \
-    -d postgres:14.1
+    postgres:14.3
 ```
 
 ### Container Commands
