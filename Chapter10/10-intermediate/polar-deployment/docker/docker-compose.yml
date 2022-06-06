@@ -71,7 +71,7 @@ services:
   # Backing Services
 
   polar-postgres:
-    image: "postgres:14.1"
+    image: "postgres:14.3"
     container_name: "polar-postgres"
     ports:
       - 5432:5432
@@ -82,13 +82,13 @@ services:
       - ./postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   polar-redis:
-    image: "redis:6.2"
+    image: "redis:7.0"
     container_name: "polar-redis"
     ports:
       - 6379:6379
 
   polar-rabbitmq:
-    image: rabbitmq:3.9-management
+    image: rabbitmq:3.10-management
     container_name: polar-rabbitmq
     ports:
       - 5672:5672

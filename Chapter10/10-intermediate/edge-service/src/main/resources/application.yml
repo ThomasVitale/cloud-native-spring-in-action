@@ -35,9 +35,10 @@ spring:
         - SaveSession
         - name: RequestRateLimiter
           args:
-            redis-rate-limiter.replenishRate: 10
-            redis-rate-limiter.burstCapacity: 20
-            redis-rate-limiter.requestedTokens: 1
+            redis-rate-limiter:
+              replenishRate: 10
+              burstCapacity: 20
+              requestedTokens: 1
         - name: Retry
           args:
             retries: 3
@@ -91,6 +92,6 @@ resilience4j:
       default:
         timeoutDuration: 5s
 
-#logging:
-#  level:
-#    io.github.resilience4j: DEBUG
+logging:
+  level:
+    io.github.resilience4j: DEBUG
