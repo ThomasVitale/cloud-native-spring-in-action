@@ -30,12 +30,12 @@ public class OrderService {
 	}
 
 	public static Order buildAcceptedOrder(Book book, int quantity) {
-		return Order.build(book.isbn(), book.title() + " - " + book.author(),
+		return Order.of(book.isbn(), book.title() + " - " + book.author(),
 				book.price(), quantity, OrderStatus.ACCEPTED);
 	}
 
 	public static Order buildRejectedOrder(String bookIsbn, int quantity) {
-		return Order.build(bookIsbn, null, null, quantity, OrderStatus.REJECTED);
+		return Order.of(bookIsbn, null, null, quantity, OrderStatus.REJECTED);
 	}
 
 }
