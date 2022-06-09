@@ -92,6 +92,6 @@ resilience4j:
       default:
         timeoutDuration: 5s
 
-logging:
-  level:
-    io.github.resilience4j: DEBUG
+#logging:
+#  level:
+#    io.github.resilience4j: DEBUG
