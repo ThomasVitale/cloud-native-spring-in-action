@@ -28,7 +28,8 @@ class SecurityConfigTests {
 	@Test
 	void whenLogoutNotAuthenticatedAndNoCsrfTokenThen403() {
 		webClient
-				.post().uri("/logout")
+				.post()
+				.uri("/logout")
 				.exchange()
 				.expectStatus().isForbidden();
 	}
@@ -37,7 +38,8 @@ class SecurityConfigTests {
 	void whenLogoutAuthenticatedAndNoCsrfTokenThen403() {
 		webClient
 				.mutateWith(SecurityMockServerConfigurers.mockOidcLogin())
-				.post().uri("/logout")
+				.post()
+				.uri("/logout")
 				.exchange()
 				.expectStatus().isForbidden();
 	}
@@ -50,7 +52,8 @@ class SecurityConfigTests {
 		webClient
 				.mutateWith(SecurityMockServerConfigurers.mockOidcLogin())
 				.mutateWith(SecurityMockServerConfigurers.csrf())
-				.post().uri("/logout")
+				.post()
+				.uri("/logout")
 				.exchange()
 				.expectStatus().isFound();
 	}

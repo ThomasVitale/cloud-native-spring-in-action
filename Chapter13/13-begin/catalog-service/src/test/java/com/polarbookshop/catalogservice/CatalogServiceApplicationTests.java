@@ -36,19 +36,19 @@ class CatalogServiceApplicationTests {
     private WebTestClient webTestClient;
 
     @Container
-    private static final KeycloakContainer keycloakContainer = new KeycloakContainer("quay.io/keycloak/keycloak:17.0.0-legacy")
-            .withRealmImportFile("keycloak_config.json");
+    private static final KeycloakContainer keycloakContainer = new KeycloakContainer("quay.io/keycloak/keycloak:18.0")
+			.withRealmImportFile("test-realm-config.json");
 
     @DynamicPropertySource
     static void dynamicProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.security.oauth2.resourceserver.jwt.issuer-uri",
-                () -> keycloakContainer.getAuthServerUrl() + "/realms/PolarBookshop");
+                () -> keycloakContainer.getAuthServerUrl() + "realms/PolarBookshop");
     }
 
     @BeforeAll
     static void generateAccessTokens() {
         WebClient webClient = WebClient.builder()
-                .baseUrl(keycloakContainer.getAuthServerUrl() + "/realms/PolarBookshop/protocol/openid-connect/token")
+                .baseUrl(keycloakContainer.getAuthServerUrl() + "realms/PolarBookshop/protocol/openid-connect/token")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .build();
 
@@ -59,7 +59,7 @@ class CatalogServiceApplicationTests {
     @Test
     void whenGetRequestWithIdThenBookReturned() {
         var bookIsbn = "1231231230";
-        var bookToCreate = Book.build(bookIsbn, "Title", "Author", 9.90, "Polarsophia");
+        var bookToCreate = Book.of(bookIsbn, "Title", "Author", 9.90, "Polarsophia");
         Book expectedBook = webTestClient
                 .post()
                 .uri("/books")
@@ -83,7 +83,7 @@ class CatalogServiceApplicationTests {
 
     @Test
     void whenPostRequestThenBookCreated() {
-        var expectedBook = Book.build("1231231231", "Title", "Author", 9.90, "Polarsophia");
+        var expectedBook = Book.of("1231231231", "Title", "Author", 9.90, "Polarsophia");
 
         webTestClient
                 .post()
@@ -100,7 +100,7 @@ class CatalogServiceApplicationTests {
 
     @Test
     void whenPostRequestUnauthenticatedThen401() {
-        var expectedBook = Book.build("1231231231", "Title", "Author", 9.90, "Polarsophia");
+        var expectedBook = Book.of("1231231231", "Title", "Author", 9.90, "Polarsophia");
 
         webTestClient
                 .post()
@@ -112,7 +112,7 @@ class CatalogServiceApplicationTests {
 
     @Test
     void whenPostRequestUnauthorizedThen403() {
-        var expectedBook = Book.build("1231231231", "Title", "Author", 9.90, "Polarsophia");
+        var expectedBook = Book.of("1231231231", "Title", "Author", 9.90, "Polarsophia");
 
         webTestClient
                 .post()
@@ -126,7 +126,7 @@ class CatalogServiceApplicationTests {
     @Test
     void whenPutRequestThenBookUpdated() {
         var bookIsbn = "1231231232";
-        var bookToCreate = Book.build(bookIsbn, "Title", "Author", 9.90, "Polarsophia");
+        var bookToCreate = Book.of(bookIsbn, "Title", "Author", 9.90, "Polarsophia");
         Book createdBook = webTestClient
                 .post()
                 .uri("/books")
@@ -156,7 +156,7 @@ class CatalogServiceApplicationTests {
     @Test
     void whenDeleteRequestThenBookDeleted() {
         var bookIsbn = "1231231233";
-        var bookToCreate = Book.build(bookIsbn, "Title", "Author", 9.90, "Polarsophia");
+        var bookToCreate = Book.of(bookIsbn, "Title", "Author", 9.90, "Polarsophia");
         webTestClient
                 .post()
                 .uri("/books")

@@ -36,4 +36,4 @@ spec:
             - name: SPRING_FLYWAY_URL
               value: jdbc:postgresql://polar-postgres/polardb_order
             - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
-              value: http://polar-keycloak/auth/realms/PolarBookshop
+              value: http://polar-keycloak/realms/PolarBookshop

@@ -21,7 +21,7 @@ services:
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres:5432/polardb_catalog
       - SPRING_PROFILES_ACTIVE=testdata
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://host.docker.internal:8080/auth/realms/PolarBookshop
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://host.docker.internal:8080/realms/PolarBookshop
   
   order-service:
     depends_on:
@@ -41,7 +41,7 @@ services:
       - SPRING_R2DBC_URL=r2dbc:postgresql://polar-postgres:5432/polardb_order
       - SPRING_FLYWAY_URL=jdbc:postgresql://polar-postgres:5432/polardb_order
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://host.docker.internal:8080/auth/realms/PolarBookshop
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://host.docker.internal:8080/realms/PolarBookshop
 
   dispatcher-service:
     depends_on:
@@ -77,7 +77,7 @@ services:
       - SPA_URL=http://polar-ui:9004
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - SPRING_REDIS_HOST=polar-redis
-      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI=http://host.docker.internal:8080/auth/realms/PolarBookshop
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI=http://host.docker.internal:8080/realms/PolarBookshop
   
   config-service:
     image: "config-service"
@@ -103,7 +103,7 @@ services:
   # Backing Services
 
   polar-postgres:
-    image: "postgres:14.1"
+    image: "postgres:14.3"
     container_name: "polar-postgres"
     ports:
       - 5432:5432
@@ -114,13 +114,13 @@ services:
       - ./postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   polar-redis:
-    image: "redis:6.2"
+    image: "redis:7.0"
     container_name: "polar-redis"
     ports:
       - 6379:6379
 
   polar-rabbitmq:
-    image: rabbitmq:3.9-management
+    image: rabbitmq:3.10-management
     container_name: polar-rabbitmq
     ports:
       - 5672:5672
@@ -129,13 +129,13 @@ services:
       - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
   
   polar-keycloak:
-    image: quay.io/keycloak/keycloak:17.0.0-legacy
+    image: quay.io/keycloak/keycloak:18.0
     container_name: "polar-keycloak"
+    command: start-dev --import-realm
     volumes:
-      - ./keycloak:/opt/jboss/keycloak/imports
+      - ./keycloak:/opt/keycloak/data/import
     environment:
-      - KEYCLOAK_USER=user
-      - KEYCLOAK_PASSWORD=password
-      - KEYCLOAK_IMPORT=/opt/jboss/keycloak/imports/full-realm-export.json
+      - KEYCLOAK_ADMIN=user
+      - KEYCLOAK_ADMIN_PASSWORD=password
     ports:
       - 8080:8080

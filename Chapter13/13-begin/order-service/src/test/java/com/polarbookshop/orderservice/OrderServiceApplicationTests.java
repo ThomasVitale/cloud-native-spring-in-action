@@ -50,19 +50,17 @@ class OrderServiceApplicationTests {
 	private static KeycloakToken isabelleTokens;
 
 	@Container
-	private static final KeycloakContainer keycloakContainer = new KeycloakContainer("quay.io/keycloak/keycloak:17.0.0-legacy")
-			.withRealmImportFile("keycloak_config.json")
-			.withEnv("DB_VENDOR", "h2");
+	private static final KeycloakContainer keycloakContainer = new KeycloakContainer("quay.io/keycloak/keycloak:18.0")
+			.withRealmImportFile("test-realm-config.json");
 
 	@Container
-	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:13.4"))
+	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:14.3"))
 			.withReuse(true);
 
 	@Autowired
 	private ObjectMapper objectMapper;
 
 	@Autowired
-	@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 	private OutputDestination output;
 
 	@Autowired
@@ -79,18 +77,18 @@ class OrderServiceApplicationTests {
 		registry.add("spring.flyway.url", postgresql::getJdbcUrl);
 
 		registry.add("spring.security.oauth2.resourceserver.jwt.issuer-uri",
-				() -> keycloakContainer.getAuthServerUrl() + "/realms/PolarBookshop");
+				() -> keycloakContainer.getAuthServerUrl() + "realms/PolarBookshop");
 	}
 
 	private static String r2dbcUrl() {
-		return String.format("r2dbc:postgresql://%s:%s/%s", postgresql.getContainerIpAddress(),
+		return String.format("r2dbc:postgresql://%s:%s/%s", postgresql.getHost(),
 				postgresql.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT), postgresql.getDatabaseName());
 	}
 
 	@BeforeAll
 	static void generateAccessTokens() {
 		WebClient webClient = WebClient.builder()
-				.baseUrl(keycloakContainer.getAuthServerUrl() + "/realms/PolarBookshop/protocol/openid-connect/token")
+				.baseUrl(keycloakContainer.getAuthServerUrl() + "realms/PolarBookshop/protocol/openid-connect/token")
 				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 				.build();
 
