@@ -719,11 +719,10 @@ data:
               "clientAuthenticatorType": "client-secret",
               "secret": "polar-keycloak-secret",
               "redirectUris": [
-                  "http://localhost:9000/login/oauth2/code/*",
-                  "http://localhost:9000"
+                  "*"
               ],
               "webOrigins": [
-                  "http://localhost:9000"
+                  "*"
               ],
               "notBefore": 0,
               "bearerOnly": false,
