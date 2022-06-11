@@ -3,6 +3,7 @@ package com.polarbookshop.orderservice.order.domain;
 import com.polarbookshop.orderservice.config.DataConfig;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.containers.PostgreSQLR2DBCDatabaseContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
@@ -34,7 +35,7 @@ class OrderRepositoryR2dbcTests {
     }
 
     private static String r2dbcUrl() {
-        return String.format("r2dbc:postgresql://%s:%s/%s", postgresql.getContainerIpAddress(),
+        return String.format("r2dbc:postgresql://%s:%s/%s", postgresql.getHost(),
                 postgresql.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT), postgresql.getDatabaseName());
     }
 
