@@ -21,7 +21,7 @@ repositories {
 }
 
 ext {
-	set('otelVersion', "1.14.0")
+	set('otelVersion', "1.12.1")
 	set('springCloudVersion', "2021.0.3")
 	set('testcontainersVersion', "1.17.2")
 	set('testKeycloakVersion', "2.1.2")
