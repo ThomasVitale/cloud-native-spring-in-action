@@ -46,7 +46,7 @@ jobs:
           kubeval: 0.16.1
           # Different schema required because of https://github.com/instrumenta/kubeval/issues/301
           command: |
-            kubeval --strict --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master -d k8s
+            kustomize build k8s | kubeval --strict --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master -
   package:
     name: Package and Publish
     if: ${{ github.ref == 'refs/heads/main' }}
