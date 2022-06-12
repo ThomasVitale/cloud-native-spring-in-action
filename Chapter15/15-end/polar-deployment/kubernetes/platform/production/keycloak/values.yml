@@ -5,7 +5,9 @@ image:
   tag: 18.0.0-debian-11-r4
 extraEnvVars:
   - name: JAVA_OPTS_APPEND
-    value: "-Dkeycloak.import=/opt/keycloak/data/import/realm-config.json"  
+    value: "-Dkeycloak.import=/opt/keycloak/data/import/realm-config.json"
+  - name: KEYCLOAK_PRODUCTION
+    value: false 
 extraVolumeMounts:
   - name: config-volume
     mountPath: "/opt/keycloak/data/import"
