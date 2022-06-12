@@ -40,8 +40,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/auth/realms/PolarBookshop
-          # jwk-set-uri: http://localhost:8080/auth/realms/PolarBookshop/protocol/openid-connect/certs
+          issuer-uri: http://localhost:8080/realms/PolarBookshop
 
 logging:
   pattern:
@@ -63,6 +62,10 @@ management:
         enabled: true
   info:
     env:
+      enabled: true
+    java:
+      enabled: true
+    os:
       enabled: true
   metrics:
     tags:
