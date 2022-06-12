@@ -3,6 +3,7 @@ package com.polarbookshop.quotefunction;
 import com.polarbookshop.quotefunction.domain.Genre;
 import com.polarbookshop.quotefunction.domain.Quote;
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
