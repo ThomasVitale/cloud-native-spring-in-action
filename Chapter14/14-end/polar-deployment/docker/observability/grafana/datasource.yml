@@ -26,6 +26,24 @@ datasources:
     isDefault: false
     version: 1
     editable: true
+    jsonData:
+      httpMethod: GET
+      tracesToLogs:
+        datasourceUid: 'loki-thomas-vitale'
+        tags: [ 'instance', 'pod', 'namespace', 'hostname' ]
+        mappedTags: [ { key: 'service.name', value: 'application' }  ]
+        mapTagNamesEnabled: true
+        spanStartTimeShift: '1h'
+        spanEndTimeShift: '1h'
+        filterByTraceID: true
+        filterBySpanID: false
+        lokiSearch: true
+      serviceMap:
+        datasourceUid: 'prometheus-thomas-vitale'
+      search:
+        hide: false
+      nodeGraph:
+        enabled: true
   - name: Loki
     type: loki
     uid: loki-thomas-vitale

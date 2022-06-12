@@ -14,21 +14,21 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class BookServiceTest {
 
-    @Mock
-    private BookRepository bookRepository;
+	@Mock
+	private BookRepository bookRepository;
 
-    @InjectMocks
-    private BookService bookService;
+	@InjectMocks
+	private BookService bookService;
 
-    @Test
-    void whenBookToCreateAlreadyExistsThenThrows() {
-        var bookIsbn = "1234561232";
-        var bookToCreate = Book.build(bookIsbn, "Title", "Author", 9.90, "Polarsophia");
-        when(bookRepository.existsByIsbn(bookIsbn)).thenReturn(true);
-        assertThatThrownBy(() -> bookService.addBookToCatalog(bookToCreate))
-                .isInstanceOf(BookAlreadyExistsException.class)
-                .hasMessage("A book with ISBN " + bookIsbn + " already exists.");
-    }
+	@Test
+	void whenBookToCreateAlreadyExistsThenThrows() {
+		var bookIsbn = "1234561232";
+		var bookToCreate = Book.of(bookIsbn, "Title", "Author", 9.90, "Polarsophia");
+		when(bookRepository.existsByIsbn(bookIsbn)).thenReturn(true);
+		assertThatThrownBy(() -> bookService.addBookToCatalog(bookToCreate))
+				.isInstanceOf(BookAlreadyExistsException.class)
+				.hasMessage("A book with ISBN " + bookIsbn + " already exists.");
+	}
 
 	@Test
 	void whenBookToReadDoesNotExistThenThrows() {

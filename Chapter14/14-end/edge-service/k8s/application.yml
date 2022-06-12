@@ -6,4 +6,4 @@ spring:
       client:
         provider:
           keycloak:
-            issuer-uri: http://polar-keycloak/auth/realms/PolarBookshop
+            issuer-uri: http://polar-keycloak/realms/PolarBookshop

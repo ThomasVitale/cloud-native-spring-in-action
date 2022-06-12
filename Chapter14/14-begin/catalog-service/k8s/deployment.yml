@@ -38,7 +38,7 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: testdata
             - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
-              value: http://polar-keycloak/auth/realms/PolarBookshop
+              value: http://polar-keycloak/realms/PolarBookshop
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
