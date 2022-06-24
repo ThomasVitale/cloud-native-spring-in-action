@@ -15,22 +15,24 @@ spec:
     spec:
       containers:
         - name: polar-keycloak
-          image: quay.io/keycloak/keycloak:17.0.0-legacy
+          image: quay.io/keycloak/keycloak:18.0
+          args:
+            - "start-dev"
           ports:
             - containerPort: 8080
           env:
-            - name: KEYCLOAK_USER
+            - name: KEYCLOAK_ADMIN
               value: user
-            - name: KEYCLOAK_PASSWORD
-              value: password 
-            - name: KEYCLOAK_IMPORT
-              value: /opt/jboss/keycloak/imports/realm-config.json
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              value: password
+            - name: JAVA_OPTS_APPEND
+              value: "-Dkeycloak.import=/opt/keycloak/data/import/realm-config.json"
           readinessProbe:
             httpGet:
-              path: /auth/realms/master
+              path: /realms/master
               port: 8080
-            initialDelaySeconds: 180
-            periodSeconds: 30
+            initialDelaySeconds: 5
+            periodSeconds: 10
           resources:
             requests:
               cpu: 100m
@@ -40,11 +42,11 @@ spec:
               memory: 750Mi
           volumeMounts:
             - name: polar-keycloak-config-volume
-              mountPath: /opt/jboss/keycloak/imports/
+              mountPath: /opt/keycloak/data/import
       volumes:
-      - name: polar-keycloak-config-volume
-        configMap:
-          name: polar-keycloak
+        - name: polar-keycloak-config-volume
+          configMap:
+            name: polar-keycloak
 
 ---
 
@@ -59,9 +61,9 @@ spec:
   selector:
     app: polar-keycloak
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 8080
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
 
 ---
 

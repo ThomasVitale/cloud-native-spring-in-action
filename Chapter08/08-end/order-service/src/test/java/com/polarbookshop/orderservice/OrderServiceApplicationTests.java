@@ -27,7 +27,7 @@ import static org.mockito.BDDMockito.given;
 class OrderServiceApplicationTests {
 
 	@Container
-	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:14.1"));
+	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:14.3"));
 
 	@Autowired
 	private WebTestClient webTestClient;
@@ -44,7 +44,7 @@ class OrderServiceApplicationTests {
 	}
 
 	private static String r2dbcUrl() {
-		return String.format("r2dbc:postgresql://%s:%s/%s", postgresql.getContainerIpAddress(),
+		return String.format("r2dbc:postgresql://%s:%s/%s", postgresql.getHost(),
 				postgresql.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT), postgresql.getDatabaseName());
 	}
 

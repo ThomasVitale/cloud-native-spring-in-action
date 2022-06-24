@@ -18,7 +18,7 @@ public record Book (
         Long id,
 
         @NotBlank(message = "The book ISBN must be defined.")
-        @Pattern(regexp = "^([0-9]{10}|[0-9]{13})$", message = "The ISBN format must follow the standards ISBN-10 or ISBN-13.")
+		@Pattern(regexp = "^([0-9]{10}|[0-9]{13})$", message = "The ISBN format must be valid.")
         String isbn,
 
         @NotBlank(message = "The book title must be defined.")
@@ -42,7 +42,7 @@ public record Book (
 
 ){
 
-        public static Book build(String isbn, String title, String author, Double price) {
+        public static Book of(String isbn, String title, String author, Double price) {
                 return new Book(null, isbn, title, author, price, null, null, 0);
         }
 

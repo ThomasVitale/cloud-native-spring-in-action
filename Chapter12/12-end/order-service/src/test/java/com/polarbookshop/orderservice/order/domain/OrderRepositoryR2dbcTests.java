@@ -23,8 +23,7 @@ import org.springframework.test.context.DynamicPropertySource;
 class OrderRepositoryR2dbcTests {
 
     @Container
-    static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:13.4"))
-            .withReuse(true);
+	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:14.3"));
 
     @Autowired
     private OrderRepository orderRepository;
@@ -38,7 +37,7 @@ class OrderRepositoryR2dbcTests {
     }
 
     private static String r2dbcUrl() {
-        return String.format("r2dbc:postgresql://%s:%s/%s", postgresql.getContainerIpAddress(),
+        return String.format("r2dbc:postgresql://%s:%s/%s", postgresql.getHost(),
                 postgresql.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT), postgresql.getDatabaseName());
     }
 
@@ -67,12 +66,12 @@ class OrderRepositoryR2dbcTests {
     }
 
     @Test
-    @WithMockUser("melinda")
+    @WithMockUser("marlena")
     void whenCreateOrderAuthenticatedThenAuditMetadata() {
         var rejectedOrder = OrderService.buildRejectedOrder( "1234567890", 3);
         StepVerifier.create(orderRepository.save(rejectedOrder))
-                .expectNextMatches(order -> order.createdBy().equals("melinda") &&
-                        order.lastModifiedBy().equals("melinda"))
+                .expectNextMatches(order -> order.createdBy().equals("marlena") &&
+                        order.lastModifiedBy().equals("marlena"))
                 .verifyComplete();
     }
 

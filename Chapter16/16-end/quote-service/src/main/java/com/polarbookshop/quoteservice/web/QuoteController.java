@@ -3,11 +3,12 @@ package com.polarbookshop.quoteservice.web;
 import com.polarbookshop.quoteservice.domain.Genre;
 import com.polarbookshop.quoteservice.domain.Quote;
 import com.polarbookshop.quoteservice.domain.QuoteService;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 @RestController
 public class QuoteController {

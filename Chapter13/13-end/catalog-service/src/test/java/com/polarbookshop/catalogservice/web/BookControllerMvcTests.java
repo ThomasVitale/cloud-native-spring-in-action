@@ -46,7 +46,7 @@ class BookControllerMvcTests {
     @Test
     void whenGetBookExistingAndAuthenticatedThenShouldReturn200() throws Exception {
         var isbn = "7373731394";
-        var expectedBook = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
+        var expectedBook = Book.of(isbn, "Title", "Author", 9.90, "Polarsophia");
         given(bookService.viewBookDetails(isbn)).willReturn(expectedBook);
         mockMvc
                 .perform(get("/books/" + isbn)
@@ -57,7 +57,7 @@ class BookControllerMvcTests {
     @Test
     void whenGetBookExistingAndNotAuthenticatedThenShouldReturn200() throws Exception {
         var isbn = "7373731394";
-        var expectedBook = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
+        var expectedBook = Book.of(isbn, "Title", "Author", 9.90, "Polarsophia");
         given(bookService.viewBookDetails(isbn)).willReturn(expectedBook);
         mockMvc
                 .perform(get("/books/" + isbn))
@@ -112,7 +112,7 @@ class BookControllerMvcTests {
     @Test
     void whenPostBookWithEmployeeRoleThenShouldReturn201() throws Exception {
         var isbn = "7373731394";
-        var bookToCreate = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
+        var bookToCreate = Book.of(isbn, "Title", "Author", 9.90, "Polarsophia");
         given(bookService.addBookToCatalog(bookToCreate)).willReturn(bookToCreate);
         mockMvc
                 .perform(post("/books")
@@ -125,7 +125,7 @@ class BookControllerMvcTests {
     @Test
     void whenPostBookWithCustomerRoleThenShouldReturn403() throws Exception {
         var isbn = "7373731394";
-        var bookToCreate = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
+        var bookToCreate = Book.of(isbn, "Title", "Author", 9.90, "Polarsophia");
         given(bookService.addBookToCatalog(bookToCreate)).willReturn(bookToCreate);
         mockMvc
                 .perform(post("/books")
@@ -138,7 +138,7 @@ class BookControllerMvcTests {
     @Test
     void whenPostBookAndNotAuthenticatedThenShouldReturn403() throws Exception {
         var isbn = "7373731394";
-        var bookToCreate = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
+        var bookToCreate = Book.of(isbn, "Title", "Author", 9.90, "Polarsophia");
         mockMvc
                 .perform(post("/books")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -149,7 +149,7 @@ class BookControllerMvcTests {
     @Test
     void whenPutBookWithEmployeeRoleThenShouldReturn200() throws Exception {
         var isbn = "7373731394";
-        var bookToCreate = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
+        var bookToCreate = Book.of(isbn, "Title", "Author", 9.90, "Polarsophia");
         given(bookService.addBookToCatalog(bookToCreate)).willReturn(bookToCreate);
         mockMvc
                 .perform(put("/books/" + isbn)
@@ -162,7 +162,7 @@ class BookControllerMvcTests {
     @Test
     void whenPutBookWithCustomerRoleThenShouldReturn403() throws Exception {
         var isbn = "7373731394";
-        var bookToCreate = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
+        var bookToCreate = Book.of(isbn, "Title", "Author", 9.90, "Polarsophia");
         given(bookService.addBookToCatalog(bookToCreate)).willReturn(bookToCreate);
         mockMvc
                 .perform(put("/books/" + isbn)
@@ -175,7 +175,7 @@ class BookControllerMvcTests {
     @Test
     void whenPutBookAndNotAuthenticatedThenShouldReturn401() throws Exception {
         var isbn = "7373731394";
-        var bookToCreate = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
+        var bookToCreate = Book.of(isbn, "Title", "Author", 9.90, "Polarsophia");
         mockMvc
                 .perform(put("/books/" + isbn)
                         .contentType(MediaType.APPLICATION_JSON)

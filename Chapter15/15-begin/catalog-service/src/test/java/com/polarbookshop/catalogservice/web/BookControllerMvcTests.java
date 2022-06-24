@@ -28,159 +28,159 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(SecurityConfig.class)
 class BookControllerMvcTests {
 
-    private static final String ROLE_EMPLOYEE = "ROLE_employee";
-    private static final String ROLE_CUSTOMER = "ROLE_customer";
+	private static final String ROLE_EMPLOYEE = "ROLE_employee";
+	private static final String ROLE_CUSTOMER = "ROLE_customer";
 
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    @Autowired
-    ObjectMapper objectMapper;
+	@Autowired
+	ObjectMapper objectMapper;
 
-    @MockBean
-    BookService bookService;
+	@MockBean
+	BookService bookService;
 
-    @MockBean
-    JwtDecoder jwtDecoder;
+	@MockBean
+	JwtDecoder jwtDecoder;
 
-    @Test
-    void whenGetBookExistingAndAuthenticatedThenShouldReturn200() throws Exception {
-        var isbn = "7373731394";
-        var expectedBook = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
-        given(bookService.viewBookDetails(isbn)).willReturn(expectedBook);
-        mockMvc
-                .perform(get("/books/" + isbn)
-                        .with(jwt()))
-                .andExpect(status().isOk());
-    }
+	@Test
+	void whenGetBookExistingAndAuthenticatedThenShouldReturn200() throws Exception {
+		var isbn = "7373731394";
+		var expectedBook = Book.of(isbn, "Title", "Author", 9.90, "Polarsophia");
+		given(bookService.viewBookDetails(isbn)).willReturn(expectedBook);
+		mockMvc
+				.perform(get("/books/" + isbn)
+						.with(jwt()))
+				.andExpect(status().isOk());
+	}
 
-    @Test
-    void whenGetBookExistingAndNotAuthenticatedThenShouldReturn200() throws Exception {
-        var isbn = "7373731394";
-        var expectedBook = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
-        given(bookService.viewBookDetails(isbn)).willReturn(expectedBook);
-        mockMvc
-                .perform(get("/books/" + isbn))
-                .andExpect(status().isOk());
-    }
+	@Test
+	void whenGetBookExistingAndNotAuthenticatedThenShouldReturn200() throws Exception {
+		var isbn = "7373731394";
+		var expectedBook = Book.of(isbn, "Title", "Author", 9.90, "Polarsophia");
+		given(bookService.viewBookDetails(isbn)).willReturn(expectedBook);
+		mockMvc
+				.perform(get("/books/" + isbn))
+				.andExpect(status().isOk());
+	}
 
-    @Test
-    void whenGetBookNotExistingAndAuthenticatedThenShouldReturn404() throws Exception {
-        var isbn = "7373731394";
-        given(bookService.viewBookDetails(isbn)).willThrow(BookNotFoundException.class);
-        mockMvc
-                .perform(get("/books/" + isbn)
-                        .with(jwt()))
-                .andExpect(status().isNotFound());
-    }
+	@Test
+	void whenGetBookNotExistingAndAuthenticatedThenShouldReturn404() throws Exception {
+		var isbn = "7373731394";
+		given(bookService.viewBookDetails(isbn)).willThrow(BookNotFoundException.class);
+		mockMvc
+				.perform(get("/books/" + isbn)
+						.with(jwt()))
+				.andExpect(status().isNotFound());
+	}
 
-    @Test
-    void whenGetBookNotExistingAndNotAuthenticatedThenShouldReturn404() throws Exception {
-        var isbn = "7373731394";
-        given(bookService.viewBookDetails(isbn)).willThrow(BookNotFoundException.class);
-        mockMvc
-                .perform(get("/books/" + isbn))
-                .andExpect(status().isNotFound());
-    }
+	@Test
+	void whenGetBookNotExistingAndNotAuthenticatedThenShouldReturn404() throws Exception {
+		var isbn = "7373731394";
+		given(bookService.viewBookDetails(isbn)).willThrow(BookNotFoundException.class);
+		mockMvc
+				.perform(get("/books/" + isbn))
+				.andExpect(status().isNotFound());
+	}
 
-    @Test
-    void whenDeleteBookWithEmployeeRoleThenShouldReturn204() throws Exception {
-        var isbn = "7373731394";
-        mockMvc
-                .perform(delete("/books/" + isbn)
-                        .with(jwt().authorities(new SimpleGrantedAuthority(ROLE_EMPLOYEE))))
-                .andExpect(status().isNoContent());
-    }
+	@Test
+	void whenDeleteBookWithEmployeeRoleThenShouldReturn204() throws Exception {
+		var isbn = "7373731394";
+		mockMvc
+				.perform(delete("/books/" + isbn)
+						.with(jwt().authorities(new SimpleGrantedAuthority(ROLE_EMPLOYEE))))
+				.andExpect(status().isNoContent());
+	}
 
-    @Test
-    void whenDeleteBookWithCustomerRoleThenShouldReturn403() throws Exception {
-        var isbn = "7373731394";
-        mockMvc
-                .perform(delete("/books/" + isbn)
-                        .with(jwt().authorities(new SimpleGrantedAuthority(ROLE_CUSTOMER))))
-                .andExpect(status().isForbidden());
-    }
+	@Test
+	void whenDeleteBookWithCustomerRoleThenShouldReturn403() throws Exception {
+		var isbn = "7373731394";
+		mockMvc
+				.perform(delete("/books/" + isbn)
+						.with(jwt().authorities(new SimpleGrantedAuthority(ROLE_CUSTOMER))))
+				.andExpect(status().isForbidden());
+	}
 
-    @Test
-    void whenDeleteBookNotAuthenticatedThenShouldReturn401() throws Exception {
-        var isbn = "7373731394";
-        mockMvc
-                .perform(delete("/books/" + isbn))
-                .andExpect(status().isUnauthorized());
-    }
+	@Test
+	void whenDeleteBookNotAuthenticatedThenShouldReturn401() throws Exception {
+		var isbn = "7373731394";
+		mockMvc
+				.perform(delete("/books/" + isbn))
+				.andExpect(status().isUnauthorized());
+	}
 
-    @Test
-    void whenPostBookWithEmployeeRoleThenShouldReturn201() throws Exception {
-        var isbn = "7373731394";
-        var bookToCreate = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
-        given(bookService.addBookToCatalog(bookToCreate)).willReturn(bookToCreate);
-        mockMvc
-                .perform(post("/books")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(bookToCreate))
-                        .with(jwt().authorities(new SimpleGrantedAuthority(ROLE_EMPLOYEE))))
-                .andExpect(status().isCreated());
-    }
+	@Test
+	void whenPostBookWithEmployeeRoleThenShouldReturn201() throws Exception {
+		var isbn = "7373731394";
+		var bookToCreate = Book.of(isbn, "Title", "Author", 9.90, "Polarsophia");
+		given(bookService.addBookToCatalog(bookToCreate)).willReturn(bookToCreate);
+		mockMvc
+				.perform(post("/books")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(bookToCreate))
+						.with(jwt().authorities(new SimpleGrantedAuthority(ROLE_EMPLOYEE))))
+				.andExpect(status().isCreated());
+	}
 
-    @Test
-    void whenPostBookWithCustomerRoleThenShouldReturn403() throws Exception {
-        var isbn = "7373731394";
-        var bookToCreate = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
-        given(bookService.addBookToCatalog(bookToCreate)).willReturn(bookToCreate);
-        mockMvc
-                .perform(post("/books")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(bookToCreate))
-                        .with(jwt().authorities(new SimpleGrantedAuthority(ROLE_CUSTOMER))))
-                .andExpect(status().isForbidden());
-    }
+	@Test
+	void whenPostBookWithCustomerRoleThenShouldReturn403() throws Exception {
+		var isbn = "7373731394";
+		var bookToCreate = Book.of(isbn, "Title", "Author", 9.90, "Polarsophia");
+		given(bookService.addBookToCatalog(bookToCreate)).willReturn(bookToCreate);
+		mockMvc
+				.perform(post("/books")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(bookToCreate))
+						.with(jwt().authorities(new SimpleGrantedAuthority(ROLE_CUSTOMER))))
+				.andExpect(status().isForbidden());
+	}
 
-    @Test
-    void whenPostBookAndNotAuthenticatedThenShouldReturn403() throws Exception {
-        var isbn = "7373731394";
-        var bookToCreate = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
-        mockMvc
-                .perform(post("/books")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(bookToCreate)))
-                .andExpect(status().isUnauthorized());
-    }
+	@Test
+	void whenPostBookAndNotAuthenticatedThenShouldReturn403() throws Exception {
+		var isbn = "7373731394";
+		var bookToCreate = Book.of(isbn, "Title", "Author", 9.90, "Polarsophia");
+		mockMvc
+				.perform(post("/books")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(bookToCreate)))
+				.andExpect(status().isUnauthorized());
+	}
 
-    @Test
-    void whenPutBookWithEmployeeRoleThenShouldReturn200() throws Exception {
-        var isbn = "7373731394";
-        var bookToCreate = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
-        given(bookService.addBookToCatalog(bookToCreate)).willReturn(bookToCreate);
-        mockMvc
-                .perform(put("/books/" + isbn)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(bookToCreate))
-                        .with(jwt().authorities(new SimpleGrantedAuthority(ROLE_EMPLOYEE))))
-                .andExpect(status().isOk());
-    }
+	@Test
+	void whenPutBookWithEmployeeRoleThenShouldReturn200() throws Exception {
+		var isbn = "7373731394";
+		var bookToCreate = Book.of(isbn, "Title", "Author", 9.90, "Polarsophia");
+		given(bookService.addBookToCatalog(bookToCreate)).willReturn(bookToCreate);
+		mockMvc
+				.perform(put("/books/" + isbn)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(bookToCreate))
+						.with(jwt().authorities(new SimpleGrantedAuthority(ROLE_EMPLOYEE))))
+				.andExpect(status().isOk());
+	}
 
-    @Test
-    void whenPutBookWithCustomerRoleThenShouldReturn403() throws Exception {
-        var isbn = "7373731394";
-        var bookToCreate = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
-        given(bookService.addBookToCatalog(bookToCreate)).willReturn(bookToCreate);
-        mockMvc
-                .perform(put("/books/" + isbn)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(bookToCreate))
-                        .with(jwt().authorities(new SimpleGrantedAuthority(ROLE_CUSTOMER))))
-                .andExpect(status().isForbidden());
-    }
+	@Test
+	void whenPutBookWithCustomerRoleThenShouldReturn403() throws Exception {
+		var isbn = "7373731394";
+		var bookToCreate = Book.of(isbn, "Title", "Author", 9.90, "Polarsophia");
+		given(bookService.addBookToCatalog(bookToCreate)).willReturn(bookToCreate);
+		mockMvc
+				.perform(put("/books/" + isbn)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(bookToCreate))
+						.with(jwt().authorities(new SimpleGrantedAuthority(ROLE_CUSTOMER))))
+				.andExpect(status().isForbidden());
+	}
 
-    @Test
-    void whenPutBookAndNotAuthenticatedThenShouldReturn401() throws Exception {
-        var isbn = "7373731394";
-        var bookToCreate = Book.build(isbn, "Title", "Author", 9.90, "Polarsophia");
-        mockMvc
-                .perform(put("/books/" + isbn)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(bookToCreate)))
-                .andExpect(status().isUnauthorized());
-    }
+	@Test
+	void whenPutBookAndNotAuthenticatedThenShouldReturn401() throws Exception {
+		var isbn = "7373731394";
+		var bookToCreate = Book.of(isbn, "Title", "Author", 9.90, "Polarsophia");
+		mockMvc
+				.perform(put("/books/" + isbn)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(bookToCreate)))
+				.andExpect(status().isUnauthorized());
+	}
 
 }

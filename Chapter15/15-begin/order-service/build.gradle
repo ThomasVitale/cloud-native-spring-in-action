@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.3'
+	id 'org.springframework.boot' version '2.7.0'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
@@ -22,9 +22,9 @@ repositories {
 
 ext {
 	set('otelVersion', "1.12.1")
-	set('springCloudVersion', "2021.0.1")
-	set('testcontainersVersion', "1.16.2")
-	set('testKeycloakVersion', "1.10.0")
+	set('springCloudVersion', "2021.0.3")
+	set('testcontainersVersion', "1.17.2")
+	set('testKeycloakVersion', "2.1.2")
 }
 
 dependencies {
@@ -39,10 +39,13 @@ dependencies {
 
 	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
 	runtimeOnly "io.opentelemetry.javaagent:opentelemetry-javaagent:${otelVersion}"
-	runtimeOnly 'io.r2dbc:r2dbc-postgresql'
 	runtimeOnly 'org.flywaydb:flyway-core'
 	runtimeOnly 'org.postgresql:postgresql'
+	runtimeOnly 'org.postgresql:r2dbc-postgresql'
 	runtimeOnly 'org.springframework:spring-jdbc'
+
+	// Only on Apple Silicon. Why it's necessary: https://github.com/netty/netty/issues/11020
+	// runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.77.Final:osx-aarch_64'
 
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
