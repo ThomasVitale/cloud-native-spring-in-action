@@ -3,7 +3,6 @@ package com.polarbookshop.orderservice.order.domain;
 import com.polarbookshop.orderservice.config.DataConfig;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.containers.PostgreSQLR2DBCDatabaseContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
@@ -21,7 +20,7 @@ import org.springframework.test.context.DynamicPropertySource;
 class OrderRepositoryR2dbcTests {
 
     @Container
-    static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:14.3"));
+    static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:14.4"));
 
     @Autowired
     private OrderRepository orderRepository;
