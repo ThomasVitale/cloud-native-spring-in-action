@@ -50,11 +50,11 @@ class OrderServiceApplicationTests {
 	private static KeycloakToken isabelleTokens;
 
 	@Container
-	private static final KeycloakContainer keycloakContainer = new KeycloakContainer("quay.io/keycloak/keycloak:18.0")
+	private static final KeycloakContainer keycloakContainer = new KeycloakContainer("quay.io/keycloak/keycloak:19.0")
 			.withRealmImportFile("test-realm-config.json");
 
 	@Container
-	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:14.3"))
+	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:14.4"))
 			.withReuse(true);
 
 	@Autowired
