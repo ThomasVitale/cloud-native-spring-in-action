@@ -1,6 +1,6 @@
 plugins {
-	id 'org.springframework.boot' version '2.7.0'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'org.springframework.boot' version '2.7.2'
+	id 'io.spring.dependency-management' version '1.0.12.RELEASE'
 	id 'java'
 }
 
@@ -17,7 +17,7 @@ repositories {
 ext {
 	set('otelVersion', "1.12.1")
 	set('springCloudVersion', "2021.0.3")
-	set('testcontainersVersion', "1.17.2")
+	set('testcontainersVersion', "1.17.3")
 }
 
 dependencies {
@@ -32,6 +32,9 @@ dependencies {
 	runtimeOnly 'io.github.resilience4j:resilience4j-micrometer'
 	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
 	runtimeOnly "io.opentelemetry.javaagent:opentelemetry-javaagent:${otelVersion}"
+
+	// Only on Apple Silicon. Why it's necessary: https://github.com/netty/netty/issues/11020
+	// runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.77.Final:osx-aarch_64'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
