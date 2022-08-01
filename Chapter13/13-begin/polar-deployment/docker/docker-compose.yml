@@ -103,7 +103,7 @@ services:
   # Backing Services
 
   polar-postgres:
-    image: "postgres:14.3"
+    image: "postgres:14.4"
     container_name: "polar-postgres"
     ports:
       - 5432:5432
@@ -129,7 +129,7 @@ services:
       - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
   
   polar-keycloak:
-    image: quay.io/keycloak/keycloak:18.0
+    image: quay.io/keycloak/keycloak:19.0
     container_name: "polar-keycloak"
     command: start-dev --import-realm
     volumes:
