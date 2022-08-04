@@ -2,7 +2,7 @@ fullnameOverride: polar-keycloak
 commonAnnotations:
   app: polar-keycloak
 image:
-  tag: 18.0.0-debian-11-r4
+  tag: 18.0.2-debian-11-r15
 extraEnvVars:
   - name: JAVA_OPTS_APPEND
     value: "-Dkeycloak.import=/opt/keycloak/data/import/realm-config.json"
