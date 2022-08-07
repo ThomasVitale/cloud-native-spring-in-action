@@ -27,6 +27,7 @@ services:
     depends_on:
       - polar-keycloak
       - polar-postgres
+      - polar-rabbitmq
     image: "order-service"
     container_name: "order-service"
     ports:
