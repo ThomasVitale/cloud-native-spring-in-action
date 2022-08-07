@@ -4,15 +4,15 @@ set -euo pipefail
 
 echo "\n📦 Installing Knative CRDs..."
 
-kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.5.0/serving-crds.yaml
+kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.6.0/serving-crds.yaml
 
 echo "\n📦 Installing Knative Serving..."
 
-kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.5.0/serving-core.yaml
+kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.6.0/serving-core.yaml
 
 echo "\n📦 Installing Kourier Ingress..."
 
-kubectl apply -f https://github.com/knative/net-kourier/releases/download/knative-v1.5.0/kourier.yaml
+kubectl apply -f https://github.com/knative/net-kourier/releases/download/knative-v1.6.0/kourier.yaml
 
 kubectl patch configmap/config-network \
   --namespace knative-serving \
@@ -26,6 +26,6 @@ kubectl patch configmap/config-domain \
   --type merge \
   --patch '{"data":{"127.0.0.1.sslip.io":""}}'
 
-kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.5.0/serving-default-domain.yaml
+kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.6.0/serving-default-domain.yaml
 
 echo "\n✅ Knative successfully installed!\n"

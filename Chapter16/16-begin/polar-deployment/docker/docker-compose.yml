@@ -35,6 +35,7 @@ services:
       - fluent-bit
       - polar-keycloak
       - polar-postgres
+      - polar-rabbitmq
     image: "order-service"
     container_name: "order-service"
     ports:
@@ -149,7 +150,7 @@ services:
   # Backing Services
 
   polar-postgres:
-    image: "postgres:14.3"
+    image: "postgres:14.4"
     container_name: "polar-postgres"
     ports:
       - 5432:5432
@@ -175,7 +176,7 @@ services:
       - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
   
   polar-keycloak:
-    image: quay.io/keycloak/keycloak:18.0
+    image: quay.io/keycloak/keycloak:19.0
     container_name: "polar-keycloak"
     command: start-dev --import-realm
     volumes:
@@ -189,7 +190,7 @@ services:
   # Observability
 
   grafana:
-    image: grafana/grafana:8.4.4
+    image: grafana/grafana:9.0.5
     container_name: grafana
     depends_on:
       - loki
@@ -206,7 +207,7 @@ services:
       - ./observability/grafana/grafana.ini:/etc/grafana/grafana.ini
 
   loki:
-    image: grafana/loki:2.4.2
+    image: grafana/loki:2.6.1
     container_name: loki
     depends_on:
       - fluent-bit
@@ -214,7 +215,7 @@ services:
       - "3100:3100"
 
   fluent-bit:
-    image: grafana/fluent-bit-plugin-loki:2.4.2-amd64
+    image: grafana/fluent-bit-plugin-loki:2.6.1-amd64
     container_name: fluent-bit
     ports:
       - "24224:24224"
@@ -224,7 +225,7 @@ services:
       - ./observability/fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
 
   prometheus:
-    image: prom/prometheus:v2.34.0
+    image: prom/prometheus:v2.37.0
     container_name: prometheus
     ports:
       - "9090:9090"
@@ -232,7 +233,7 @@ services:
       - ./observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
 
   tempo:
-    image: grafana/tempo:1.3.2
+    image: grafana/tempo:1.4.1
     container_name: tempo
     command: -config.file /etc/tempo-config.yml
     ports:
