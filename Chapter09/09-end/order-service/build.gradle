@@ -1,6 +1,6 @@
 plugins {
-	id 'org.springframework.boot' version '2.7.2'
-	id 'io.spring.dependency-management' version '1.0.12.RELEASE'
+	id 'org.springframework.boot' version '2.7.3'
+	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
 	id 'java'
 }
 
@@ -38,7 +38,7 @@ dependencies {
 	runtimeOnly 'org.springframework:spring-jdbc'
 
 	// Only on Apple Silicon. Why it's necessary: https://github.com/netty/netty/issues/11020
-	// runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.77.Final:osx-aarch_64'
+	// runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.79.Final:osx-aarch_64'
 
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
