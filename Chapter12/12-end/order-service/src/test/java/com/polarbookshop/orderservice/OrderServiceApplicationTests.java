@@ -54,8 +54,7 @@ class OrderServiceApplicationTests {
 			.withRealmImportFile("test-realm-config.json");
 
 	@Container
-	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:14.4"))
-			.withReuse(true);
+	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:14.4"));
 
 	@Autowired
 	private ObjectMapper objectMapper;
