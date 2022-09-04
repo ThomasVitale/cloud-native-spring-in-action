@@ -94,7 +94,7 @@ services:
       - BPL_DEBUG_PORT=9888
 
   polar-ui:
-    image: "ghcr.io/polarbookshop/polar-ui:latest"
+    image: "ghcr.io/polarbookshop/polar-ui:v1"
     container_name: "polar-ui"
     ports:
       - 9004:9004

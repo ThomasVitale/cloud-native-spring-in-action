@@ -38,7 +38,6 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8080/realms/PolarBookshop
-          # jwk-set-uri: http://localhost:8080/realms/PolarBookshop/protocol/openid-connect/certs
 
 management:
   endpoints:
