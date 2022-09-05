@@ -42,7 +42,7 @@ jobs:
       - name: Validate Kubernetes manifests
         uses: stefanprodan/kube-tools@v1
         with:
-          kubectl: 1.24.1
+          kubectl: 1.24.3
           kubeval: 0.16.1
           command: |
             kustomize build k8s | kubeval --strict -
