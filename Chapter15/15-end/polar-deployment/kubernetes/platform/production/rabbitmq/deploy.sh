@@ -54,7 +54,6 @@ export RABBITMQ_PASSWORD=$(kubectl get secret polar-rabbitmq-default-user -o jso
 echo "Username: $RABBITMQ_USERNAME"
 echo "Password: $RABBITMQ_PASSWORD"
 
-
 echo "\n🔑 Generating Secret with RabbitMQ credentials."
 
 kubectl delete secret polar-rabbitmq-credentials || true

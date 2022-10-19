@@ -72,6 +72,10 @@ and identifying mistakes.
 | 15. Continuous delivery and GitOps | [15-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter15/15-begin) | - | [15-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter15/15-end) |
 | 16. Serverless, GraalVM and Knative | [16-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter16/16-begin) | - | [10-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter16/16-end) |
 
+## Polar Bookshop
+
+You can find the source code for the Angular frontend [here](https://github.com/PolarBookshop/polar-ui/tree/v1).
+
 ## Book Forum
 
 Feel free to submit questions, feedback, or errata to the forum dedicated to "Cloud Native Spring in Action": https://livebook.manning.com/book/cloud-native-spring-in-action/.
