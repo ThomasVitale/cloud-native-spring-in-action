@@ -21,9 +21,14 @@ grafana:
   enabled: true
   image:
     tag: 9.1.2
-  adminUser: heimdall
+  adminUser: user
   service:
     type: ClusterIP
+  # See: https://github.com/grafana/helm-charts/issues/1746
+  rbac:
+    pspEnabled: false
+  testFramework:
+    enabled: false
   sidecar:
     dashboards:
       enabled: true
@@ -37,7 +42,7 @@ grafana:
       datasources:
         - name: Prometheus
           type: prometheus
-          uid: prometheus-thomas-vitale
+          uid: prometheus
           access: proxy
           orgId: 1
           url: http://loki-stack-prometheus-server
@@ -47,7 +52,7 @@ grafana:
           editable: true
         - name: Tempo
           type: tempo
-          uid: tempo-thomas-vitale
+          uid: tempo
           access: proxy
           orgId: 1
           url: http://tempo:3100
@@ -58,7 +63,7 @@ grafana:
           jsonData:
             httpMethod: GET
             tracesToLogs:
-              datasourceUid: 'loki-thomas-vitale'
+              datasourceUid: 'loki'
               tags: [ 'instance', 'pod', 'namespace', 'hostname' ]
               mappedTags: [ { key: 'service.name', value: 'application' } ]
               mapTagNamesEnabled: true
@@ -68,14 +73,14 @@ grafana:
               filterBySpanID: false
               lokiSearch: true
             serviceMap:
-              datasourceUid: 'prometheus-thomas-vitale'
+              datasourceUid: 'prometheus'
             search:
               hide: false
             nodeGraph:
               enabled: true
         - name: Loki
           type: loki
-          uid: loki-thomas-vitale
+          uid: loki
           access: proxy
           orgId: 1
           url: http://loki-stack:3100
@@ -86,7 +91,7 @@ grafana:
           jsonData:
             derivedFields:
               - datasourceUid: tempo-thomas-vitale
-                matcherRegex: \d+\-\d+\-\d+ \d+\:\d+\:\d+\.\d+\s+\w+\s+\[[\w-]+\,(\w+)\,\w+\]
+                matcherRegex: \[.+,(.+?),
                 name: TraceID
                 url: $${__value.raw}
 

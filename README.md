@@ -45,9 +45,9 @@ and identifying mistakes.
 * [Kubernetes Plugin for IntelliJ IDEA](https://plugins.jetbrains.com/plugin/10485-kubernetes)
 * [Kubernetes Extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-kubernetes-tools)
 
-## Additional Deployment Guides
+## Additional Guides
 
-* [Observability setup on Kubernetes](#)
+* [Observability setup on Kubernetes](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Guides/grafana-observability-stack)
 * [Setting up a Kubernetes cluster for Polar Bookshop on Azure](#)
 * [Setting up a Kubernetes cluster for Polar Bookshop on DigitalOcean](#)
 
