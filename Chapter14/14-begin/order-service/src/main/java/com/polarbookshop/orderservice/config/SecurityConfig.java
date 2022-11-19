@@ -18,7 +18,7 @@ public class SecurityConfig {
 				)
 				.oauth2ResourceServer(ServerHttpSecurity.OAuth2ResourceServerSpec::jwt)
 				.requestCache(requestCacheSpec ->
-						requestCacheSpec.requestCache((NoOpServerRequestCache.getInstance())))
+						requestCacheSpec.requestCache(NoOpServerRequestCache.getInstance()))
 				.csrf(ServerHttpSecurity.CsrfSpec::disable)
 				.build();
 	}

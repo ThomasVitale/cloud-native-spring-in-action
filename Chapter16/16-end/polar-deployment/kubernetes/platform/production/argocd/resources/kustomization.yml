@@ -5,7 +5,7 @@ namespace: argocd
 
 resources:
   - namespace.yml
-  - https://raw.githubusercontent.com/argoproj/argo-cd/v2.4.0/manifests/install.yaml
+  - https://raw.githubusercontent.com/argoproj/argo-cd/v2.4.15/manifests/install.yaml
 
 patchesStrategicMerge:
   - patch-service.yml
