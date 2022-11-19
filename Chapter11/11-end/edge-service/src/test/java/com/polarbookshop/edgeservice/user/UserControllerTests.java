@@ -29,7 +29,8 @@ class UserControllerTests {
 	@Test
 	void whenNotAuthenticatedThen401() {
 		webClient
-				.get().uri("/user")
+				.get()
+				.uri("/user")
 				.exchange()
 				.expectStatus().isUnauthorized();
 	}

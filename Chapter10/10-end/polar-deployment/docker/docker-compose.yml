@@ -24,6 +24,7 @@ services:
   order-service:
     depends_on:
       - polar-postgres
+      - polar-rabbitmq
     image: "order-service"
     container_name: "order-service"
     ports:
@@ -87,7 +88,7 @@ services:
   # Backing Services
 
   polar-postgres:
-    image: "postgres:14.3"
+    image: "postgres:14.4"
     container_name: "polar-postgres"
     ports:
       - 5432:5432

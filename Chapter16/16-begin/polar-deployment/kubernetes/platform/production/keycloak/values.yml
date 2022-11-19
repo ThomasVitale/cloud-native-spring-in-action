@@ -2,12 +2,16 @@ fullnameOverride: polar-keycloak
 commonAnnotations:
   app: polar-keycloak
 image:
-  tag: 18.0.0-debian-11-r4
+  tag: 19.0.3-debian-11-r2
 extraEnvVars:
   - name: JAVA_OPTS_APPEND
     value: "-Dkeycloak.import=/opt/keycloak/data/import/realm-config.json"
-  - name: KEYCLOAK_PRODUCTION
-    value: false 
+  - name: KC_HTTP_ENABLED
+    value: "true"
+  - name: KC_HOSTNAME_STRICT_HTTPS
+    value: "false"
+  - name: KC_HOSTNAME_STRICT
+    value: "false"
 extraVolumeMounts:
   - name: config-volume
     mountPath: "/opt/keycloak/data/import"
@@ -29,10 +33,10 @@ readinessProbe:
 resources:
   requests:
     cpu: 0.2
-    memory: 750Mi
+    memory: 756Mi
   limits:
     cpu: 2
-    memory: 750Mi
+    memory: 756Mi
 service:
   type: LoadBalancer
   port: 80

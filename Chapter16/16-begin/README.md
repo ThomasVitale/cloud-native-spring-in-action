@@ -9,7 +9,7 @@ Either way, you'll get a zip archive that you can extract and import in your IDE
 From the [Spring Initialzr](https://start.spring.io/) website, choose the following:
 
 * _Project_: Gradle (or Maven)
-* _Spring Boot_: 2.7.0 (or the latest 2.x production version available)
+* _Spring Boot_: 2.7.2 (or the latest 2.x production version available)
 * _Group_: `com.polarbookshop`
 * _Artifact_: `quote-service`
 * _Name_: quote-service
@@ -24,7 +24,7 @@ Then, click "Generate" to download the `quote-service.zip` archive containing th
 From the [Spring Initialzr](https://start.spring.io/) website, choose the following:
 
 * _Project_: Gradle (or Maven)
-* _Spring Boot_: 2.7.0 (or the latest 2.x production version available)
+* _Spring Boot_: 2.7.2 (or the latest 2.x production version available)
 * _Group_: `com.polarbookshop`
 * _Artifact_: `quote-function`
 * _Name_: quote-function
