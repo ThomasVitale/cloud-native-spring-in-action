@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-service
+spec:
+  template:
+    spec:
+      containers:
+        - name: edge-service
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: staging

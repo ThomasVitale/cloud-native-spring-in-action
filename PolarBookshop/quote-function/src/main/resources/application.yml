@@ -1,0 +1,9 @@
+server:
+  port: 9102
+
+spring:
+  application:
+    name: quote-function
+  cloud:
+    function:
+      definition: allQuotes

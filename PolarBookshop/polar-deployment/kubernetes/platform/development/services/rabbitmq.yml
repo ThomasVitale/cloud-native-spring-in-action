@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rabbitmq-config
+  labels:
+    db: polar-rabbitmq
+data:
+  rabbitmq.conf: |
+    default_user = user
+    default_pass = password
+    vm_memory_high_watermark.relative = 1.0
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: polar-rabbitmq
+  labels:
+    db: polar-rabbitmq
+spec:
+  selector:
+    matchLabels:
+      db: polar-rabbitmq
+  template:
+    metadata:
+      labels:
+        db: polar-rabbitmq
+    spec:
+      containers:
+        - name: polar-rabbitmq
+          image: rabbitmq:3.10-management
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 200m
+              memory: 150Mi
+          volumeMounts:
+            - mountPath: /etc/rabbitmq
+              name: rabbitmq-config-volume
+      volumes:
+        - name: rabbitmq-config-volume
+          configMap:
+            name: rabbitmq-config
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: polar-rabbitmq
+  labels:
+    db: polar-rabbitmq
+spec:
+  type: ClusterIP
+  selector:
+    db: polar-rabbitmq
+  ports:
+  - name: amqp
+    protocol: TCP
+    port: 5672
+    targetPort: 5672
+  - name: management
+    protocol: TCP
+    port: 15672
+    targetPort: 15672

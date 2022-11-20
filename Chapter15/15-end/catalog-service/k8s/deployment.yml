@@ -14,9 +14,9 @@ spec:
       labels:
         app: catalog-service
       annotations:
-        prometheus.io/scrape : "true"
-        prometheus.io/path : /actuator/prometheus
-        prometheus.io/port : "9001"
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "9001"
     spec:
       containers:
         - name: catalog-service

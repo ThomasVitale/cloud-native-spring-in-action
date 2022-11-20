@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: polar-ui
+  labels:
+    app: polar-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: polar-ui
+  template:
+    metadata:
+      labels:
+        app: polar-ui
+    spec:
+      containers:
+        - name: polar-ui
+          image: ghcr.io/polarbookshop/polar-ui:v1
+          imagePullPolicy: Always
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 5" ]
+          ports:
+            - containerPort: 9004
+          env:
+            - name: PORT
+              value: "9004"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: polar-ui
+  labels:
+    app: polar-ui
+spec:
+  type: ClusterIP
+  selector:
+    app: polar-ui
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9004
