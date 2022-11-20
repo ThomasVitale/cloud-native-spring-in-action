@@ -27,7 +27,8 @@ Logs and metrics from your Spring Boot applications are automatically scraped an
 
 If you want to collect traces as well, you need to configure your applications to send traces
 to Tempo at http://tempo.observability-stack.svc.cluster.local:4317. For example, you can add
-the configuration via a Kustomize patch as follows.
+the configuration via a Kustomize patch (as included in the production configuration
+for the final project available [here](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/PolarBookshop/polar-deployment/kubernetes/applications)).
 
 ```yaml
 apiVersion: apps/v1
