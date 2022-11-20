@@ -74,6 +74,8 @@ and identifying mistakes.
 
 ## Polar Bookshop
 
+The final project developed throughout the book is available [here](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/PolarBookshop).
+
 You can find the source code for the Angular frontend [here](https://github.com/PolarBookshop/polar-ui/tree/v1).
 
 ## Book Forum
