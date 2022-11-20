@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dispatcher-service
+spec:
+  template:
+    spec:
+      containers:
+        - name: dispatcher-service
+          volumeMounts:
+            - name: rabbitmq-credentials-volume
+              mountPath: /workspace/secrets/rabbitmq
+      volumes:
+        - name: rabbitmq-credentials-volume
+          secret:
+            secretName: polar-rabbitmq-credentials

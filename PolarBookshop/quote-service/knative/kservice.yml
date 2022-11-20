@@ -1,0 +1,19 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: quote-service
+spec:
+  template:
+    spec:
+      containers:
+        - name: quote-service
+          image: ghcr.io/polarbookshop/quote-service
+          ports:
+            - containerPort: 9101
+          resources:
+            requests:
+              cpu: '0.1'
+              memory: '128Mi'
+            limits:
+              cpu: '2'
+              memory: '512Mi'

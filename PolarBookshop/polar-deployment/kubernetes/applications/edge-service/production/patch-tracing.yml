@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-service
+spec:
+  template:
+    spec:
+      containers:
+        - name: edge-service
+          env:
+            - name: JAVA_TOOL_OPTIONS
+              value: "-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.17.0.jar"
+            - name: OTEL_SERVICE_NAME
+              value: edge-service
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://tempo.observability-stack.svc.cluster.local:4317
+            - name: OTEL_METRICS_EXPORTER
+              value: none

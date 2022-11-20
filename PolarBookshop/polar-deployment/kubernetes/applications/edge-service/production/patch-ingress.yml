@@ -1,0 +1,10 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: polar-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location ~* "^/actuator" {
+        deny all;
+        return 403;
+      }
