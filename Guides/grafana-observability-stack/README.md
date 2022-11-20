@@ -23,7 +23,7 @@ kubectl port-forward --namespace observability-stack service/loki-stack-grafana 
 
 Now, you can access Grafana at http://localhost:3000.
 
-Logs and metrics from your Spring Boot are automatically scraped and visualized in Grafana.
+Logs and metrics from your Spring Boot applications are automatically scraped and visualized in Grafana.
 
 If you want to collect traces as well, you need to configure your applications to send traces
 to Tempo at http://tempo.observability-stack.svc.cluster.local:4317. For example, you can add
