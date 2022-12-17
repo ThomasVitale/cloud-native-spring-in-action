@@ -1,7 +1,7 @@
 loki:
   enabled: true
   image:
-    tag: 2.6.1
+    tag: 2.7.1
   config:
     ingester:
       wal:
@@ -10,17 +10,17 @@ loki:
 promtail:
   enabled: false
   image:
-    tag: 2.6.1
+    tag: 2.7.1
 
 fluent-bit:
   enabled: true
   image:
-    tag: 2.6.1-amd64
+    tag: 2.7.1-amd64
 
 grafana:
   enabled: true
   image:
-    tag: 9.1.2
+    tag: 9.3.2
   adminUser: user
   service:
     type: ClusterIP
@@ -112,6 +112,6 @@ prometheus:
     global:
       scrape_interval: 15s
     image:
-      tag: v2.38.0
+      tag: v2.40.7
     persistentVolume:
       enabled: false

@@ -18,7 +18,7 @@ services:
       - BPL_JVM_THREAD_COUNT=50
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=8001
-      - JAVA_TOOL_OPTIONS=-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.17.0.jar
+      - JAVA_TOOL_OPTIONS=-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.19.2.jar
       - OTEL_SERVICE_NAME=catalog-service
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
       - OTEL_METRICS_EXPORTER=none
@@ -46,7 +46,7 @@ services:
       # Buildpacks environment variable to enable debug through a socket on port 8002
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=8002
-      - JAVA_TOOL_OPTIONS=-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.17.0.jar
+      - JAVA_TOOL_OPTIONS=-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.19.2.jar
       - OTEL_SERVICE_NAME=order-service
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
       - OTEL_METRICS_EXPORTER=none
@@ -74,7 +74,7 @@ services:
       # Buildpacks environment variable to enable debug through a socket on port 8002
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=8003
-      - JAVA_TOOL_OPTIONS=-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.17.0.jar
+      - JAVA_TOOL_OPTIONS=-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.19.2.jar
       - OTEL_SERVICE_NAME=dispatcher-service
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
       - OTEL_METRICS_EXPORTER=none
@@ -100,7 +100,7 @@ services:
       # Buildpacks environment variable to enable debug through a socket on port 8000
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=8000
-      - JAVA_TOOL_OPTIONS=-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.17.0.jar
+      - JAVA_TOOL_OPTIONS=-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.19.2.jar
       - OTEL_SERVICE_NAME=edge-service
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
       - OTEL_METRICS_EXPORTER=none
@@ -129,7 +129,7 @@ services:
       # Buildpacks environment variable to enable debug through a socket on port 9888
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=9888
-      - JAVA_TOOL_OPTIONS=-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.17.0.jar
+      - JAVA_TOOL_OPTIONS=-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.19.2.jar
       - OTEL_SERVICE_NAME=config-service
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
       - OTEL_METRICS_EXPORTER=none
@@ -155,7 +155,7 @@ services:
   # Backing Services
 
   polar-postgres:
-    image: "postgres:14.4"
+    image: "postgres:15.1"
     container_name: "polar-postgres"
     ports:
       - 5432:5432
@@ -172,7 +172,7 @@ services:
       - 6379:6379
 
   polar-rabbitmq:
-    image: rabbitmq:3.10-management
+    image: rabbitmq:3.11-management
     container_name: polar-rabbitmq
     ports:
       - 5672:5672
@@ -195,7 +195,7 @@ services:
   # Observability
 
   grafana:
-    image: grafana/grafana:9.1.2
+    image: grafana/grafana:9.3.2
     container_name: grafana
     depends_on:
       - loki
@@ -212,7 +212,7 @@ services:
       - ./observability/grafana/grafana.ini:/etc/grafana/grafana.ini
 
   loki:
-    image: grafana/loki:2.6.1
+    image: grafana/loki:2.7.1
     container_name: loki
     depends_on:
       - fluent-bit
@@ -220,7 +220,7 @@ services:
       - "3100:3100"
 
   fluent-bit:
-    image: grafana/fluent-bit-plugin-loki:2.6.1-amd64
+    image: grafana/fluent-bit-plugin-loki:2.7.1-amd64
     container_name: fluent-bit
     ports:
       - "24224:24224"
@@ -230,7 +230,7 @@ services:
       - ./observability/fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
 
   prometheus:
-    image: prom/prometheus:v2.38.0
+    image: prom/prometheus:v2.40.7
     container_name: prometheus
     ports:
       - "9090:9090"
