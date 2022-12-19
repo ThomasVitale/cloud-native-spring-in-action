@@ -9,7 +9,7 @@ Either way, you'll get a zip archive that you can extract and import in your IDE
 From the [Spring Initialzr](https://start.spring.io/) website, choose the following:
 
 * _Project_: Gradle (or Maven)
-* _Spring Boot_: 2.7.6 (or the latest 2.x production version available)
+* _Spring Boot_: 3.0.0 (or the latest 3.x production version available)
 * _Group_: `com.polarbookshop`
 * _Artifact_: `edge-service`
 * _Name_: edge-service
@@ -24,11 +24,11 @@ Then, click "Generate" to download the `edge-service.zip` archive containing the
 If you prefer using the REST API offered by Spring Initializr, run the following command to initialize a project with Gradle as the build tool:
 
 ```bash
-curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=edge-service -d name=edge-service -d packageName=com.polarbookshop.edgeservice -d dependencies=cloud-gateway -d javaVersion=17 -d bootVersion=2.7.6 -d type=gradle-project -o edge-service.zip
+curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=edge-service -d name=edge-service -d packageName=com.polarbookshop.edgeservice -d dependencies=cloud-gateway -d javaVersion=17 -d bootVersion=3.0.0 -d type=gradle-project -o edge-service.zip
 ```
 
 For using Maven instead of Gradle:
 
 ```bash
-curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=edge-service -d name=edge-service -d packageName=com.polarbookshop.edgeservice -d dependencies=cloud-gateway -d javaVersion=17 -d bootVersion=2.7.6 -o edge-service.zip
+curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=edge-service -d name=edge-service -d packageName=com.polarbookshop.edgeservice -d dependencies=cloud-gateway -d javaVersion=17 -d bootVersion=3.0.0 -d type=maven-project -o edge-service.zip
 ```

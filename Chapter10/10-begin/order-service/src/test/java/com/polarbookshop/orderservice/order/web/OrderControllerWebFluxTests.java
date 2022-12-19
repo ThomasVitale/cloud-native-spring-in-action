@@ -32,7 +32,7 @@ class OrderControllerWebFluxTests {
 
 		webClient
 				.post()
-				.uri("/orders/")
+				.uri("/orders")
 				.bodyValue(orderRequest)
 				.exchange()
 				.expectStatus().is2xxSuccessful()

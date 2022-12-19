@@ -1,9 +1,8 @@
 package com.polarbookshop.orderservice.order.web;
 
-import javax.validation.Valid;
-
 import com.polarbookshop.orderservice.order.domain.Order;
 import com.polarbookshop.orderservice.order.domain.OrderService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;

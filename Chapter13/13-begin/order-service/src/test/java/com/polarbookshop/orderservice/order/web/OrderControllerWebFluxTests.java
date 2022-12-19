@@ -43,7 +43,7 @@ class OrderControllerWebFluxTests {
 				.mutateWith(SecurityMockServerConfigurers.mockJwt()
 						.authorities(new SimpleGrantedAuthority("ROLE_customer")))
 				.post()
-				.uri("/orders/")
+				.uri("/orders")
 				.bodyValue(orderRequest)
 				.exchange()
 				.expectStatus().is2xxSuccessful()

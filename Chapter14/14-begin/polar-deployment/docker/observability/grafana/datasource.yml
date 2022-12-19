@@ -57,6 +57,6 @@ datasources:
     jsonData:
       derivedFields:
         - datasourceUid: tempo-thomas-vitale
-          matcherRegex: \d+\-\d+\-\d+ \d+\:\d+\:\d+\.\d+\s+\w+\s+\[[\w-]+\,(\w+)\,\w+\]
+          matcherRegex: \[.+,(.+?),
           name: TraceID
           url: $${__value.raw}

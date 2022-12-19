@@ -1,7 +1,7 @@
 plugins {
-	id 'org.springframework.boot' version '2.7.6'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 	id 'java'
+	id 'org.springframework.boot' version '3.0.0'
+	id 'io.spring.dependency-management' version '1.1.0'
 }
 
 group = 'com.polarbookshop'
@@ -22,7 +22,7 @@ repositories {
 
 ext {
 	set('otelVersion', "1.19.2")
-	set('springCloudVersion', "2021.0.5")
+	set('springCloudVersion', "2022.0.0")
 	set('testcontainersVersion', "1.17.6")
 	set('testKeycloakVersion', "2.3.0")
 }
@@ -57,14 +57,7 @@ dependencies {
 	testImplementation 'org.testcontainers:junit-jupiter'
 	testImplementation 'org.testcontainers:postgresql'
 	testImplementation 'org.testcontainers:r2dbc'
-	testImplementation("org.springframework.cloud:spring-cloud-stream") {
-		artifact {
-			name = "spring-cloud-stream"
-			extension = "jar"
-			type ="test-jar"
-			classifier = "test-binder"
-		}
-	}
+	testImplementation 'org.springframework.cloud:spring-cloud-stream-test-binder'
 }
 
 dependencyManagement {
@@ -88,6 +81,12 @@ bootBuildImage {
 			password = project.findProperty("registryToken")
 			url = project.findProperty("registryUrl")
 		}
+	}
+
+	if (System.getProperty( "os.arch" ).toLowerCase().startsWith('aarch')) {
+		// This builder is only for ARM64 systems.
+		// For more info: https://github.com/thomasvitale/paketo-arm64
+		builder = "ghcr.io/thomasvitale/java-builder-arm64"
 	}
 }
 

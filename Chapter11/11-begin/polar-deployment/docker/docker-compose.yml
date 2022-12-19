@@ -70,7 +70,7 @@ services:
       - CATALOG_SERVICE_URL=http://catalog-service:9001
       - ORDER_SERVICE_URL=http://order-service:9002
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-      - SPRING_REDIS_HOST=polar-redis
+      - SPRING_DATA_REDIS_HOST=polar-redis
   
   config-service:
     image: "config-service"

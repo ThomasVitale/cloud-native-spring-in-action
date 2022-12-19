@@ -6,26 +6,93 @@ This repository contains the source code accompanying the book [Cloud Native Spr
 
 There is a folder for each chapter, for which both an _initial_ and _final_ versions are available. For example, for chapter 4, you can use `Chapter04/04-begin` as a starting point to follow along with the examples in the chapter and `Chapter04/04-end` to check the code as it looks like at the end.
 
-## Updates
+## Changes with Spring Boot 3.0.0
 
-This branch contains the source code accompanying the book "Cloud Native Spring in Action" with the following main updates:
+This branch contains the source code accompanying the book "Cloud Native Spring in Action" upgraded to Spring Boot 3.0.0. Besides the new dependency version, there are a few minor changes compared to what it's included in the book.
 
-* Spring Boot 2.7.3 => 2.7.6
-* Spring Cloud 2021.0.3 => 2021.0.5
+### Jakarta EE
 
-And the following dependency updates:
+Spring Boot 3 is based on Jakarta EE 9, which comes with a change in the package naming strategy from `javax.*` to `jakarta.*`.
+The annotations from the Java Validation API introduced in chapter 3 should change from `javax.validation.*` to `jakarta.validation.*`
+(Catalog Service and Order Service).
 
-* Grafana 9.1.2 => 9.3.2
-* Loki 2.6.1 => 2.7.1
-* OpenTelemetry 1.17.0 => 1.19.2
-* PostgreSQL 14.4 => 15.1
-* Prometheus 2.38.0 => 2.40.7
-* RabbitMQ 3.10 => 3.11
-* Testcontainers 1.17.3 => 1.17.6
+### Spring Data Redis
+
+Chapter 9 introduces Spring Data Redis. In Spring Boot 3, all configuration properties related to Redis changed naming strategy from
+`spring.redis.*` to `spring.data.redis.*` (Edge Service).
+
+### Spring Session
+
+The `spring.session.store-type=redis` configuration property used in chapter 9 (Edge Service) is not necessary anymore. Spring Session will detect
+that the application is integrated with Redis and it will use it to store the session data automatically.
+
+### Spring Cloud Stream
+
+The test binder used in chapter 10 is now provided via a dedicated dependency `org.springframework.cloud:spring-cloud-stream-test-binder`
+and it comes with its autoconfiguration. Therefore, it's not necessary anymore to explicitly add the `@Import(TestChannelBinderConfiguration.class)`
+annotation on a test class.
+
+### Spring Security
+
+#### CSRF
+
+The latest version of Spring Security provides a more robust protection against CSRF attacks. In order to make the new functionality work,
+we need to update the configuration in Edge Service explained in chapter 11 to combine the higher protection with support for SPAs
+using a cookie-based strategy to read CSRF tokens.
+
+```java
+@Configuration
+public class SecurityConfig {
+
+    @Bean
+	SecurityWebFilterChain securityFilterChain(...) {
+		return http
+				...
+				.csrf(csrf -> csrf
+						.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
+						.csrfTokenRequestHandler(new XorServerCsrfTokenRequestAttributeHandler()::handle)) <1>
+				.build();
+	}
+}
+```
+
+<1> This is the new line to add.
+
+#### Servlet
+
+In chapter 12, we use `mvcMatcher()` to tell Spring Security which endpoints of Catalog Service should be protected.
+We need to replace the `mvcMatcher()` expressions with `requestMatcher()` because the former has been removed.
+
+```java
+@Configuration
+public class SecurityConfig {
+
+    @Bean
+	SecurityFilterChain securityFilterChain(...) throws Exception {
+		return http
+				.authorizeHttpRequests(authorize -> authorize
+ 						.requestMatchers("/actuator/**").permitAll() <2>
+ 						.requestMatchers(HttpMethod.GET, "/", "/books/**").permitAll() <2>
+                ...
+				.build();
+	}
+}
+```
+
+<2> These are the lines with changes.
+
+### GraalVM Support
+
+Chapter 16 covers Spring Native. Starting from Spring Boot 3 and Spring Framework 6, support for GraalVM native images is part of the core
+framework. From the Spring Initializr, you would choose "GraalVM Native Support" instead of "Spring Native (Experimental)".
+In practice, the only necessary code change is in the Gradle configuration. Instead of having the `org.springframework.experimental.aot` plugin,
+you would have the `org.graalvm.buildtools.native` plugin. This is provided for you when you use Spring Initializr. Everything else stays the same
+as it's explained in the book, including all the commands to build the application as a native executable.
 
 ## Prerequisites
 
-Chapter after chapter, you'll build, containerize, and deploy cloud native applications. Along the journey, you will need the following software installed.
+Chapter after chapter, you'll build, containerize, and deploy cloud native applications. Along the journey, you will need the following
+software installed.
 
 * Java 17
     * OpenJDK: [Eclipse Temurin](https://adoptium.net)
