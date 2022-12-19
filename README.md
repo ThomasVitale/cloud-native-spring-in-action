@@ -6,22 +6,10 @@ This repository contains the source code accompanying the book [Cloud Native Spr
 
 There is a folder for each chapter, for which both an _initial_ and _final_ versions are available. For example, for chapter 4, you can use `Chapter04/04-begin` as a starting point to follow along with the examples in the chapter and `Chapter04/04-end` to check the code as it looks like at the end.
 
-## Updates
+## Changes with Spring Boot 2.7.6
 
-This branch contains the source code accompanying the book "Cloud Native Spring in Action" with the following main updates:
-
-* Spring Boot 2.7.3 => 2.7.6
-* Spring Cloud 2021.0.3 => 2021.0.5
-
-And the following dependency updates:
-
-* Grafana 9.1.2 => 9.3.2
-* Loki 2.6.1 => 2.7.1
-* OpenTelemetry 1.17.0 => 1.19.2
-* PostgreSQL 14.4 => 15.1
-* Prometheus 2.38.0 => 2.40.7
-* RabbitMQ 3.10 => 3.11
-* Testcontainers 1.17.3 => 1.17.6
+This branch contains the source code accompanying the book "Cloud Native Spring in Action" upgraded to Spring Boot 3.0.0.
+Besides the new dependency version, there are no changes necessary to the code.
 
 ## Prerequisites
 
