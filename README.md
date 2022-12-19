@@ -1,10 +1,14 @@
 # 🍃 Cloud Native Spring in Action
 
-<a href="https://www.manning.com/books/cloud-native-spring-in-action"><img src="/book-cover.png" alt="The book cover of 'Cloud Native Spring in Action' by Thomas Vitale" align="left" height="200px" /></a>
+<a href="https://www.manning.com/books/cloud-native-spring-in-action"><img src="/book-cover.jpg" alt="The book cover of 'Cloud Native Spring in Action' by Thomas Vitale" align="left" height="200px" /></a>
 
 This repository contains the source code accompanying the book [Cloud Native Spring in Action - With Spring Boot and Kubernetes](https://www.manning.com/books/cloud-native-spring-in-action) written by [Thomas Vitale](https://www.thomasvitale.com/) and published by Manning Publications.
 
 There is a folder for each chapter, for which both an _initial_ and _final_ versions are available. For example, for chapter 4, you can use `Chapter04/04-begin` as a starting point to follow along with the examples in the chapter and `Chapter04/04-end` to check the code as it looks like at the end.
+
+The book uses Spring Boot 2.7.3. You can find the same examples upgraded to the latest [2.7.x](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-2-main) and [3.0.x](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main)
+versions of Spring Boot in dedicated branches. Feel free to use Spring Boot 3 while reading the book. Only a few minor changes are necessary
+to the code samples and they are documented [here](https://github.com/ThomasVitale/cloud-native-spring-in-action/blob/sb-3-main/README.md).
 
 ## Prerequisites
 

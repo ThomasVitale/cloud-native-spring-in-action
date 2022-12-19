@@ -30,5 +30,5 @@ curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifac
 For using Maven instead of Gradle:
 
 ```bash
-curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=config-service -d name=config-service -d packageName=com.polarbookshop.configservice -d dependencies=cloud-config-server -d javaVersion=17 -d bootVersion=2.7.3 -o config-service.zip
+curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=config-service -d name=config-service -d packageName=com.polarbookshop.configservice -d dependencies=cloud-config-server -d javaVersion=17 -d bootVersion=2.7.3 -d type=maven-project -o config-service.zip
 ```

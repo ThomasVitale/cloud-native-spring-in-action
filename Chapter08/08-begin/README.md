@@ -30,5 +30,5 @@ curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifac
 For using Maven instead of Gradle:
 
 ```bash
-curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=order-service -d name=order-service -d packageName=com.polarbookshop.orderservice -d dependencies=webflux,data-r2dbc,validation,postgresql,testcontainers -d javaVersion=17 -d bootVersion=2.7.3 -o order-service.zip
+curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=order-service -d name=order-service -d packageName=com.polarbookshop.orderservice -d dependencies=webflux,data-r2dbc,validation,postgresql,testcontainers -d javaVersion=17 -d bootVersion=2.7.3 -d type=maven-project -o order-service.zip
 ```

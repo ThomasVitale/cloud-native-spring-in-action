@@ -30,5 +30,5 @@ curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifac
 For using Maven instead of Gradle:
 
 ```bash
-curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=dispatcher-service -d name=dispatcher-service -d packageName=com.polarbookshop.dispatcherservice -d dependencies=cloud-function -d javaVersion=17 -d bootVersion=2.7.3 -o dispatcher-service.zip
+curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=dispatcher-service -d name=dispatcher-service -d packageName=com.polarbookshop.dispatcherservice -d dependencies=cloud-function -d javaVersion=17 -d bootVersion=2.7.3 -d type=maven-project -o dispatcher-service.zip
 ```

@@ -30,5 +30,5 @@ curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifac
 For using Maven instead of Gradle:
 
 ```bash
-curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=edge-service -d name=edge-service -d packageName=com.polarbookshop.edgeservice -d dependencies=cloud-gateway -d javaVersion=17 -d bootVersion=2.7.3 -o edge-service.zip
+curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=edge-service -d name=edge-service -d packageName=com.polarbookshop.edgeservice -d dependencies=cloud-gateway -d javaVersion=17 -d bootVersion=2.7.3 -d type=maven-project -o edge-service.zip
 ```

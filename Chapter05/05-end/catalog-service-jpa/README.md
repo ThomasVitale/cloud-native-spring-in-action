@@ -39,12 +39,13 @@ java -jar build/libs/catalog-service-jpa-0.0.1-SNAPSHOT.jar
 Run PostgreSQL as a Docker container
 
 ```bash
-docker run --name polar-postgres-catalog \
+docker run -d \
+    --name polar-postgres \
     -e POSTGRES_USER=user \
     -e POSTGRES_PASSWORD=password \
     -e POSTGRES_DB=polardb_catalog \
     -p 5432:5432 \
-    -d postgres:14.1
+    postgres:14.4
 ```
 
 ### Container Commands
