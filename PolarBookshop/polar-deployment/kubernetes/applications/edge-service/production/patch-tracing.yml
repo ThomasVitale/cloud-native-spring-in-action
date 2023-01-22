@@ -9,7 +9,7 @@ spec:
         - name: edge-service
           env:
             - name: JAVA_TOOL_OPTIONS
-              value: "-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.19.2.jar"
+              value: "-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.22.1.jar"
             - name: OTEL_SERVICE_NAME
               value: edge-service
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
