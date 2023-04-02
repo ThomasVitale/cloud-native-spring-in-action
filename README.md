@@ -44,14 +44,14 @@ using a cookie-based strategy to read CSRF tokens.
 @Configuration
 public class SecurityConfig {
 
-    @Bean
+	@Bean
 	SecurityWebFilterChain securityFilterChain(...) {
 		return http
-				...
-				.csrf(csrf -> csrf
-						.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
-						.csrfTokenRequestHandler(new XorServerCsrfTokenRequestAttributeHandler()::handle)) <1>
-				.build();
+			...
+			.csrf(csrf -> csrf
+				.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
+				.csrfTokenRequestHandler(new XorServerCsrfTokenRequestAttributeHandler()::handle)) <1>
+			.build();
 	}
 }
 ```
@@ -67,14 +67,14 @@ We need to replace the `mvcMatcher()` expressions with `requestMatcher()` becaus
 @Configuration
 public class SecurityConfig {
 
-    @Bean
+	@Bean
 	SecurityFilterChain securityFilterChain(...) throws Exception {
 		return http
-				.authorizeHttpRequests(authorize -> authorize
- 						.requestMatchers("/actuator/**").permitAll() <2>
- 						.requestMatchers(HttpMethod.GET, "/", "/books/**").permitAll() <2>
-                ...
-				.build();
+			.authorizeHttpRequests(authorize -> authorize
+				.requestMatchers("/actuator/**").permitAll() <2>
+				.requestMatchers(HttpMethod.GET, "/", "/books/**").permitAll() <2>
+				...
+			.build();
 	}
 }
 ```
