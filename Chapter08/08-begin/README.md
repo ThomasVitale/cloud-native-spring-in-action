@@ -9,7 +9,7 @@ Either way, you'll get a zip archive that you can extract and import in your IDE
 From the [Spring Initialzr](https://start.spring.io/) website, choose the following:
 
 * _Project_: Gradle (or Maven)
-* _Spring Boot_: 3.0.2 (or the latest 3.x production version available)
+* _Spring Boot_: 3.0.5 (or the latest 3.x production version available)
 * _Group_: `com.polarbookshop`
 * _Artifact_: `order-service`
 * _Name_: order-service
@@ -24,11 +24,11 @@ Then, click "Generate" to download the `order-service.zip` archive containing th
 If you prefer using the REST API offered by Spring Initializr, run the following command to initialize a project with Gradle as the build tool:
 
 ```bash
-curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=order-service -d name=order-service -d packageName=com.polarbookshop.orderservice -d dependencies=webflux,data-r2dbc,validation,postgresql,testcontainers -d javaVersion=17 -d bootVersion=3.0.2 -d type=gradle-project -o order-service.zip
+curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=order-service -d name=order-service -d packageName=com.polarbookshop.orderservice -d dependencies=webflux,data-r2dbc,validation,postgresql,testcontainers -d javaVersion=17 -d bootVersion=3.0.5 -d type=gradle-project -o order-service.zip
 ```
 
 For using Maven instead of Gradle:
 
 ```bash
-curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=order-service -d name=order-service -d packageName=com.polarbookshop.orderservice -d dependencies=webflux,data-r2dbc,validation,postgresql,testcontainers -d javaVersion=17 -d bootVersion=3.0.2 -o type=maven-project order-service.zip
+curl https://start.spring.io/starter.zip -d groupId=com.polarbookshop -d artifactId=order-service -d name=order-service -d packageName=com.polarbookshop.orderservice -d dependencies=webflux,data-r2dbc,validation,postgresql,testcontainers -d javaVersion=17 -d bootVersion=3.0.5 -o type=maven-project order-service.zip
 ```

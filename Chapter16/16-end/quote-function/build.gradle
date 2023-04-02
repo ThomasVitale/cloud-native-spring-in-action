@@ -1,8 +1,8 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.0.2'
+	id 'org.springframework.boot' version '3.0.5'
 	id 'io.spring.dependency-management' version '1.1.0'
-	id 'org.graalvm.buildtools.native' version '0.9.18'
+	id 'org.graalvm.buildtools.native' version '0.9.20'
 }
 
 group = 'com.polarbookshop'
@@ -16,7 +16,7 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "2022.0.0")
+	set('springCloudVersion', "2022.0.2")
 }
 
 dependencies {
