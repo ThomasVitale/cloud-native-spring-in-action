@@ -43,7 +43,7 @@ Gradle | Maven
 
 ## Useful Tools
 
-When working with Kubernetes manifests, you can install a dedicate plugin in your IDE to help you validating the syntax
+When working with Kubernetes manifests, you can install a dedicated plugin in your IDE to help you validate the syntax
 and identifying mistakes.
 
 * [Kubernetes Plugin for IntelliJ IDEA](https://plugins.jetbrains.com/plugin/10485-kubernetes)
@@ -51,6 +51,7 @@ and identifying mistakes.
 
 ## Additional Guides
 
+* [Working with Windows](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Guides/working-with-windows.md)
 * [Observability setup on Kubernetes](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Guides/grafana-observability-stack)
 * [Setting up a Kubernetes cluster for Polar Bookshop on Azure](#)
 * [Setting up a Kubernetes cluster for Polar Bookshop on DigitalOcean](#)
