@@ -6,7 +6,7 @@ This repository contains the source code accompanying the book [Cloud Native Spr
 
 There is a folder for each chapter, for which both an _initial_ and _final_ versions are available. For example, for chapter 4, you can use `Chapter04/04-begin` as a starting point to follow along with the examples in the chapter and `Chapter04/04-end` to check the code as it looks like at the end.
 
-## Changes with Spring Boot 2.7.9
+## Changes with Spring Boot 2.7.10
 
 This branch contains the source code accompanying the book "Cloud Native Spring in Action" upgraded to the latest Spring Boot 2.7.x. Besides the new dependency version, there are no changes necessary to the code.
 
