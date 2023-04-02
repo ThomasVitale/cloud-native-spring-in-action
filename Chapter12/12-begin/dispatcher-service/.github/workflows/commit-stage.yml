@@ -22,6 +22,10 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: gradle
+      - name: Build, unit tests and integration tests
+        run: |
+          chmod +x gradlew
+          ./gradlew build
       - name: Code vulnerability scanning
         uses: anchore/scan-action@v3
         id: scan
@@ -34,10 +38,6 @@ jobs:
         if: success() || failure()
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}
-      - name: Build, unit tests and integration tests
-        run: |
-          chmod +x gradlew
-          ./gradlew build
       - name: Validate Kubernetes manifests
         uses: stefanprodan/kube-tools@v1
         with:
