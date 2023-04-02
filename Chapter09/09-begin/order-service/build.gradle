@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.7.6'
+	id 'org.springframework.boot' version '2.7.10'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 	id 'java'
 }
@@ -21,7 +21,7 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "2021.0.5")
+	set('springCloudVersion', "2021.0.6")
 	set('testcontainersVersion', "1.17.6")
 }
 
