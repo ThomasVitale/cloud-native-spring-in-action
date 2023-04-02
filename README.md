@@ -6,8 +6,8 @@ This repository contains the source code accompanying the book [Cloud Native Spr
 
 There is a folder for each chapter, for which both an _initial_ and _final_ versions are available. For example, for chapter 4, you can use `Chapter04/04-begin` as a starting point to follow along with the examples in the chapter and `Chapter04/04-end` to check the code as it looks like at the end.
 
-The book uses Spring Boot 2.7.3. You can find the same examples upgraded to the latest [2.7.x](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-2-main) and [3.0.x](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main)
-versions of Spring Boot in dedicated branches. Feel free to use Spring Boot 3 while reading the book. Only a few minor changes are necessary
+The book uses Spring Boot 2.7.3. You can find the same examples upgraded to the latest [2.7.x](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-2-main) and [3.x](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main)
+versions of Spring Boot in dedicated branches. Feel free to use **Spring Boot 3** while reading the book. Only a few minor changes are necessary
 to the code samples and they are documented [here](https://github.com/ThomasVitale/cloud-native-spring-in-action/blob/sb-3-main/README.md).
 
 ## Prerequisites
@@ -88,4 +88,4 @@ Feel free to submit questions, feedback, or errata to the forum dedicated to "Cl
 
 ## Contact the Author
 
-You are very welcome to contact me for questions, feedback, or suggestions. Feel free to reach out to me on [Twitter](https://twitter.com/vitalethomas), [LinkedIn](https://www.linkedin.com/in/vitalethomas), or here on [GitHub](https://github.com/ThomasVitale/).
+You are very welcome to contact me for questions, feedback, or suggestions. Feel free to reach out to me on [Twitter](https://twitter.com/vitalethomas), [LinkedIn](https://www.linkedin.com/in/vitalethomas), [Mastodon](https://mastodon.online/@thomasvitale), or here on [GitHub](https://github.com/ThomasVitale/).
