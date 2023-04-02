@@ -16,7 +16,7 @@ You can find the same examples upgraded to the latest [3.x](https://github.com/T
 
 Chapter after chapter, you'll build, containerize, and deploy cloud native applications. Along the journey, you will need the following software installed.
 
-* Java 17
+* Java 17+
     * OpenJDK: [Eclipse Temurin](https://adoptium.net)
     * GraalVM: [GraalVM](https://www.graalvm.org)
     * JDK Management: [SDKMAN](https://sdkman.io)
@@ -26,7 +26,7 @@ Chapter after chapter, you'll build, containerize, and deploy cloud native appli
     * [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop)
 * Kubernetes 1.24+
     * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-    * [kind](https://kind.sigs.k8s.io)
+    * [minikube](https://minikube.sigs.k8s.io/docs/)
 * Other
     * [HTTPie](https://httpie.org/)
 
@@ -57,6 +57,7 @@ and identifying mistakes.
 * [Replacing Kubeval with Kubeconform](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-2-main/Guides/replacing-kubeval-with-kubeconform.md)
 * [Setting up a Kubernetes cluster for Polar Bookshop on Azure](#)
 * [Setting up a Kubernetes cluster for Polar Bookshop on DigitalOcean](#)
+* [Working with macOS on Apple Silicon](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-2-main/Guides/working-with-macos-on-apple-silicon.md)
 * [Working with Windows](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-2-main/Guides/working-with-windows.md)
 
 ## Source Code by Chapter
