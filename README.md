@@ -121,16 +121,10 @@ Gradle | Maven
 `./gradlew bootRun` | `./mvnw spring-boot:run`
 `./gradlew bootBuildImage` | `./mvnw spring-boot:build-image`
 
-## Useful Tools
+## Guides, Tools and Tips
 
-When working with Kubernetes manifests, you can install a dedicated plugin in your IDE to help you validate the syntax
-and identifying mistakes.
-
-* [Kubernetes Plugin for IntelliJ IDEA](https://plugins.jetbrains.com/plugin/10485-kubernetes)
-* [Kubernetes Extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-kubernetes-tools)
-
-## Additional Guides
-
+* [Configuring IntelliJ IDEA](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Guides/configuring-intellij-idea.md)
+* [Configuring Visual Studio Code](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Guides/configuring-visual-studio-code.md)
 * [Observability setup on Kubernetes](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Guides/grafana-observability-stack)
 * [Replacing Kubeval with Kubeconform](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Guides/replacing-kubeval-with-kubeconform.md)
 * [Setting up a Kubernetes cluster for Polar Bookshop on Azure](#)
