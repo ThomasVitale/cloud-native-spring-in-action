@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.0.7'
+	id 'org.springframework.boot' version '3.1.0'
 	id 'io.spring.dependency-management' version '1.1.0'
 }
 
@@ -22,7 +22,6 @@ repositories {
 
 ext {
 	set('springCloudVersion', "2022.0.3")
-	set('testcontainersVersion', "1.18.3")
 	set('testKeycloakVersion', "2.3.0")
 }
 
@@ -41,11 +40,12 @@ dependencies {
 	runtimeOnly 'org.springframework:spring-jdbc'
 
 	// Only on Apple Silicon. Why it's necessary: https://github.com/netty/netty/issues/11020
-	// runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.85.Final:osx-aarch_64'
+	// runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.92.Final:osx-aarch_64'
 
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'io.projectreactor:reactor-test'
 	testImplementation 'com.squareup.okhttp3:mockwebserver'
@@ -58,7 +58,6 @@ dependencies {
 
 dependencyManagement {
 	imports {
-		mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 	}
 }
