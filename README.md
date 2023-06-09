@@ -102,7 +102,7 @@ software installed.
     * [Docker for Linux](https://docs.docker.com/engine/install/ubuntu/)
     * [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop)
     * [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop)
-* Kubernetes 1.24+
+* Kubernetes 1.25+
     * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
     * [minikube](https://minikube.sigs.k8s.io/docs/)
 * Other
