@@ -12,7 +12,7 @@ sourceCompatibility = '17'
 description = 'Provides quotes from the books in the library.'
 
 repositories {
-	maven { url 'https://repo.spring.io/release' }
+	maven { url 'https://repo.spring.io/milestone' }
 	mavenCentral()
 }
 
