@@ -49,9 +49,8 @@ jobs:
       - name: Set up GraalVM
         uses: graalvm/setup-graalvm@v1
         with:
-          version: '22.1.0'
-          java-version: '17'
-          components: 'native-image'
+          java-version: '17.0.8'
+          distribution: 'graalvm'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build, unit tests and integration tests (native)
         run: |
