@@ -12,6 +12,7 @@ In each Spring Boot project, you can configure Buildpacks in your `build.gradle`
 
 ```groovy
 bootBuildImage {
+	builder = "docker.io/paketobuildpacks/builder-jammy-tiny"
     if (System.getProperty( "os.arch" ).toLowerCase().startsWith('aarch')) {
 	    builder = "ghcr.io/thomasvitale/java-builder-arm64"
     }

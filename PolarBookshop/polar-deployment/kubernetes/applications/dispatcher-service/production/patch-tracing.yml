@@ -9,7 +9,7 @@ spec:
         - name: dispatcher-service
           env:
             - name: JAVA_TOOL_OPTIONS
-              value: "-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.19.2.jar"
+              value: "-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.28.0.jar"
             - name: OTEL_SERVICE_NAME
               value: dispatcher-service
             - name: OTEL_EXPORTER_OTLP_ENDPOINT

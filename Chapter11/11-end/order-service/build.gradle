@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.7.12'
+	id 'org.springframework.boot' version '2.7.14'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 	id 'java'
 }
@@ -21,7 +21,7 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "2021.0.7")
+	set('springCloudVersion', "2021.0.8")
 	set('testcontainersVersion', "1.18.3")
 }
 
@@ -39,7 +39,7 @@ dependencies {
 	runtimeOnly 'org.springframework:spring-jdbc'
 
 	// Only on Apple Silicon. Why it's necessary: https://github.com/netty/netty/issues/11020
-	// runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.85.Final:osx-aarch_64'
+	// runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.94.Final:osx-aarch_64'
 
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
@@ -67,6 +67,7 @@ dependencyManagement {
 }
 
 bootBuildImage {
+	builder = "docker.io/paketobuildpacks/builder-jammy-tiny"
 	imageName = "${project.name}"
 	environment = ["BP_JVM_VERSION": "17.*"]
 

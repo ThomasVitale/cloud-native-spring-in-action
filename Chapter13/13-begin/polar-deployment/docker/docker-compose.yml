@@ -104,7 +104,7 @@ services:
   # Backing Services
 
   polar-postgres:
-    image: "postgres:15.1"
+    image: "postgres:15.4"
     container_name: "polar-postgres"
     ports:
       - 5432:5432
@@ -121,7 +121,7 @@ services:
       - 6379:6379
 
   polar-rabbitmq:
-    image: rabbitmq:3.11-management
+    image: rabbitmq:3.12-management
     container_name: polar-rabbitmq
     ports:
       - 5672:5672

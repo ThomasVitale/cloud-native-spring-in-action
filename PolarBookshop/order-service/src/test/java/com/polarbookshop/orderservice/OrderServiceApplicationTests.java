@@ -1,27 +1,14 @@
 package com.polarbookshop.orderservice;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.polarbookshop.orderservice.book.Book;
-import com.polarbookshop.orderservice.book.BookClient;
-import com.polarbookshop.orderservice.order.domain.Order;
-import com.polarbookshop.orderservice.order.domain.OrderStatus;
-import com.polarbookshop.orderservice.order.event.OrderAcceptedMessage;
-import com.polarbookshop.orderservice.order.web.OrderRequest;
-import dasniko.testcontainers.keycloak.KeycloakContainer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
-import reactor.core.publisher.Mono;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -35,9 +22,23 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.polarbookshop.orderservice.book.Book;
+import com.polarbookshop.orderservice.book.BookClient;
+import com.polarbookshop.orderservice.order.domain.Order;
+import com.polarbookshop.orderservice.order.domain.OrderStatus;
+import com.polarbookshop.orderservice.order.event.OrderAcceptedMessage;
+import com.polarbookshop.orderservice.order.web.OrderRequest;
+
+import dasniko.testcontainers.keycloak.KeycloakContainer;
+import reactor.core.publisher.Mono;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(TestChannelBinderConfiguration.class)
@@ -54,7 +55,7 @@ class OrderServiceApplicationTests {
 			.withRealmImportFile("test-realm-config.json");
 
 	@Container
-	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:14.4"));
+	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:15.4"));
 
 	@Autowired
 	private ObjectMapper objectMapper;
