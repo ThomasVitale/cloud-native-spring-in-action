@@ -70,9 +70,9 @@ jobs:
         ]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
@@ -82,3 +82,31 @@ jobs:
           cd ${{ matrix.project }}
           chmod +x gradlew
           ./gradlew build
+  
+  native-build:
+    name: Native Build and Test ${{ matrix.project }}
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [
+          Chapter16/16-end/quote-service,
+          Chapter16/16-end/quote-function,
+        ]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '17'
+          distribution: 'graalvm'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build, unit tests and integration tests
+        run: |
+          cd ${{ matrix.project }}
+          chmod +x gradlew
+          ./gradlew nativeBuild
