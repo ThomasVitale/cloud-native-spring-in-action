@@ -36,8 +36,8 @@ with the following step (also in Edge Service):
 - name: Validate Kubernetes manifests
   uses: stefanprodan/kube-tools@v1
   with:
-    kubectl: 1.26.3
-    kubeconform: 0.6.1
+    kubectl: 1.28.3
+    kubeconform: 0.6.4
     command: |
       kubeconform --strict k8s
 ```
@@ -48,8 +48,8 @@ When using Kustomize (starting from chapter 14), this is the new configuration t
 - name: Validate Kubernetes manifests
   uses: stefanprodan/kube-tools@v1
   with:
-    kubectl: 1.26.3
-    kubeconform: 0.6.1
+    kubectl: 1.28.3
+    kubeconform: 0.6.4
     command: |
       kustomize build k8s | kubeconform --strict -
 ```

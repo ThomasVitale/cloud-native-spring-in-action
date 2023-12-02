@@ -45,7 +45,7 @@ docker run -d \
     -e POSTGRES_PASSWORD=password \
     -e POSTGRES_DB=polardb_catalog \
     -p 5432:5432 \
-    postgres:14.4
+    postgres:14.10
 ```
 
 ### Container Commands

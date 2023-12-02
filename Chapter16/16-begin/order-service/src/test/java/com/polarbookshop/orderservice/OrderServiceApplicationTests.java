@@ -50,11 +50,11 @@ class OrderServiceApplicationTests {
 	private static KeycloakToken isabelleTokens;
 
 	@Container
-	private static final KeycloakContainer keycloakContainer = new KeycloakContainer("quay.io/keycloak/keycloak:19.0")
+	private static final KeycloakContainer keycloakContainer = new KeycloakContainer("quay.io/keycloak/keycloak:23.0")
 			.withRealmImportFile("test-realm-config.json");
 
 	@Container
-	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:14.4"));
+	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:14.10"));
 
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -76,7 +76,7 @@ class OrderServiceApplicationTests {
 		registry.add("spring.flyway.url", postgresql::getJdbcUrl);
 
 		registry.add("spring.security.oauth2.resourceserver.jwt.issuer-uri",
-				() -> keycloakContainer.getAuthServerUrl() + "realms/PolarBookshop");
+				() -> keycloakContainer.getAuthServerUrl() + "/realms/PolarBookshop");
 	}
 
 	private static String r2dbcUrl() {
@@ -87,7 +87,7 @@ class OrderServiceApplicationTests {
 	@BeforeAll
 	static void generateAccessTokens() {
 		WebClient webClient = WebClient.builder()
-				.baseUrl(keycloakContainer.getAuthServerUrl() + "realms/PolarBookshop/protocol/openid-connect/token")
+				.baseUrl(keycloakContainer.getAuthServerUrl() + "/realms/PolarBookshop/protocol/openid-connect/token")
 				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 				.build();
 

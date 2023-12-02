@@ -16,7 +16,7 @@ jobs:
       APP_VERSION: ${{ github.event.client_payload.app_version }}
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Update image version
         run: |
           cd kubernetes/applications/${{ env.APP_NAME }}/production
