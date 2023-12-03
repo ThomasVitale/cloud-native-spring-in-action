@@ -2,10 +2,10 @@ fullnameOverride: polar-keycloak
 commonAnnotations:
   app: polar-keycloak
 image:
-  tag: 19.0.3
+  tag: 22.0.5-debian-11-r2
 extraEnvVars:
-  - name: JAVA_OPTS_APPEND
-    value: "-Dkeycloak.import=/opt/keycloak/data/import/realm-config.json"
+  - name: KEYCLOAK_EXTRA_ARGS
+    value: "--import-realm"
   - name: KC_HTTP_ENABLED
     value: "true"
   - name: KC_HOSTNAME_STRICT_HTTPS
@@ -14,14 +14,13 @@ extraEnvVars:
     value: "false"
 extraVolumeMounts:
   - name: config-volume
-    mountPath: "/opt/keycloak/data/import"
+    mountPath: "/opt/bitnami/keycloak/data/import"
     readOnly: true
 extraVolumes:
   - name: config-volume
     configMap:
       name: keycloak-config
-readinessProbe:
-  enabled: true
+customReadinessProbe:
   httpGet:
     path: /realms/master
     port: 8080
@@ -29,6 +28,15 @@ readinessProbe:
   periodSeconds: 10
   timeoutSeconds: 1
   failureThreshold: 3
+  successThreshold: 1
+customStartupProbe:
+  httpGet:
+    path: /realms/master
+    port: 8080
+  initialDelaySeconds: 30
+  periodSeconds: 5
+  timeoutSeconds: 1
+  failureThreshold: 60
   successThreshold: 1
 resources:
   requests:
