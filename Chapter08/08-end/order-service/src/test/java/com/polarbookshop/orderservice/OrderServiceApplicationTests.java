@@ -27,7 +27,7 @@ import static org.mockito.BDDMockito.given;
 class OrderServiceApplicationTests {
 
 	@Container
-	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:14.4"));
+	static PostgreSQLContainer<?> postgresql = new PostgreSQLContainer<>(DockerImageName.parse("postgres:14.10"));
 
 	@Autowired
 	private WebTestClient webTestClient;

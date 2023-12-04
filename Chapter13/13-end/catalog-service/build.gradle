@@ -1,6 +1,6 @@
 plugins {
-	id 'org.springframework.boot' version '2.7.3'
-	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+	id 'org.springframework.boot' version '2.7.18'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 	id 'java'
 }
 
@@ -21,10 +21,10 @@ repositories {
 }
 
 ext {
-	set('otelVersion', "1.17.0")
-	set('springCloudVersion', "2021.0.3")
-	set('testcontainersVersion', "1.17.3")
-	set('testKeycloakVersion', "2.3.0")
+	set('otelVersion', "1.32.0")
+	set('springCloudVersion', "2021.0.8")
+	set('testcontainersVersion', "1.19.3")
+	set('testKeycloakVersion', "3.2.0")
 }
 
 dependencies {
@@ -66,8 +66,9 @@ bootRun {
 }
 
 bootBuildImage {
+	builder = "docker.io/paketobuildpacks/builder-jammy-base"
 	imageName = "${project.name}"
-	environment = ["BP_JVM_VERSION": "17.*"]
+	environment = ["BP_JVM_VERSION": "17"]
 
 	docker {
 		publishRegistry {

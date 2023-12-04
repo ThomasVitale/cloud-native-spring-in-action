@@ -1,6 +1,6 @@
 plugins {
-	id 'org.springframework.boot' version '2.7.3'
-	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+	id 'org.springframework.boot' version '2.7.18'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 	id 'java'
 }
 
@@ -21,8 +21,8 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "2021.0.3")
-	set('testcontainersVersion', "1.17.3")
+	set('springCloudVersion', "2021.0.8")
+	set('testcontainersVersion', "1.19.3")
 }
 
 dependencies {
@@ -38,7 +38,7 @@ dependencies {
 	runtimeOnly 'org.springframework:spring-jdbc'
 
 	// Only on Apple Silicon. Why it's necessary: https://github.com/netty/netty/issues/11020
-	// runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.79.Final:osx-aarch_64'
+	// runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.101.Final:osx-aarch_64'
 
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
@@ -58,8 +58,9 @@ dependencyManagement {
 }
 
 bootBuildImage {
+	builder = "docker.io/paketobuildpacks/builder-jammy-base"
 	imageName = "${project.name}"
-	environment = ["BP_JVM_VERSION": "17.*"]
+	environment = ["BP_JVM_VERSION": "17"]
 
 	docker {
 		publishRegistry {

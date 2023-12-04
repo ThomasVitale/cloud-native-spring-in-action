@@ -30,6 +30,10 @@ kubectl wait \
   --selector=app=polar-keycloak \
   --timeout=300s
 
+echo "\n⌛ Ensuring Keycloak Ingress is created..."
+
+kubectl apply -f services/keycloak.yml
+
 echo "\n📦 Deploying PostgreSQL..."
 
 kubectl apply -f services/postgresql.yml

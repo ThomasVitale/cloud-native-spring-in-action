@@ -16,14 +16,14 @@ jobs:
       APP_VERSION: ${{ github.event.client_payload.app_version }}
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Update image version
         run: |
           cd kubernetes/applications/${{ env.APP_NAME }}/production
           kustomize edit set image ${{ env.APP_NAME }}=${{ env.APP_IMAGE }}:${{ env.APP_VERSION }}
           sed -i 's/ref=[\w+]/${{ env.APP_VERSION }}/' kustomization.yml
       - name: Commit updated manifests
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Update ${{ env.APP_NAME }} to version ${{ env.APP_VERSION }}"
           branch: main

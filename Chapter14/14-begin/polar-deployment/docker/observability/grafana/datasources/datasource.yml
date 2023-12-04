@@ -38,6 +38,8 @@ datasources:
         filterByTraceID: true
         filterBySpanID: false
         lokiSearch: true
+      lokiSearch:
+        datasourceUid: 'loki-thomas-vitale'
       serviceMap:
         datasourceUid: 'prometheus-thomas-vitale'
       search:
@@ -57,6 +59,6 @@ datasources:
     jsonData:
       derivedFields:
         - datasourceUid: tempo-thomas-vitale
-          matcherRegex: \d+\-\d+\-\d+ \d+\:\d+\:\d+\.\d+\s+\w+\s+\[[\w-]+\,(\w+)\,\w+\]
+          matcherRegex: \[.+,(.+?),
           name: TraceID
           url: $${__value.raw}

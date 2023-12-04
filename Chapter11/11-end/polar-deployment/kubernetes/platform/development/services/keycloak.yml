@@ -15,9 +15,10 @@ spec:
     spec:
       containers:
         - name: polar-keycloak
-          image: quay.io/keycloak/keycloak:19.0
+          image: quay.io/keycloak/keycloak:23.0
           args:
             - "start-dev"
+            - "--import-realm"
           ports:
             - containerPort: 8080
           env:
@@ -25,8 +26,12 @@ spec:
               value: user
             - name: KEYCLOAK_ADMIN_PASSWORD
               value: password
-            - name: JAVA_OPTS_APPEND
-              value: "-Dkeycloak.import=/opt/keycloak/data/import/realm-config.json"
+          startupProbe:
+            httpGet:
+              path: /realms/master
+              port: 8080
+            failureThreshold: 40
+            periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /realms/master
