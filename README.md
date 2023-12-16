@@ -43,6 +43,7 @@ Gradle | Maven
 
 * [Configuring IntelliJ IDEA](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Guides/configuring-intellij-idea.md)
 * [Configuring Visual Studio Code](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Guides/configuring-visual-studio-code.md)
+* [Minikube configuration behind a proxy](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Guides/minikube-configuration-behind-a-proxy.md)
 * [Observability setup on Kubernetes](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Guides/grafana-observability-stack)
 * [Replacing Kubeval with Kubeconform](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Guides/replacing-kubeval-with-kubeconform.md)
 * [Setting up a Kubernetes cluster for Polar Bookshop on Azure](#)
