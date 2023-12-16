@@ -15,7 +15,7 @@ by [Thomas Vitale](https://www.thomasvitale.com).
 | `/books/{isbn}` | `GET`    |            | 200    | Book           | Get the book with the given ISBN. |
 |                 |          |            | 404    |                | No book with the given ISBN exists. |
 | `/books/{isbn}` | `PUT`    | Book       | 200    | Book           | Update the book with the given ISBN. |
-|                 |          |            | 201    | Book           | Create a book with the given ISBN. |
+|                 |          |            | 200    | Book           | Create a book with the given ISBN. |
 | `/books/{isbn}` | `DELETE` |            | 204    |                | Delete the book with the given ISBN. |
 
 ## Useful Commands
