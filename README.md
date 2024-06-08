@@ -37,7 +37,7 @@ Gradle | Maven
 `./gradlew test` | `./mvnw test`
 `./gradlew bootJar` | `./mvnw spring-boot:repackage`
 `./gradlew bootRun` | `./mvnw spring-boot:run`
-`./gradlew bootBuildImage` | `./mvnw spring-boot:build-image`
+`./gradlew bootBuildImage` | `./mvnw spring-boot:build-image -DskipTests`
 
 ## Guides, Tools and Tips
 
