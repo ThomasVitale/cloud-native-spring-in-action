@@ -168,7 +168,7 @@ services:
       - 6379:6379
 
   polar-rabbitmq:
-    image: rabbitmq:3.12-management
+    image: rabbitmq:3.13-management
     container_name: polar-rabbitmq
     ports:
       - 5672:5672
@@ -191,7 +191,7 @@ services:
   # Observability
 
   grafana:
-    image: grafana/grafana-oss:10.2.2
+    image: grafana/grafana-oss:10.4.3
     container_name: grafana
     depends_on:
       - loki
@@ -208,7 +208,7 @@ services:
       - ./observability/grafana/grafana.ini:/etc/grafana/grafana.ini
 
   loki:
-    image: grafana/loki:2.9.2
+    image: grafana/loki:2.9.8
     container_name: loki
     depends_on:
       - fluent-bit
@@ -216,7 +216,7 @@ services:
       - "3100:3100"
 
   fluent-bit:
-    image: grafana/fluent-bit-plugin-loki:2.9.1
+    image: grafana/fluent-bit-plugin-loki:2.9.8
     container_name: fluent-bit
     ports:
       - "24224:24224"
@@ -226,7 +226,7 @@ services:
       - ./observability/fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
 
   prometheus:
-    image: quay.io/prometheus/prometheus:v2.48.0
+    image: quay.io/prometheus/prometheus:v2.52.0
     container_name: prometheus
     ports:
       - "9090:9090"
@@ -234,7 +234,7 @@ services:
       - ./observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
 
   tempo:
-    image: grafana/tempo:2.3.1
+    image: grafana/tempo:2.5.0
     container_name: tempo
     command: -config.file=/etc/tempo-config.yml
     ports:

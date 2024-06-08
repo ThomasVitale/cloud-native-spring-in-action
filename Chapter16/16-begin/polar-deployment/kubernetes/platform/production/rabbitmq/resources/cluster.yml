@@ -11,11 +11,12 @@ spec:
       memory: 275Mi
     limits:
       cpu: 250m
-      memory: 275Mi
+      memory: 350Mi
   persistence:
     storage: 1Gi
   rabbitmq:
     additionalConfig: |
+      disk_free_limit.absolute = 500MB
       vm_memory_high_watermark_paging_ratio = 0.99
       vm_memory_high_watermark.relative = 0.90
   terminationGracePeriodSeconds: 60

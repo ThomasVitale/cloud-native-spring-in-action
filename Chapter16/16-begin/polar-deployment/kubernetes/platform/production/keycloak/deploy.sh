@@ -17,7 +17,7 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 helm upgrade --install polar-keycloak bitnami/keycloak \
   --values values.yml \
-  --namespace keycloak-system --version 17.3.0
+  --namespace keycloak-system --version 21.4.1
 
 echo "\n⌛ Waiting for Keycloak to be deployed..."
 

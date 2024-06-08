@@ -117,7 +117,7 @@ services:
       - 6379:6379
 
   polar-rabbitmq:
-    image: rabbitmq:3.12-management
+    image: rabbitmq:3.13-management
     container_name: polar-rabbitmq
     ports:
       - 5672:5672

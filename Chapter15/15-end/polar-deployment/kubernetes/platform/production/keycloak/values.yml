@@ -2,7 +2,7 @@ fullnameOverride: polar-keycloak
 commonAnnotations:
   app: polar-keycloak
 image:
-  tag: 22.0.5-debian-11-r2
+  tag: 24.0.5
 extraEnvVars:
   - name: KEYCLOAK_EXTRA_ARGS
     value: "--import-realm"
@@ -20,24 +20,8 @@ extraVolumes:
   - name: config-volume
     configMap:
       name: keycloak-config
-customReadinessProbe:
-  httpGet:
-    path: /realms/master
-    port: 8080
-  initialDelaySeconds: 30
-  periodSeconds: 10
-  timeoutSeconds: 1
-  failureThreshold: 3
-  successThreshold: 1
-customStartupProbe:
-  httpGet:
-    path: /realms/master
-    port: 8080
-  initialDelaySeconds: 30
-  periodSeconds: 5
-  timeoutSeconds: 1
-  failureThreshold: 60
-  successThreshold: 1
+startupProbe:
+  enabled: true
 resources:
   requests:
     cpu: 0.2
