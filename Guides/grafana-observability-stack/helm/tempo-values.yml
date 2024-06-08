@@ -1,7 +1,14 @@
 tempo:
-  tag: 1.5.0
+  repository: "grafana/tempo"
+  tag: 2.5.0
 
-  searchEnabled: true
+  reportingEnabled: false
+
+  metricsGenerator:
+    enabled: true
+    remoteWriteUrl: "http://prometheus/api/v1/write"
+
+  retention: 1h
 
   receivers:
     otlp:
@@ -12,8 +19,6 @@ tempo:
           endpoint: "0.0.0.0:4318"
     zipkin:
       endpoint: "0.0.0.0:9411"
-
-  ingester:
-    trace_idle_period: 10s
-    max_block_bytes: 1_000_000
-    max_block_duration: 5m
+    
+  persistence:
+    enabled: true

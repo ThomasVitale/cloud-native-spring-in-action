@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Deliver application to production
-        uses: peter-evans/repository-dispatch@v2
+        uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.DISPATCH_TOKEN }}
           repository: ${{ env.OWNER }}/${{ env.DEPLOY_REPO }}

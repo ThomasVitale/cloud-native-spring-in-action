@@ -1,29 +1,60 @@
 loki:
   enabled: true
   image:
-    tag: 2.6.1
+    registry: docker.io
+    repository: grafana/loki
+    tag: 2.9.8
   config:
-    ingester:
-      wal:
-        dir: /data/loki/wal
-
-promtail:
-  enabled: false
-  image:
-    tag: 2.6.1
+    analytics:
+      reporting_enabled: false
+  query_scheduler:
+    max_outstanding_requests_per_tenant: 2048
+  storage:
+    type: filesystem
 
 fluent-bit:
+  enabled: false
+
+promtail:
   enabled: true
   image:
-    tag: 2.6.1-amd64
+    registry: docker.io
+    repository: grafana/promtail
+    tag: 2.9.8
 
 grafana:
   enabled: true
   image:
-    tag: 9.1.2
+    registry: docker.io
+    repository: grafana/grafana-oss
+    tag: 10.4.3
   adminUser: user
   service:
     type: ClusterIP
+  grafana.ini:
+    analytics:
+      enabled: false
+      reporting_enabled: false
+      check_for_updates: false
+      check_for_plugin_updates: false
+      feedback_links_enabled: false
+    feature_toggles:
+      enable: correlations dataSourcePageHeader traceToMetrics scenes showDashboardValidationWarnings extraThemes lokiPredefinedOperations lokiFormatQuery exploreScrollableLogsContainer vizAndWidgetSplit logsExploreTableVisualisation metricsSummary featureToggleAdminPage httpSLOLevels enableNativeHTTPHistogram
+    news:
+      news_feed_enabled: false
+    paths:
+      temp_data_lifetime: 1h
+    server:
+      enable_gzip: true
+    snapshots:
+      enabled: false
+      external_enabled: false
+    users:
+      default_theme: light
+  ingress:
+    enabled: false
+  persistence:
+    enabled: false
   # See: https://github.com/grafana/helm-charts/issues/1746
   rbac:
     pspEnabled: false
@@ -50,6 +81,11 @@ grafana:
           isDefault: false
           version: 1
           editable: true
+          jsonData:
+            httpMethod: POST
+            exemplarTraceIdDestinations:
+              - name: traceID
+                datasourceUid: tempo
         - name: Tempo
           type: tempo
           uid: tempo
@@ -62,18 +98,28 @@ grafana:
           editable: true
           jsonData:
             httpMethod: GET
+            tracesToMetrics:
+              datasourceUid: prometheus
+              tags: [ { key: 'service.name', value: 'application' }, { key: 'org' }, { key: 'method' }, { key: 'uri' }, { key: 'outcome' }, { key: 'status' }, { key: 'exception' } ]
+              queries:
+                - name: 'Throughput'
+                  query: 'sum(rate(http_server_requests_seconds_count{$$__tags}[$$__rate_interval]))'
+                - name: 'Latency'
+                  query: 'histogram_quantile(1.00, sum(rate(http_server_requests_seconds_bucket{$$__tags}[$$__rate_interval])) by (le))'
             tracesToLogs:
               datasourceUid: 'loki'
               tags: [ 'instance', 'pod', 'namespace', 'hostname' ]
-              mappedTags: [ { key: 'service.name', value: 'application' } ]
+              mappedTags: [ { key: 'org' }, { key: 'service.name', value: 'application' }  ]
               mapTagNamesEnabled: true
               spanStartTimeShift: '1h'
               spanEndTimeShift: '1h'
               filterByTraceID: true
               filterBySpanID: false
               lokiSearch: true
+            lokiSearch:
+              datasourceUid: loki
             serviceMap:
-              datasourceUid: 'prometheus'
+              datasourceUid: prometheus
             search:
               hide: false
             nodeGraph:
@@ -82,7 +128,6 @@ grafana:
           type: loki
           uid: loki
           access: proxy
-          orgId: 1
           url: http://loki-stack:3100
           basicAuth: false
           isDefault: true
@@ -90,7 +135,7 @@ grafana:
           editable: true
           jsonData:
             derivedFields:
-              - datasourceUid: tempo-thomas-vitale
+              - datasourceUid: tempo
                 matcherRegex: \[.+,(.+?),
                 name: TraceID
                 url: $${__value.raw}
@@ -102,7 +147,7 @@ prometheus:
   configmapReload:
     alertmanager:
       enabled: false
-  kubeStateMetrics:
+  kube-state-metrics:
     metricLabelsAllowlist:
       - pods=[*]
       - deployments=[app.kubernetes.io/name,app.kubernetes.io/component,app.kubernetes.io/instance]
@@ -112,6 +157,7 @@ prometheus:
     global:
       scrape_interval: 15s
     image:
-      tag: v2.38.0
+      repository: quay.io/prometheus/prometheus
+      tag: v2.52.0
     persistentVolume:
       enabled: false

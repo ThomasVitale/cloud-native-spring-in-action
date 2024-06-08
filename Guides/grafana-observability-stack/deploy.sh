@@ -12,7 +12,7 @@ helm repo update
 echo "\n📦 Installing Tempo..."
 
 helm upgrade --install tempo --namespace=observability-stack grafana/tempo \
-  --values helm/tempo-values.yml
+  --values helm/tempo-values.yml --version 1.9.0
 
 echo "\n⌛ Waiting for Tempo to be ready..."
 
@@ -26,24 +26,24 @@ kubectl wait \
   --timeout=90s \
   --namespace=observability-stack
 
-echo "\n📦 Installing Grafana, Loki, Prometheus, and Fluent Bit..."
+echo "\n📦 Installing Grafana, Loki, Prometheus, and Promtail..."
 
 kubectl apply -f resources/dashboards
 
 helm upgrade --install loki-stack --namespace=observability-stack grafana/loki-stack \
-  --values helm/loki-stack-values.yml
+  --values helm/loki-stack-values.yml --version 2.10.2
 
 sleep 5
 
-echo "\n⌛ Waiting for Fluent Bit to be ready..."
+echo "\n⌛ Waiting for Promtail to be ready..."
 
-while [ $(kubectl get pod -l app=fluent-bit-loki -n observability-stack | wc -l) -eq 0 ] ; do
+while [ $(kubectl get pod -l app.kubernetes.io/name=promtail -n observability-stack | wc -l) -eq 0 ] ; do
   sleep 5
 done
 
 kubectl wait \
   --for=condition=ready pod \
-  --selector=app=fluent-bit-loki \
+  --selector=app.kubernetes.io/name=promtail \
   --timeout=90s \
   --namespace=observability-stack
 

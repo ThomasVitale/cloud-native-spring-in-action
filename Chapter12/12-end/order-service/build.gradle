@@ -21,9 +21,9 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "2021.0.8")
-	set('testcontainersVersion', "1.19.3")
-	set('testKeycloakVersion', "3.2.0")
+	set('springCloudVersion', "2021.0.9")
+	set('testcontainersVersion', "1.19.8")
+	set('testKeycloakVersion', "3.3.1")
 }
 
 dependencies {

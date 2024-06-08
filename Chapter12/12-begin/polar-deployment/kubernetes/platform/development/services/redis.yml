@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: polar-redis
-          image: redis:7.0
+          image: redis:7.2
           resources:
             requests:
               cpu: 100m

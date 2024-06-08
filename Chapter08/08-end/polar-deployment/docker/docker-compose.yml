@@ -54,7 +54,7 @@ services:
   # Backing Services
 
   polar-postgres:
-    image: "postgres:14.10"
+    image: "postgres:14.12"
     container_name: "polar-postgres"
     ports:
       - 5432:5432

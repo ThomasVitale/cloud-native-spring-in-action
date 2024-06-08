@@ -15,7 +15,7 @@ repositories {
 }
 
 ext {
-    set('springCloudVersion', "2021.0.8")
+    set('springCloudVersion', "2021.0.9")
 }
 
 dependencies {

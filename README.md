@@ -16,7 +16,7 @@ Chapter after chapter, you'll build, containerize, and deploy cloud native appli
     * OpenJDK: [Eclipse Temurin](https://adoptium.net)
     * GraalVM: [GraalVM](https://www.graalvm.org)
     * JDK Management: [SDKMAN](https://sdkman.io)
-* Docker 24+
+* Docker 26+
     * [Docker for Linux](https://docs.docker.com/engine/install/ubuntu/)
     * [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop)
     * [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop)

@@ -34,17 +34,19 @@ jobs:
           fail-build: false
           severity-cutoff: high
       - name: Upload vulnerability report
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         if: success() || failure()
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}
-      - name: Validate Kubernetes manifests
-        uses: stefanprodan/kube-tools@v1
+      - name: Setup tools
+        uses: alexellis/setup-arkade@v3
+      - name: Install tools
+        uses: alexellis/arkade-get@master
         with:
-          kubectl: 1.28.3
-          kubeval: 0.16.1
-          command: |
-            kubeval --strict -d k8s
+          kubeconform: latest
+      - name: Validate Kubernetes manifests
+        run: |
+          kubeconform --strict k8s
   package:
     name: Package and Publish
     if: ${{ github.ref == 'refs/heads/main' }}
@@ -76,7 +78,7 @@ jobs:
           fail-build: false
           severity-cutoff: high
       - name: Upload vulnerability report
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         if: success() || failure()
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}

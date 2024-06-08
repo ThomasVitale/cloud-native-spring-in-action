@@ -24,7 +24,7 @@ You can replace this step in _all_ applications:
 - name: Validate Kubernetes manifests
   uses: stefanprodan/kube-tools@v1
   with:
-    kubectl: 1.26.3
+    kubectl: 1.30.1
     kubeval: 0.16.1
     command: |
       kubeval --strict k8s
@@ -33,23 +33,28 @@ You can replace this step in _all_ applications:
 with the following step (also in Edge Service):
 
 ```yaml
-- name: Validate Kubernetes manifests
-  uses: stefanprodan/kube-tools@v1
+- name: Setup tools
+  uses: alexellis/setup-arkade@v3
+- name: Install tools
+  uses: alexellis/arkade-get@master
   with:
-    kubectl: 1.28.3
-    kubeconform: 0.6.4
-    command: |
-      kubeconform --strict k8s
+    kubeconform: latest
+- name: Validate Kubernetes manifests
+  run: |
+    kubeconform --strict k8s
 ```
 
 When using Kustomize (starting from chapter 14), this is the new configuration to use with Kubeconform:
 
 ```yaml
-- name: Validate Kubernetes manifests
-  uses: stefanprodan/kube-tools@v1
+- name: Setup tools
+  uses: alexellis/setup-arkade@v3
+- name: Install tools
+  uses: alexellis/arkade-get@master
   with:
-    kubectl: 1.28.3
-    kubeconform: 0.6.4
-    command: |
-      kustomize build k8s | kubeconform --strict -
+    kustomize: latest
+    kubeconform: latest
+- name: Validate Kubernetes manifests
+  run: |
+    kustomize build k8s | kubeconform --strict -
 ```
