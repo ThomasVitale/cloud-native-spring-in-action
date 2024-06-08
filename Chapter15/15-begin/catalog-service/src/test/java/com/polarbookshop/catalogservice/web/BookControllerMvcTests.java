@@ -13,7 +13,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.BDDMockito.given;
@@ -39,9 +38,6 @@ class BookControllerMvcTests {
 
 	@MockBean
 	BookService bookService;
-
-	@MockBean
-	JwtDecoder jwtDecoder;
 
 	@Test
 	void whenGetBookExistingAndAuthenticatedThenShouldReturn200() throws Exception {

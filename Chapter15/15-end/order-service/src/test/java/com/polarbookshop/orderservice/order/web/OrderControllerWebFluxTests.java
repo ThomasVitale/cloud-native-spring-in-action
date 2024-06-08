@@ -12,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
 import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
@@ -28,9 +27,6 @@ class OrderControllerWebFluxTests {
 
 	@MockBean
 	OrderService orderService;
-
-	@MockBean
-	ReactiveJwtDecoder reactiveJwtDecoder;
 
 	@Test
 	void whenBookNotAvailableThenRejectOrder() {
