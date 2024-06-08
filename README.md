@@ -20,7 +20,7 @@ Chapter after chapter, you'll build, containerize, and deploy cloud native appli
     * [Docker for Linux](https://docs.docker.com/engine/install/ubuntu/)
     * [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop)
     * [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop)
-* Kubernetes 1.28+
+* Kubernetes 1.30+
     * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
     * [minikube](https://minikube.sigs.k8s.io/docs/)
 * Other
