@@ -1,3 +1,0 @@
-spring:
-  rabbitmq:
-    host: polar-rabbitmq
