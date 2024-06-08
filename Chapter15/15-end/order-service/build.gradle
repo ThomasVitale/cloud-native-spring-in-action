@@ -1,6 +1,6 @@
 plugins {
-	id 'org.springframework.boot' version '2.7.18'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'org.springframework.boot' version '3.3.0'
+	id 'io.spring.dependency-management' version '1.1.5'
 	id 'java'
 }
 
@@ -21,9 +21,8 @@ repositories {
 }
 
 ext {
-	set('otelVersion', "1.33.3")
-	set('springCloudVersion', "2021.0.9")
-	set('testcontainersVersion', "1.19.8")
+	set('otelVersion', "2.4.0")
+	set('springCloudVersion', "2023.0.2")
 	set('testKeycloakVersion', "3.3.1")
 }
 
@@ -40,12 +39,13 @@ dependencies {
 	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
 	runtimeOnly "io.opentelemetry.javaagent:opentelemetry-javaagent:${otelVersion}"
 	runtimeOnly 'org.flywaydb:flyway-core'
+	runtimeOnly 'org.flywaydb:flyway-database-postgresql'
 	runtimeOnly 'org.postgresql:postgresql'
 	runtimeOnly 'org.postgresql:r2dbc-postgresql'
 	runtimeOnly 'org.springframework:spring-jdbc'
 
 	// Only on Apple Silicon. Why it's necessary: https://github.com/netty/netty/issues/11020
-	// runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.101.Final:osx-aarch_64'
+	// runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.110.Final:osx-aarch_64'
 
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
@@ -57,19 +57,11 @@ dependencies {
 	testImplementation 'org.testcontainers:junit-jupiter'
 	testImplementation 'org.testcontainers:postgresql'
 	testImplementation 'org.testcontainers:r2dbc'
-	testImplementation("org.springframework.cloud:spring-cloud-stream") {
-		artifact {
-			name = "spring-cloud-stream"
-			extension = "jar"
-			type ="test-jar"
-			classifier = "test-binder"
-		}
-	}
+	testImplementation 'org.springframework.cloud:spring-cloud-stream-test-binder'
 }
 
 dependencyManagement {
 	imports {
-		mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 	}
 }

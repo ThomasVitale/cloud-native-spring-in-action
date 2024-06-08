@@ -1,8 +1,8 @@
 plugins {
-	id 'org.springframework.boot' version '2.7.15'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'org.springframework.boot' version '3.3.0'
+	id 'io.spring.dependency-management' version '1.1.5'
 	id 'java'
-	id 'org.springframework.experimental.aot' version '0.12.2'
+	id 'org.graalvm.buildtools.native' version '0.10.2'
 }
 
 group = 'com.polarbookshop'
@@ -12,7 +12,6 @@ sourceCompatibility = '17'
 description = 'Provides quotes from the books in the library.'
 
 repositories {
-	maven { url 'https://repo.spring.io/milestone' }
 	mavenCentral()
 }
 

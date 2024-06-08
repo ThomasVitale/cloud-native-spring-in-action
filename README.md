@@ -6,7 +6,108 @@ This repository contains the source code accompanying the book [Cloud Native Spr
 
 There is a folder for each chapter, for which both an _initial_ and _final_ versions are available. For example, for chapter 4, you can use `Chapter04/04-begin` as a starting point to follow along with the examples in the chapter and `Chapter04/04-end` to check the code as it looks like at the end.
 
-The book uses Spring Boot 2.7.x and this main branch contains the samples updated to version 2.7.18. You can find the same examples upgraded to the latest [3.x](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main) version of Spring Boot in a dedicated branche. Feel free to use **Spring Boot 3** while reading the book. Only a few minor changes are necessary to the code samples and they are documented [here](https://github.com/ThomasVitale/cloud-native-spring-in-action/blob/sb-3-main/README.md).
+## Changes with Spring Boot 3
+
+This branch contains the source code accompanying the book "Cloud Native Spring in Action" upgraded to Spring Boot 3. Besides the new dependency version, there are a few minor changes compared to what it's included in the book.
+
+### Jakarta EE
+
+Spring Boot 3 is based on Jakarta EE 9, which comes with a change in the package naming strategy from `javax.*` to `jakarta.*`.
+The annotations from the Java Validation API introduced in chapter 3 should change from `javax.validation.*` to `jakarta.validation.*`
+(Catalog Service and Order Service).
+
+### Spring Data Redis
+
+Chapter 9 introduces Spring Data Redis. In Spring Boot 3, all configuration properties related to Redis changed naming strategy from
+`spring.redis.*` to `spring.data.redis.*` (Edge Service).
+
+### Spring Session
+
+The `spring.session.store-type=redis` configuration property used in chapter 9 (Edge Service) is not necessary anymore. Spring Session will detect
+that the application is integrated with Redis and it will use it to store the session data automatically.
+
+### Spring Cloud Stream
+
+The test binder used in chapter 10 is now provided via a dedicated dependency `org.springframework.cloud:spring-cloud-stream-test-binder`.
+
+### Spring Security
+
+#### Configuration
+
+The `@EnableWebSecurity` and `@EnableWebFluxSecurity` annotations do not mark the annotated class as a configuration source anymore, and they are not needed for the examples in the book. Instead, add the `@Configuration(proxyBeanMethods = false)` annotation explicitly in chapter 11 and 12.
+
+```java
+@Configuration(proxyBeanMethods = false)
+public class SecurityConfig {
+    ...
+}
+```
+
+#### CSRF
+
+The latest version of Spring Security provides a more robust protection against CSRF attacks. In order to make the new functionality work,
+we need to update the configuration in Edge Service explained in chapter 11 to combine the higher protection with support for SPAs
+using a cookie-based strategy to read CSRF tokens.
+
+```java
+@Configuration(proxyBeanMethods = false)
+public class SecurityConfig {
+
+	@Bean
+	SecurityWebFilterChain securityFilterChain(...) {
+		return http
+			...
+			.csrf(csrf -> csrf
+				.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
+				.csrfTokenRequestHandler(new XorServerCsrfTokenRequestAttributeHandler()::handle)) <1>
+			.build();
+	}
+}
+```
+
+<1> This is the new line to add.
+
+#### Servlet
+
+In chapter 12, we use `mvcMatcher()` to tell Spring Security which endpoints of Catalog Service should be protected.
+We need to replace the `mvcMatcher()` expressions with `requestMatcher()` because the former has been removed.
+
+```java
+@Configuration(proxyBeanMethods = false)
+public class SecurityConfig {
+
+	@Bean
+	SecurityFilterChain securityFilterChain(...) throws Exception {
+		return http
+			.authorizeHttpRequests(authorize -> authorize
+				.requestMatchers("/actuator/**").permitAll() <2>
+				.requestMatchers(HttpMethod.GET, "/", "/books/**").permitAll() <2>
+				...
+			.build();
+	}
+}
+```
+
+<2> These are the lines with changes.
+
+### Flyway
+
+The Flyway project has changed the way it supports specific databases. In the book, we use PostgreSQL. To make it work with Flyway, we need to add a dedicated dependency providing PostgreSQL support for Flyway.
+
+```groovy
+implementation 'org.flywaydb:flyway-core'
+implementation 'org.flywaydb:flyway-database-postgresql' <3>
+```
+
+<3> The new dependency to add.
+
+### GraalVM Support
+
+Chapter 16 covers Spring Native. Starting from Spring Boot 3 and Spring Framework 6, support for GraalVM native images is part of the core
+framework. From the Spring Initializr, you would choose "GraalVM Native Support" instead of "Spring Native (Experimental)".
+In practice, the only necessary code change is in the Gradle configuration. Instead of having the `org.springframework.experimental.aot` plugin,
+you would have the `org.graalvm.buildtools.native` plugin. This is provided for you when you use Spring Initializr. Everything else stays the same
+as it's explained in the book, including all the commands to build the application as a native executable.
 
 ## Prerequisites
 
@@ -60,25 +161,25 @@ Gradle | Maven
 | Chapter | Starting point | Intermediate version | Final version |
 |---------|----------------|----------------------|---------------|
 | 1. Introduction to cloud native | - | - | - |
-| 2. Cloud native patterns and technologies | [02-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter02/02-begin) | - | [02-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter02/02-end) |
-| 3. Getting started with cloud native development | [03-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter03/03-begin) | - | [03-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter03/03-end) |
-| 4. Externalized configuration management | [04-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter04/04-begin) | - | [04-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter04/04-end) |
-| 5. Persisting and managing data in the cloud | [05-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter05/05-begin) | [05-intermediate](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter05/05-intermediate) | [05-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter05/05-end) |
-| 6. Containerizing Spring Boot | [06-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter06/06-begin) | - | [06-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter06/06-end) |
-| 7. Kubernetes fundamentals for Spring Boot | [07-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter07/07-begin) | - | [07-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter07/07-end) |
-| 8. Reactive Spring: Resilience and scalability | [08-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter08/08-begin) | - | [08-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter08/08-end) |
-| 9. API gateway and circuit breakers | [09-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter09/09-begin) | - | [09-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter09/09-end) |
-| 10. Event-driven applications and functions | [10-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter10/10-begin) | [10-intermediate](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter10/10-intermediate) | [10-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter10/10-end) |
-| 11. Security: Authentication and SPA | [11-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter11/11-begin) | - | [11-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter11/11-end) |
-| 12. Security: Authorization and auditing | [12-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter12/12-begin) | - | [12-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter12/12-end) |
-| 13. Observability and monitoring | [13-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter13/13-begin) | - | [13-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter13/13-end) |
-| 14. Configuration and secrets management | [14-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter14/14-begin) | - | [14-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter14/14-end) |
-| 15. Continuous delivery and GitOps | [15-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter15/15-begin) | - | [15-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter15/15-end) |
-| 16. Serverless, GraalVM and Knative | [16-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter16/16-begin) | - | [10-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/Chapter16/16-end) |
+| 2. Cloud native patterns and technologies | [02-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter02/02-begin) | - | [02-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter02/02-end) |
+| 3. Getting started with cloud native development | [03-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter03/03-begin) | - | [03-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter03/03-end) |
+| 4. Externalized configuration management | [04-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter04/04-begin) | - | [04-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter04/04-end) |
+| 5. Persisting and managing data in the cloud | [05-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter05/05-begin) | [05-intermediate](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter05/05-intermediate) | [05-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter05/05-end) |
+| 6. Containerizing Spring Boot | [06-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter06/06-begin) | - | [06-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter06/06-end) |
+| 7. Kubernetes fundamentals for Spring Boot | [07-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter07/07-begin) | - | [07-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter07/07-end) |
+| 8. Reactive Spring: Resilience and scalability | [08-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter08/08-begin) | - | [08-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter08/08-end) |
+| 9. API gateway and circuit breakers | [09-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter09/09-begin) | - | [09-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter09/09-end) |
+| 10. Event-driven applications and functions | [10-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter10/10-begin) | [10-intermediate](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter10/10-intermediate) | [10-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter10/10-end) |
+| 11. Security: Authentication and SPA | [11-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter11/11-begin) | - | [11-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter11/11-end) |
+| 12. Security: Authorization and auditing | [12-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter12/12-begin) | - | [12-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter12/12-end) |
+| 13. Observability and monitoring | [13-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter13/13-begin) | - | [13-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter13/13-end) |
+| 14. Configuration and secrets management | [14-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter14/14-begin) | - | [14-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter14/14-end) |
+| 15. Continuous delivery and GitOps | [15-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter15/15-begin) | - | [15-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter15/15-end) |
+| 16. Serverless, GraalVM and Knative | [16-begin](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter16/16-begin) | - | [10-end](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/Chapter16/16-end) |
 
 ## Polar Bookshop
 
-The final project developed throughout the book is available [here](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/main/PolarBookshop).
+The final project developed throughout the book is available [here](https://github.com/ThomasVitale/cloud-native-spring-in-action/tree/sb-3-main/PolarBookshop).
 
 You can find the source code for the Angular frontend [here](https://github.com/PolarBookshop/polar-ui/tree/v1).
 

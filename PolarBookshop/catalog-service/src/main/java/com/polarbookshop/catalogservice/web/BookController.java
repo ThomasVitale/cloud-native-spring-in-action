@@ -1,6 +1,6 @@
 package com.polarbookshop.catalogservice.web;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import com.polarbookshop.catalogservice.domain.Book;
 import com.polarbookshop.catalogservice.domain.BookService;

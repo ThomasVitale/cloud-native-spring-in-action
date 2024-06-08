@@ -1,6 +1,6 @@
 plugins {
-	id 'org.springframework.boot' version '2.7.18'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'org.springframework.boot' version '3.3.0'
+	id 'io.spring.dependency-management' version '1.1.5'
 	id 'java'
 }
 
@@ -21,8 +21,7 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "2021.0.9")
-	set('testcontainersVersion', "1.19.8")
+	set('springCloudVersion', "2023.0.2")
 }
 
 dependencies {
@@ -33,12 +32,13 @@ dependencies {
 	implementation 'org.springframework.retry:spring-retry'
 
 	runtimeOnly 'org.flywaydb:flyway-core'
+	runtimeOnly 'org.flywaydb:flyway-database-postgresql'
 	runtimeOnly 'org.postgresql:postgresql'
 	runtimeOnly 'org.postgresql:r2dbc-postgresql'
 	runtimeOnly 'org.springframework:spring-jdbc'
 
 	// Only on Apple Silicon. Why it's necessary: https://github.com/netty/netty/issues/11020
-	// runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.101.Final:osx-aarch_64'
+	// runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.110.Final:osx-aarch_64'
 
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
@@ -52,7 +52,6 @@ dependencies {
 
 dependencyManagement {
 	imports {
-		mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 	}
 }

@@ -2,7 +2,7 @@ package com.polarbookshop.orderservice.config;
 
 import java.net.URI;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

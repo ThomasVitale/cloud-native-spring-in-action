@@ -1,6 +1,6 @@
 plugins {
-	id 'org.springframework.boot' version '2.7.18'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'org.springframework.boot' version '3.3.0'
+	id 'io.spring.dependency-management' version '1.1.5'
 	id 'java'
 }
 
@@ -15,8 +15,8 @@ repositories {
 }
 
 ext {
-	set('otelVersion', "1.33.3")
-	set('springCloudVersion', "2021.0.9")
+	set('otelVersion', "2.4.0")
+	set('springCloudVersion', "2023.0.2")
 }
 
 dependencies {

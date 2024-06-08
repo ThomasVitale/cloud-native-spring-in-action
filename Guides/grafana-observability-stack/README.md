@@ -42,7 +42,7 @@ spec:
         - name: catalog-service
           env:
             - name: JAVA_TOOL_OPTIONS
-              value: "-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.33.3.jar"
+              value: "-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-2.4.0.jar"
             - name: OTEL_SERVICE_NAME
               value: catalog-service
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
