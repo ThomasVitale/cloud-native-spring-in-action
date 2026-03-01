@@ -14,7 +14,7 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/PolarBookshop/config-repo
+          uri: https://github.com/lilei6809/config-repo
           default-label: main
           timeout: 5
           clone-on-start: true

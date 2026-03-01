@@ -1,7 +1,8 @@
 plugins {
-	id 'org.springframework.boot' version '3.3.0'
-	id 'io.spring.dependency-management' version '1.1.5'
+	id 'org.springframework.boot' version '3.4.1'
+	id 'io.spring.dependency-management' version '1.1.6'
 	id 'java'
+	id 'com.google.cloud.tools.jib' version '3.4.3'
 }
 
 group = 'com.polarbookshop'
@@ -9,6 +10,81 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 description = 'Provides functionality for managing the books in the catalog.'
+
+def ghcrOwner = (project.findProperty('ghcrOwner') ?: System.getenv('GITHUB_REPOSITORY_OWNER') ?: 'CHANGE_ME').toString().toLowerCase()
+def ghcrUsername = project.findProperty("ghcrUsername") ?: System.getenv("GH_USERNAME") ?: System.getenv("GITHUB_ACTOR")
+def ghcrToken = project.findProperty("ghcrToken") ?: System.getenv("GHCR_TOKEN") ?: System.getenv("GITHUB_TOKEN")
+def debugEnabled = (project.findProperty("debug") ?: "false").toString().toBoolean()
+
+// bootBuildImage 配置使用 Backpack build image
+bootBuildImage {
+
+	builder = "docker.io/paketobuildpacks/builder-jammy-base:0.4.240"
+	runImage = "docker.io/paketobuildpacks/run-jammy-base:0.1.202"
+	imageName = "${project.name}"
+	environment = ["BP_JVM_VERSION" : "17.*"]  // jvm version
+
+	// 配置 image builded 后, 直接发到 registry hub
+	// 这几个参数可以使用 bootBuildImage 的命令行参数传入
+	/**
+	 * $ ./gradlew bootBuildImage \
+			 --imageName ghcr.io/<your_github_username>/catalog-service \
+			 --publishImage \
+			 -PregistryUrl=ghcr.io \
+			 -PregistryUsername=<your_github_username> \
+			 -PregistryToken=<your_github_token>
+	 */
+		def publishUsername = project.findProperty("registryUsername")
+				?: project.findProperty("GH_USERNAME")
+				?: System.getenv("GH_USERNAME")
+		def publishPassword = project.findProperty("registryToken")
+				?: project.findProperty("GHCR_TOKEN")
+				?: System.getenv("GHCR_TOKEN")
+		def publishUrl = project.findProperty("registryUrl") ?: System.getenv("REGISTRY_URL")
+
+		docker {
+		// Windows 上的错误 npipe:////./pipe/dockerDesktopLinuxEngine 是
+		// Spring Boot Gradle 插件在 Windows 上自动检测 Docker socket 时生成了含冒号的非法路径。
+		//
+		//  需要在 bootBuildImage 中显式指定 Docker host，并针对 Windows/Linux 做条件处理
+		if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+			host = "//./pipe/dockerDesktopLinuxEngine"
+		}
+
+			// 仅在明确提供发布凭据时才启用 publishRegistry，避免本地构建也触发认证校验
+			if (publishUsername && publishPassword && publishUrl) {
+				publishRegistry {
+					username = publishUsername
+					password = publishPassword
+					url = publishUrl
+				}
+			}
+		}
+	}
+
+jib {
+	from {
+		image = 'eclipse-temurin:17-jre'
+	}
+	to {
+		// Default target: ghcr.io/<owner>/catalog-service:0.0.1-SNAPSHOT
+		image = project.findProperty("imageName") ?: "ghcr.io/${ghcrOwner}/${project.name}:${project.version}"
+		if (ghcrUsername && ghcrToken) {
+			auth {
+				username = ghcrUsername
+				password = ghcrToken
+			}
+		}
+	}
+	container {
+		ports = debugEnabled ? ['9001', '5005'] : ['9001']
+		if (debugEnabled) {
+			jvmFlags = ['-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005']
+		}
+		creationTime = 'USE_CURRENT_TIMESTAMP'
+	}
+}
+
 
 configurations {
 	compileOnly {
@@ -21,7 +97,7 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "2023.0.2")
+	set('springCloudVersion', "2024.0.0")
 }
 
 dependencies {
@@ -32,7 +108,7 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	implementation 'org.springframework.retry:spring-retry'
 	implementation 'org.flywaydb:flyway-core'
-  implementation 'org.flywaydb:flyway-database-postgresql'
+    implementation 'org.flywaydb:flyway-database-postgresql'
 
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"

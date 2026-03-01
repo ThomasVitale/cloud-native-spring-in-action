@@ -94,3 +94,7 @@ out/
 /nbdist/
 /.nb-gradle/
 
+# .gitattributes
+* text=auto eol=lf
+*.sh text eol=lf
+gradlew text eol=lf
